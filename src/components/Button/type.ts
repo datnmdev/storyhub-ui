@@ -6,5 +6,6 @@ export interface ButtonProps extends PropsWithChildren {
     color?: string,
     bgColor?: string,
     borderRadius?: string,
-    padding?: string
+    padding?: string,
+    onClick?: () => void
 }

@@ -6,9 +6,12 @@ import Nav from "./components/Nav";
 import { useTranslation } from "react-i18next";
 import Logo from "./components/Logo";
 import classNames from "classnames";
+import { useNavigate } from "react-router-dom";
+import paths from "@routers/paths";
 
 function Header() {
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     return (
         <div className="border-solid border-b-[1px] border-[var(--gray)]">
@@ -23,7 +26,9 @@ function Header() {
                     <ToggleThemeButton />
                     <ChangeLangButton />
                     <div className="ml-2">
-                        <Button>
+                        <Button
+                            onClick={() => navigate(paths.signInPage())}
+                        >
                             {t("reader.header.btn.signIn")}
                         </Button>
                     </div>

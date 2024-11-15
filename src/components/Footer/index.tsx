@@ -6,7 +6,7 @@ import qs from "qs";
 function Footer() {
     const { t } = useTranslation();
     return (
-        <div className="mt-8 border-t-[4px] border-solid border-[var(--gray)] bg-[#d9d9d91a] py-4">
+        <div className="border-t-[4px] border-solid border-[var(--gray)] bg-[#d9d9d91a] py-4">
             <div className="grid desktop:grid-cols-12 desktop:w-[var(--desktop-container-w)] mx-auto gap-x-2">
                 <div className="desktop:col-span-3 space-y-2">
                     <div className="space-y-2">

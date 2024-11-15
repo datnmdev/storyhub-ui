@@ -3,9 +3,14 @@ import { IconButtonProps } from "./type";
 function IconButton({
     icon,
     children,
+    color,
+    bgColor,
+    fontSize,
     width,
     height,
+    border,
     borderRadius,
+    boxShadow,
     padding,
     onClick
 }: IconButtonProps) {
@@ -15,7 +20,12 @@ function IconButton({
             style={{
                 width,
                 height,
+                fontSize,
+                color,
+                backgroundColor: bgColor,
+                border,
                 borderRadius,
+                boxShadow,
                 padding
             }}
             onClick={onClick}

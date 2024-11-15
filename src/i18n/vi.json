@@ -28,6 +28,16 @@
                 "privacy": "Chính sách bảo mật",
                 "term": "Điều khoản sử dụng"
             }
+        },
+        "signInPage": {
+            "signIn": "Đăng nhập",
+            "signUp": "Đăng Ký",
+            "email": "Địa chỉ email",
+            "password": "Mật khẩu",
+            "forgotPassword": "Quên mật khẩu?",
+            "or": "Hoặc",
+            "noAccount": "Bạn chưa có tài khoản?",
+            "signUpNow": "Đăng ký ngay"
         }
     }
 }

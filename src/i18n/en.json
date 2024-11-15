@@ -26,6 +26,16 @@
                 "privacy": "Privacy Policy",
                 "term": "Terms of Use"
             }
+        },
+        "signInPage": {
+            "signIn": "Sign In",
+            "signUp": "Sign Up",
+            "email": "Email",
+            "password": "Password",
+            "forgotPassword": "Forgot Password?",
+            "or": "Or",
+            "noAccount": "Don't have an account?",
+            "signUpNow": "Sign up now"
         }
     }
 }

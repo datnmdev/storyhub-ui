@@ -8,7 +8,8 @@ function Button({
     bgColor = colors.primary,
     borderRadius = "4px",
     padding = "0",
-    children
+    children,
+    onClick,
 }: ButtonProps) {
     return (
         <div
@@ -21,6 +22,7 @@ function Button({
                 borderRadius,
                 padding
             }}
+            onClick={onClick}
         >
             {children}
         </div>

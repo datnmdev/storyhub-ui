@@ -11,9 +11,9 @@ export default defineConfig({
     ],
     css: {
         preprocessorOptions: {
-          scss: {
-            implementation: sass,
-          },
+            scss: {
+                implementation: sass,
+            },
         },
-      },
+    },
 });

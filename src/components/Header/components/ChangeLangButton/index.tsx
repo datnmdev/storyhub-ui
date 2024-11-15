@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import VietnameseFlagIcon from "@assets/imgs/flags/vietnamese.png";
 import EnglishFlagIcon from "@assets/imgs/flags/english.png";
 import classNames from "classnames";
-import styles from "./ChangeLangButton.module.scss"
+import styles from "./ChangeLangButton.module.scss";
 
 function ChangeLangButton() {
     const themeValue = useSelector(themeFeature.themeSelector.selectValue);
@@ -22,9 +22,9 @@ function ChangeLangButton() {
     };
 
     useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener("mousedown", handleClickOutside);
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
 
@@ -66,7 +66,10 @@ function ChangeLangButton() {
                             className={classNames("flex items-center py-2 space-x-2 hover:bg-[var(--primary)] hover:text-[var(--white)] px-2",
                                 i18n.language === "vi" && "text-[var(--primary)]"
                             )}
-                            onClick={() => i18n.changeLanguage("vi")}
+                            onClick={() => {
+                                setHiddenBox(true);
+                                i18n.changeLanguage("vi");
+                            }}
                         >
                             <img
                                 className="w-8 h-8 object-cover object-center"
@@ -74,14 +77,17 @@ function ChangeLangButton() {
                                 alt="Icon"
                             />
 
-                            <span className="grow">{t(`reader.header.language.vi`)}</span>
+                            <span className="grow">{t("reader.header.language.vi")}</span>
                         </li>
 
                         <li
                             className={classNames("flex items-center py-2 space-x-2 hover:bg-[var(--primary)] hover:text-[var(--white)] px-2",
                                 i18n.language === "en" && "text-[var(--primary)]"
                             )}
-                            onClick={() => i18n.changeLanguage("en")}
+                            onClick={() => {
+                                setHiddenBox(true);
+                                i18n.changeLanguage("en");
+                            }}
                         >
                             <img
                                 className="w-8 h-8 object-cover object-center"
@@ -89,7 +95,7 @@ function ChangeLangButton() {
                                 alt="Icon"
                             />
 
-                            <span className="grow">{t(`reader.header.language.en`)}</span>
+                            <span className="grow">{t("reader.header.language.en")}</span>
                         </li>
                     </ul>
                 )}
