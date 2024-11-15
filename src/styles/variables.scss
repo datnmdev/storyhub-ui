@@ -1,0 +1,13 @@
+$primary: #977ef5;
+$black: #000;
+$white: #FFF;
+$gray: #bdc3c8;
+$desktop-w-container: calc(100% - (48px * 2));
+
+:root {
+    --primary: #{$primary};
+    --black: #{$black};
+    --white: #{$white};
+    --gray: #{$gray};
+    --desktop-w-container: #{$desktop-w-container};
+}

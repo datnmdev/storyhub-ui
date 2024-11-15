@@ -1,0 +1,20 @@
+{
+    "reader": {
+        "header": {
+            "nav": {
+                "home": "TRANG CHỦ",
+                "novel": "TRUYỆN CHỮ",
+                "comic": "TRUYỆN TRANH",
+                "search": "TÌM TRUYỆN",
+                "rank": "XẾP HẠNG"
+            },
+            "btn": {
+                "signIn": "Đăng nhập"
+            },
+            "language": {
+                "vi": "Tiếng Việt",
+                "en": "Tiếng Anh"
+            }
+        }
+    }
+}

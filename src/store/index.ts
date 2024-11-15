@@ -1,11 +1,9 @@
+import themeFeature from "@features/themes";
 import { configureStore } from "@reduxjs/toolkit";
 
-export const store = configureStore({
-  reducer: {
-        
-  }
+const store = configureStore({
+    reducer: {
+        theme: themeFeature.themeReducer
+    },
 });
-
-export type AppStore = typeof store
-export type RootState = ReturnType<AppStore["getState"]>
-export type AppDispatch = AppStore["dispatch"]
+export default store;

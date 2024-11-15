@@ -1,0 +1,20 @@
+{
+    "reader": {
+        "header": {
+            "nav": {
+                "home": "HOME",
+                "novel": "NOVEL",
+                "comic": "COMIC",
+                "search": "SEARCH",
+                "rank": "RANK"
+            },
+            "btn": {
+                "signIn": "Sign In"
+            },
+            "language": {
+                "vi": "Vietnamese",
+                "en": "English"
+            }
+        }
+    }
+}
