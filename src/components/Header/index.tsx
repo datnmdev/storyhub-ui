@@ -11,20 +11,22 @@ function Header() {
     const { t } = useTranslation();
 
     return (
-        <div className={classNames("desktop:w-[var(--desktop-w-container)] mx-auto flex justify-between leading-[64px]")} >
-            <div className="flex">
-                <Logo />
-                <Nav />
-            </div>
+        <div className="border-solid border-b-[1px] border-[var(--gray)]">
+            <div className={classNames("desktop:w-[var(--desktop-container-w)] mx-auto flex justify-between leading-[64px]")} >
+                <div className="flex">
+                    <Logo />
+                    <Nav />
+                </div>
 
-            <div className="flex items-center">
-                <SearchButton />
-                <ToggleThemeButton />
-                <ChangeLangButton />
-                <div className="ml-2">
-                    <Button>
-                        {t("reader.header.btn.signIn")}
-                    </Button>
+                <div className="flex items-center">
+                    <SearchButton />
+                    <ToggleThemeButton />
+                    <ChangeLangButton />
+                    <div className="ml-2">
+                        <Button>
+                            {t("reader.header.btn.signIn")}
+                        </Button>
+                    </div>
                 </div>
             </div>
         </div>

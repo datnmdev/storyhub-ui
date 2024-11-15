@@ -15,6 +15,17 @@
                 "vi": "Vietnamese",
                 "en": "English"
             }
+        },
+        "footer": {
+            "contact": {
+                "heading": "Contact",
+                "address": "97 Man Thien St., Hiep Phu, District 9, Ho Chi Minh City 70000"
+            },
+            "about": {
+                "heading": "About",
+                "privacy": "Privacy Policy",
+                "term": "Terms of Use"
+            }
         }
     }
 }

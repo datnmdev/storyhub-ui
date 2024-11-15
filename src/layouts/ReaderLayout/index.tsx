@@ -12,9 +12,7 @@ function ReaderLayout({
 
     return (
         <div className={classNames(themeValue === "light" ? 'light' : 'dark', "min-h-[100vh]")}>
-            <div className="border-solid border-b-[1px] border-[var(--gray)]">
-                <Header />
-            </div>
+            <Header />
             {children}
             <Footer />
         </div>
