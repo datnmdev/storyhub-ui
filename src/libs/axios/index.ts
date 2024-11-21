@@ -21,30 +21,33 @@ export default function axiosInstance(token?: string) {
     async response => response,
     async error => {
       if (error.response && error.response.status === HttpStatusCode.Unauthorized) {
-        const request = {};
-        refreshRequestQueue.push(request)
+        const token = JSON.parse(localStorage.getItem(TOKEN_KEY) as string);
+        if (token) {
+          const request = {};
+          refreshRequestQueue.push(request)
 
-        await PromiseUtils.wait(() => {
-          if (refreshRequestQueue.length > 0 && refreshRequestQueue[0] === request) {
-            return true;
+          await PromiseUtils.wait(() => {
+            if (refreshRequestQueue.length > 0 && refreshRequestQueue[0] === request) {
+              return true;
+            }
+            return false;
+          })
+
+          const refreshToken = (await axios({
+            url: `${import.meta.env.VITE_SERVER_HOST}${import.meta.env.VITE_BASE_URI}/auth/refresh-token`,
+            method: "post",
+            data: JSON.parse(localStorage.getItem(TOKEN_KEY) as string)
+          })).data
+
+          if (refreshToken) {
+            store.dispatch(authFeature.authAction.saveToken(refreshToken));
+            error.config.headers.Authorization = `Bearer ${refreshToken.accessToken}`;
+            refreshRequestQueue.splice(0, 1);
+            return await axios(error.config);
+          } else {
+            store.dispatch(authFeature.authAction.signOut());
+            refreshRequestQueue.splice(0, 1);
           }
-          return false;
-        })
-
-        const refreshToken = (await axios({
-          url: `${import.meta.env.VITE_SERVER_HOST}${import.meta.env.VITE_BASE_URI}/auth/refresh-token`,
-          method: "post",
-          data: JSON.parse(localStorage.getItem(TOKEN_KEY) as string)
-        })).data
-
-        if (refreshToken) {
-          store.dispatch(authFeature.authAction.saveToken(refreshToken));
-          error.config.headers.Authorization = `Bearer ${refreshToken.accessToken}`;
-          refreshRequestQueue.splice(0, 1);
-          return await axios(error.config);
-        } else {
-          store.dispatch(authFeature.authAction.signOut());
-          refreshRequestQueue.splice(0, 1);
         }
       }
       return error;
