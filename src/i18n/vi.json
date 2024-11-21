@@ -14,6 +14,13 @@
             "language": {
                 "vi": "Tiếng Việt",
                 "en": "Tiếng Anh"
+            },
+            "user": {
+                "wallet": "Ví tiền",
+                "follow": "Truyện theo dõi",
+                "history": "Lịch sử đọc",
+                "setting": "Cài đặt",
+                "signOut": "Đăng xuất"
             }
         },
         "footer": {
@@ -39,5 +46,26 @@
             "noAccount": "Bạn chưa có tài khoản?",
             "signUpNow": "Đăng ký ngay"
         }
+    },
+    "validation": {
+        "required": "Trường này là bắt buộc",
+        "email": "Email không hợp lệ",
+        "password": "Mật khẩu phải tối thiểu 8 kí tự, bao gồm ít nhất một chữ in hoa, chữ thường, số và kí tự đặc biệt"
+    },
+    "errorPage": {
+        "notFoundPage": {
+            "message": "Xin lỗi! Không thể tìm thấy trang này"
+        },
+        "forbiddenPage": {
+            "message": "Xin lỗi! Bạn không có quyền truy cập vào trang này"
+        },
+        "button": {
+            "goHome": "Trở về trang chủ"
+        }
+    },
+    "notification": {
+        "signInWithEmailPasswordFailure": "Địa chỉ email hoặc mật khẩu không đúng",
+        "loginSuccess": "Đăng nhập thành công",
+        "undefinedError": "Đã có lỗi không xác định xảy ra, hãy vui lòng thử lại"
     }
 }

@@ -12,23 +12,25 @@ function IconButton({
     borderRadius,
     boxShadow,
     padding,
+    disable = false,
     onClick
 }: IconButtonProps) {
     return (
         <div
-            className="flex justify-center items-center space-x-1 hover:opacity-60 cursor-pointer"
+            className="flex justify-center items-center space-x-1 hover:opacity-60"
             style={{
                 width,
                 height,
                 fontSize,
                 color,
-                backgroundColor: bgColor,
+                backgroundColor: disable ? "var(--gray)" : bgColor,
                 border,
                 borderRadius,
                 boxShadow,
-                padding
+                padding,
+                cursor: disable ? "not-allowed" : "pointer" 
             }}
-            onClick={onClick}
+            onClick={disable ? (e) => e.preventDefault() : onClick}
         >
             <span>{icon}</span>
             {children && <span>{children}</span>}

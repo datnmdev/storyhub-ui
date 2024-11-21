@@ -11,5 +11,6 @@ export interface IconButtonProps extends PropsWithChildren {
     borderRadius?: string,
     boxShadow?: string,
     padding?: string,
+    disable?: boolean,
     onClick?: () => void
 }

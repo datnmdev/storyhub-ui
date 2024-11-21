@@ -14,6 +14,13 @@
             "language": {
                 "vi": "Vietnamese",
                 "en": "English"
+            },
+            "user": {
+                "wallet": "Wallet",
+                "follow": "Followed Stories",
+                "history": "Reading History",
+                "setting": "Settings",
+                "signOut": "Sign Out"
             }
         },
         "footer": {
@@ -37,5 +44,26 @@
             "noAccount": "Don't have an account?",
             "signUpNow": "Sign up now"
         }
+    },
+    "validation": {
+        "required": "This field is required",
+        "email": "Invalid email",
+        "password": "Password must be at least 8 characters long, including at least one uppercase letter, one lowercase letter, one number, and one special character"
+    },
+    "errorPage": {
+        "notFoundPage": {
+            "message": "Sorry! We couldn't find this page"
+        },
+        "forbiddenPage": {
+            "message": "Sorry! You do not have permission to access this page"
+        },
+        "button": {
+            "goHome": "Go home"
+        }
+    },
+    "notification": {
+        "signInWithEmailPasswordFailure": "Incorrect email or password",
+        "loginSuccess": "Login successful",
+        "undefinedError": "An undefined error occurred, please try again"
     }
 }

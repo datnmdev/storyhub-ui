@@ -1,16 +1,16 @@
-import Logo from "@assets/imgs/logo.png";
+import Logo from "@assets/icons/logo.png";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import SignInWithEmailForm from "./components/SignInWithEmailForm";
 import IconButton from "@components/IconButton";
-import GoogleIcon from "@assets/imgs/icons/google.png";
+import GoogleIcon from "@assets/icons/static/google.png";
 
 function SignInPage() {
     const { t } = useTranslation();
     return (
         <div>
             <div className="desktop:w-[var(--desktop-container-w)] mx-auto py-8 flex justify-center items-center">
-                <div className="max-w-[548px] p-8 space-y-4 shadow-[0_0_8px_var(--gray)]">
+                <div className="max-w-[415px] p-8 space-y-4 shadow-[0_0_8px_var(--gray)]">
                     <div>
                         <img
                             className="w-60 mx-auto"

@@ -1,6 +1,6 @@
-import Footer from "@components/Footer";
-import Header from "@components/Header";
-import themeFeature from "@features/themes";
+import ReaderFooter from "@components/ReaderFooter";
+import ReaderHeader from "@components/ReaderHeader";
+import themeFeature from "@features/theme";
 import classNames from "classnames";
 import { PropsWithChildren } from "react";
 import { useSelector } from "react-redux";
@@ -12,13 +12,13 @@ function ReaderLayout({
 
     return (
         <div className={classNames(themeValue === "light" ? "light" : "dark", "min-h-[100vh] flex flex-col justify-between")}>
-            <Header />
+            <ReaderHeader />
 
             <div className="grow">
                 {children}
             </div>
 
-            <Footer />
+            <ReaderFooter />
         </div>
     );
 }

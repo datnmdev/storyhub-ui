@@ -7,18 +7,22 @@ i18n
     .use(initReactI18next)
     .init({
         resources: {
-            vi: { 
+            vi: {
                 translation: vi
             },
-            en: { 
+            en: {
                 translation: en
             },
         },
-        lng: "vi",
+        lng: localStorage.getItem('language') || "vi",
         fallbackLng: "vi",
         interpolation: {
             escapeValue: false,
-        },
+        }
     });
+
+i18n.on('languageChanged', (lng) => {
+    localStorage.setItem('language', lng);
+});
 
 export default i18n;
