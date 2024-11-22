@@ -6,7 +6,7 @@ import { Link, Location, useLocation, useNavigate } from "react-router-dom";
 import IconButton from "@components/IconButton";
 import { useFormValidation } from "./hooks/validate.hook";
 import ErrorMessage from "@components/ErrorMessage";
-import { generateValidateSchema } from "./schema";
+import { generateValidateSchema } from "./SignInWithEmailForm.schema";
 import useFetch from "@hooks/fetch.hook";
 import { Token } from "@features/auth/auth.type";
 import apis from "@apis/index";

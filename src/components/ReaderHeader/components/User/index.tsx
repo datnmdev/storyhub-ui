@@ -7,7 +7,7 @@ import themeFeature from "@features/theme";
 import { Link, useNavigate } from "react-router-dom";
 import useFetch from "@hooks/fetch.hook";
 import apis from "@apis/index";
-import UserSkeleton from "./UserSkeleton";
+import UserSkeleton from "./User.skeleton";
 import authFeature from "@features/auth";
 import { TOKEN_KEY } from "@constants/auth.constants";
 import LoadingWrapper from "@components/LoadingWrapper";

@@ -1,5 +1,5 @@
 import { memo } from "react"
-import { ErrorMessageProps } from "./type"
+import { ErrorMessageProps } from "./ErrorMessage.type"
 
 function ErrorMessage({
     message
