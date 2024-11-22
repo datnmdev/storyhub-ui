@@ -4,6 +4,8 @@ import Loading from "@components/Loading";
 
 function LoadingWrapper({
     isLoading = false,
+    message,
+    backgroundVisible = "frog",
     children
 }: LoadingWrapperProps) {
     return (
@@ -15,7 +17,8 @@ function LoadingWrapper({
             {isLoading
                 && (
                     <Loading
-                        backgroundVisible="frog"
+                        message={message}
+                        backgroundVisible={backgroundVisible}
                     />
                 )}
         </div>

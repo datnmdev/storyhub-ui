@@ -15,11 +15,8 @@ import { useAppDispatch } from "@hooks/redux.hook";
 import authFeature from "@features/auth";
 import toastFeature from "@features/toast";
 import { ToastType } from "@constants/toast.constants";
-import paths from "@routers/router.path";
-import { jwtDecode } from "jwt-decode";
-import { JwtPayload } from "types/jwt.type";
-import { Role } from "@constants/auth.constants";
 import { LocationState } from "@type/reactRouterDom.type";
+import SignInPageUtils from "@pages/SignInPage/SignInPage.util";
 
 function SignInWithEmailForm() {
     const dispatch = useAppDispatch();
@@ -47,31 +44,7 @@ function SignInWithEmailForm() {
                 type: ToastType.SUCCESS,
                 title: t("notification.loginSuccess")
             }))
-            const payload = jwtDecode(data.accessToken) as JwtPayload;
-            let route: string;
-            switch (payload.role) {
-                case Role.MANAGER:
-                    route = paths.managerDashboardPage();
-                    break;
-
-                case Role.MODERATOR:
-                    route = paths.moderatorHomePage();
-                    break;
-
-                case Role.AUTHOR:
-                    route = paths.authorHomePage();
-                    break;
-
-                default:
-                    route = paths.readerHomePage();
-                    break;
-            }
-            if (location.state?.role && location.state.role === payload.role) {
-                if (location.state?.from) {
-                    route = location.state.from;
-                }
-            }
-            navigate(route, {
+            navigate(SignInPageUtils.getRedirectUriBelongTo(data.accessToken, location), {
                 replace: true
             });
         }

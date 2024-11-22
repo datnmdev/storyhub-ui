@@ -9,7 +9,6 @@ import useFetch from "@hooks/fetch.hook";
 import apis from "@apis/index";
 import UserSkeleton from "./UserSkeleton";
 import authFeature from "@features/auth";
-import UrlUtils from "@utilities/url.util";
 import { TOKEN_KEY } from "@constants/auth.constants";
 import LoadingWrapper from "@components/LoadingWrapper";
 import paths from "@routers/router.path";
@@ -66,8 +65,8 @@ function User() {
                     <IconButton
                         icon={(
                             <img
-                                className="w-6 h-6 object-cover object-center"
-                                src={profile.avatar ? UrlUtils.generateUrl(profile.avatar) : DefaultAvatar}
+                                className="w-8 h-8 object-cover object-center rounded-[50%]"
+                                src={profile.avatar ? profile.avatar : DefaultAvatar}
                                 alt="Avatar"
                             />
                         )}

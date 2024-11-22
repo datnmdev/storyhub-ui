@@ -1,9 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { Auth } from "./auth.type";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Auth, Token } from "./auth.type";
 import { TOKEN_KEY, AUTH_KEY } from "@constants/auth.constants";
 
 const initialState: Auth = {
-    isAuthenticated: false,
+    isAuthenticated: null,
     user: null
 }
 
@@ -11,16 +11,16 @@ export const authSlice = createSlice({
     name: AUTH_KEY,
     initialState,
     reducers: {
-        setAuthenticated: (state, action) => {
+        setAuthenticated: (state, action: PayloadAction<boolean>) => {
             state.isAuthenticated = action.payload
         },
         setUser: (state, action) => {
             state.user = action.payload
         },
-        saveToken: (state, action) => {
+        saveToken: (state, action: PayloadAction<Token>) => {
             localStorage.setItem(TOKEN_KEY, JSON.stringify(action.payload))
         },
-        signIn: (state, action) => {
+        signIn: (state, action: PayloadAction<Token>) => {
             localStorage.setItem(TOKEN_KEY, JSON.stringify(action.payload))
             state.isAuthenticated = true
         },

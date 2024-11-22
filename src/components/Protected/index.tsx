@@ -1,4 +1,4 @@
-import { memo, useEffect } from "react";
+import { memo } from "react";
 import { Location, Navigate, useLocation } from "react-router-dom";
 import { ProtectedProps } from "./Protected.type";
 import paths from "@routers/router.path";
@@ -9,6 +9,7 @@ import { TOKEN_KEY } from "@constants/auth.constants";
 import { jwtDecode } from "jwt-decode";
 import { JwtPayload } from "@type/jwt.type";
 import { ForbiddenError } from "@utilities/error.util";
+import Loading from "@components/Loading";
 
 function Protected({
     children,
@@ -17,10 +18,11 @@ function Protected({
     const location: Location<LocationState> = useLocation();
     const isAuthenticated = useAppSelector(authFeature.authSelector.selectAuthenticated);
 
-    useEffect(() => {
-        console.log(isAuthenticated);
-        
-    }, [isAuthenticated])
+    if (isAuthenticated === null) {
+        return (
+            <Loading />
+        )
+    }
 
     if (isAuthenticated) {
         const tokenJson = localStorage.getItem(TOKEN_KEY);

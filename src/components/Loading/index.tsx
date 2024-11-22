@@ -6,8 +6,8 @@ import classNames from "classnames";
 import { LoadingProps } from "./Loading.type";
 
 function Loading({
-    messsage,
-    backgroundVisible = "default"
+    backgroundVisible = "default",
+    message
 }: LoadingProps) {
     const themeValue = useSelector(themeFeature.themeSelector.selectValue);
 
@@ -21,13 +21,13 @@ function Loading({
                 )}
             ></div>
 
-            <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center z-[1]">
+            <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center z-[1]">
                 <img
                     className="w-24"
                     src={LoadingIcon}
                     alt="Loading Icon"
                 />
-                <div>{messsage}</div>
+                <div className="font-[500] animate-[fadeIn_2.5s_linear_0s_both_infinite]">{message}</div>
             </div>
         </div>
     )

@@ -48,9 +48,12 @@ export default function axiosInstance(token?: string) {
             store.dispatch(authFeature.authAction.signOut());
             refreshRequestQueue.splice(0, 1);
           }
+        } else {
+          store.dispatch(authFeature.authAction.signOut());
+            refreshRequestQueue.splice(0, 1);
         }
       }
-      return error;
+      return await Promise.reject(error);
     }
   );
 

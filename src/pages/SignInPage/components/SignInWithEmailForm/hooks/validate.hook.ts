@@ -7,7 +7,7 @@ export const useFormValidation = (initialValues: InputData, validationSchema: Sc
   const { i18n } = useTranslation();
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState<InputError>({});
-
+  
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
