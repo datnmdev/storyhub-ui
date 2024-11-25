@@ -11,5 +11,11 @@ export enum Role {
     READER =4
 }
 
+export enum OtpVerificationType {
+    SIGN_IN = 0,
+    SIGN_UP = 1,
+    FORGOT_PASSWORD = 2
+}
+
 export const AUTH_KEY = "user";
 export const TOKEN_KEY = "token";

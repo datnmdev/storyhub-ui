@@ -5,7 +5,7 @@ function ErrorMessage({
     message
 }: ErrorMessageProps) {
     return (
-        <p className="text-red-500 py-0.5">{message}</p>
+        <p className="text-red-500 py-0.5 animate-fadeIn">{message}</p>
     )
 }
 
