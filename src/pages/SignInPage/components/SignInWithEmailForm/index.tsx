@@ -1,10 +1,9 @@
 import InputWithIcon from "@components/InputWithIcon";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect } from "react";
 import KeyIcon from "@assets/icons/static/key.png";
 import { useTranslation } from "react-i18next";
 import { Link, Location, useLocation, useNavigate } from "react-router-dom";
 import IconButton from "@components/IconButton";
-import { useFormValidation } from "./hooks/validate.hook";
 import ErrorMessage from "@components/ErrorMessage";
 import { generateValidateSchema } from "./SignInWithEmailForm.schema";
 import useFetch from "@hooks/fetch.hook";
@@ -16,37 +15,59 @@ import authFeature from "@features/auth";
 import toastFeature from "@features/toast";
 import { ToastType } from "@constants/toast.constants";
 import { LocationState } from "@type/reactRouterDom.type";
-import SignInPageUtils from "@pages/SignInPage/SignInPage.util";
+import { useFormValidation } from "@hooks/validate.hook";
+import { InputData, InputError } from "./SignInWithEmailForm.type";
+import { jwtDecode } from "jwt-decode";
+import { JwtPayload } from "@type/jwt.type";
+import { AccountStatus } from "@constants/oauth.constants";
+import paths from "@routers/router.path";
+import { OtpVerificationType } from "@constants/auth.constants";
+import RouteUtils from "@routers/route.util";
 
 function SignInWithEmailForm() {
     const dispatch = useAppDispatch();
     const location: Location<LocationState> = useLocation();
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { values, handleChange, errors, validateAll } = useFormValidation({
+    const { values, handleChange, errors, validateAll } = useFormValidation<InputData, InputError>({
         email: '',
         password: ''
     }, generateValidateSchema())
-    const [isValid, setValid] = useState(false);
     const { data, isLoading, error, setRefetch } = useFetch<Token>(apis.authApi.signInWithEmailPassword, { body: values }, false)
 
     useEffect(() => {
-        async function callValidateAll() {
-            setValid(await validateAll())
-        }
-        callValidateAll()
-    }, [values])
-
-    useEffect(() => {
         if (data) {
-            dispatch(authFeature.authAction.signIn(data))
-            dispatch(toastFeature.toastAction.add({
-                type: ToastType.SUCCESS,
-                title: t("notification.loginSuccess")
-            }))
-            navigate(SignInPageUtils.getRedirectUriBelongTo(data.accessToken, location), {
-                replace: true
-            });
+            const payload: JwtPayload = jwtDecode(data.accessToken);
+            switch (payload.status) {
+                case AccountStatus.ACTIVATED:
+                    dispatch(authFeature.authAction.signIn(data))
+                    dispatch(toastFeature.toastAction.add({
+                        type: ToastType.SUCCESS,
+                        title: t("notification.loginSuccess")
+                    }))
+                    navigate(RouteUtils.getRedirectUriBelongTo(data.accessToken, location), {
+                        replace: true
+                    });
+                    break;
+
+                case AccountStatus.UNACTIVATED:
+                    navigate(paths.otpVerificationPage(), {
+                        state: {
+                            type: OtpVerificationType.SIGN_IN,
+                            prevData: values,
+                            account: {
+                                ...payload,
+                                id: payload.accountId
+                            }
+                        }
+                    })
+                    dispatch(toastFeature.toastAction.add({
+                        type: ToastType.INFO,
+                        title: t("notification.needToVerifyAccount")
+                    }))
+                    break;
+            }
+
         }
     }, [data])
 
@@ -105,11 +126,14 @@ function SignInWithEmailForm() {
                     height={48}
                     color="var(--white)"
                     bgColor="var(--primary)"
-                    disable={!isValid}
                     borderRadius="50%"
-                    onClick={() => setRefetch({
-                        value: true
-                    })}
+                    onClick={async () => {
+                        if (await validateAll()) {
+                            setRefetch({
+                                value: true
+                            })
+                        }
+                    }}
                 />
             </div>
         </div>

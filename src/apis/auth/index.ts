@@ -21,6 +21,20 @@ const authApi = {
     },
     signOut: (options: RequestInit) => {
         return axiosInstance().post("/auth/sign-out", options.body);
+    },
+    signUp: (options: RequestInit) => {
+        return axiosInstance().post("/auth/sign-up", options.body);
+    },
+    validateEmail: (options: RequestInit) =>{
+        return axiosInstance().get("/auth/validate-email", {
+            params: options.queries
+        })
+    },
+    verifyAccount: (options: RequestInit) => {
+        return axiosInstance().post("/auth/verify-account", options.body);
+    },
+    resendOtp: (options: RequestInit) => {
+        return axiosInstance().post("/auth/resend-otp", options.body);
     }
 }
 

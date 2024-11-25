@@ -12,8 +12,10 @@ import authFeature from "@features/auth";
 import { TOKEN_KEY } from "@constants/auth.constants";
 import LoadingWrapper from "@components/LoadingWrapper";
 import paths from "@routers/router.path";
+import { useTranslation } from "react-i18next";
 
 function User() {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const themeValue = useAppSelector(themeFeature.themeSelector.selectValue);
@@ -56,7 +58,10 @@ function User() {
     }
 
     return (
-        <LoadingWrapper isLoading={isSigningOut}>
+        <LoadingWrapper 
+            isLoading={isSigningOut}
+            message={t("reader.header.signingOut")}
+        >
             <div className="relative">
                 <div
                     className="border-[2px] border-solid rounded-[50%] border-[var(--gray)]"
@@ -97,7 +102,7 @@ function User() {
                                         <i className="fa-solid fa-wallet"></i>
                                     </span>
 
-                                    <span>Ví tiền</span>
+                                    <span>{t("reader.header.user.wallet")}</span>
                                 </Link>
                             </li>
 
@@ -112,7 +117,7 @@ function User() {
                                     <span className="text-[1.6rem]">
                                         <i className="fa-solid fa-heart"></i>
                                     </span>
-                                    <span>Truyện theo dõi</span>
+                                    <span>{t("reader.header.user.follow")}</span>
                                 </Link>
                             </li>
 
@@ -127,7 +132,7 @@ function User() {
                                     <span className="text-[1.6rem]">
                                         <i className="fa-solid fa-check-to-slot"></i>
                                     </span>
-                                    <span>Lịch sử đọc</span>
+                                    <span>{t("reader.header.user.history")}</span>
                                 </Link>
                             </li>
 
@@ -142,7 +147,7 @@ function User() {
                                     <span className="text-[1.6rem]">
                                         <i className="fa-solid fa-gear"></i>
                                     </span>
-                                    <span>Cài đặt</span>
+                                    <span>{t("reader.header.user.setting")}</span>
                                 </Link>
                             </li>
 
@@ -159,7 +164,7 @@ function User() {
                                     <span className="text-[1.6rem]">
                                         <i className="fa-solid fa-right-from-bracket"></i>
                                     </span>
-                                    <span>Đăng xuất</span>
+                                    <span>{t("reader.header.user.signOut")}</span>
                                 </div>
                             </li>
                         </ul>

@@ -1,4 +1,4 @@
-import { memo, useEffect } from "react";
+import { memo } from "react";
 import { AuthenticationProps } from "./Authentication.type";
 import { TOKEN_KEY } from "@constants/auth.constants";
 import useFetch from "@hooks/fetch.hook";
@@ -20,12 +20,10 @@ function Authentication({
     }
 
     if (data !== null) {
-        // console.log(data);
-        
         if (data) {
             dispatch(authFeature.authAction.setAuthenticated(true));
         } else {
-            dispatch(authFeature.authAction.setAuthenticated(true));
+            dispatch(authFeature.authAction.setAuthenticated(false));
         }
     }
 

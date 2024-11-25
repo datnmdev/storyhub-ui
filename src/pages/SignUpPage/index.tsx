@@ -1,24 +1,24 @@
+import LoadingWrapper from "@components/LoadingWrapper";
+import { memo, useEffect, useState } from "react"
 import Logo from "@assets/icons/logo.png";
-import { useTranslation } from "react-i18next";
 import { Link, Location, useLocation, useNavigate } from "react-router-dom";
-import SignInWithEmailForm from "./components/SignInWithEmailForm";
+import paths from "@routers/router.path";
+import { useTranslation } from "react-i18next";
 import IconButton from "@components/IconButton";
 import GoogleIcon from "@assets/icons/static/google.png";
-import useFetch from "@hooks/fetch.hook";
-import apis from "@apis/index";
-import LoadingWrapper from "@components/LoadingWrapper";
-import { useEffect, useState } from "react";
 import { useAppDispatch } from "@hooks/redux.hook";
-import toastFeature from "@features/toast";
-import { ToastType } from "@constants/toast.constants";
+import { LocationState } from "@type/reactRouterDom.type";
 import { OAuthState } from "@type/auth.type";
+import apis from "@apis/index";
 import { OAuthStatus } from "@constants/oauth.constants";
 import authFeature from "@features/auth";
-import { LocationState } from "@type/reactRouterDom.type";
-import paths from "@routers/router.path";
+import toastFeature from "@features/toast";
+import { ToastType } from "@constants/toast.constants";
+import SignUpForm from "./components/SignUpForm";
+import useFetch from "@hooks/fetch.hook";
 import RouteUtils from "@routers/route.util";
 
-function SignInPage() {
+function SignUp() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const location: Location<LocationState> = useLocation();
@@ -111,7 +111,7 @@ function SignInPage() {
                                 <ul className="flex border-[1px] border-solid border-[var(--gray)] rounded-[4px]">
                                     <li>
                                         <Link
-                                            className="block grow text-center w-[180px] py-2.5 bg-[var(--primary)] text-[var(--white)]"
+                                            className="block grow text-center w-[180px] py-2.5 hover:text-[var(--primary)]"
                                             to={paths.signInPage()}
                                         >
                                             {t("reader.signInPage.signIn")}
@@ -120,7 +120,7 @@ function SignInPage() {
 
                                     <li>
                                         <Link
-                                            className="block grow text-center w-[180px] py-2.5 hover:text-[var(--primary)]"
+                                            className="block grow text-center w-[180px] py-2.5 bg-[var(--primary)] text-[var(--white)]"
                                             to={paths.signUpPage()}
                                         >
                                             {t("reader.signInPage.signUp")}
@@ -130,7 +130,7 @@ function SignInPage() {
 
                                 <div className="mt-6">
                                     <div>
-                                        <SignInWithEmailForm />
+                                        <SignUpForm />
                                     </div>
 
                                     <div>
@@ -157,12 +157,12 @@ function SignInPage() {
                                     </div>
 
                                     <div className="mt-6 text-center space-x-1">
-                                        <span>{t("reader.signInPage.noAccount")}</span>
+                                        <span>{t("reader.signUpPage.hadAccount")}</span>
                                         <Link
                                             className="text-[var(--primary)] hover:opacity-60"
-                                            to={paths.signUpPage()}
+                                            to={paths.signInPage()}
                                         >
-                                            {t("reader.signInPage.signUpNow")}
+                                            {t("reader.signUpPage.signInNow")}
                                         </Link>
                                     </div>
                                 </div>
@@ -171,8 +171,8 @@ function SignInPage() {
                     </div>
                 </div>
             </LoadingWrapper>
-        </LoadingWrapper >
-    );
+        </LoadingWrapper>
+    )
 }
 
-export default SignInPage;
+export default memo(SignUp);
