@@ -108,7 +108,7 @@ function SignInWithEmailForm() {
             <div className="flex justify-end">
                 <Link
                     className="text-[var(--primary)] hover:opacity-60 py-1"
-                    to="#"
+                    to={paths.forgotPasswordPage()}
                 >
                     {t("reader.signInPage.forgotPassword")}
                 </Link>
