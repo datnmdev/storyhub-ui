@@ -14,7 +14,7 @@ import { useAppSelector } from "@hooks/redux.hook";
 import themeFeature from "@features/theme";
 import DepositePopup from "./components/DepositePopup";
 
-function WalletPage() {
+function ReaderWalletPage() {
     const { t } = useTranslation();
     const { data: wallet, setRefetch } = useFetch<Wallet>(apis.walletApi.getWallet);
     const themeValue = useAppSelector(themeFeature.themeSelector.selectValue);
@@ -27,12 +27,11 @@ function WalletPage() {
         },
         {
             label: t("reader.walletPage.breadcrumb.items.walletPage"),
-            path: paths.walletPage()
+            path: paths.readerWalletPage()
         }
     ]
 
     return (
-
         <div className="grow desktop:w-[var(--desktop-container-w)] mx-auto py-8">
             <div>
                 <Breadcrumb
@@ -47,7 +46,7 @@ function WalletPage() {
                         <li>
                             <Link
                                 className="px-4 rounded-[4px] leading-[38px] space-x-2 flex items-center bg-[var(--primary)] text-[var(--white)]"
-                                to={paths.walletPage()}
+                                to={paths.readerWalletPage()}
                             >
                                 <span className="text-[1.2rem]">
                                     <i className="fa-solid fa-wallet"></i>
@@ -59,7 +58,7 @@ function WalletPage() {
                         <li>
                             <Link
                                 className="px-4 rounded-[4px] hover:text-[var(--primary)] leading-[38px] space-x-2 flex items-center"
-                                to={paths.walletPage()}
+                                to={paths.readerDepositeTransHistoryPage()}
                             >
                                 <span className="text-[1.2rem]">
                                     <i className="fa-solid fa-building-columns"></i>
@@ -71,7 +70,7 @@ function WalletPage() {
                         <li>
                             <Link
                                 className="px-4 rounded-[4px] hover:text-[var(--primary)] leading-[38px] space-x-2 flex items-center"
-                                to={paths.walletPage()}
+                                to={paths.readerWalletPage()}
                             >
                                 <span className="text-[1.2rem]">
                                     <i className="fa-solid fa-money-bills"></i>
@@ -111,4 +110,4 @@ function WalletPage() {
     )
 }
 
-export default memo(WalletPage);
+export default memo(ReaderWalletPage);

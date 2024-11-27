@@ -9,7 +9,12 @@ const depositeTransactionApi = {
         return axiosInstance().get("/deposite-transaction/get-payment-status", {
             params: options.queries
         })
-    }
+    },
+    getDepositeTransHistory: (options: RequestInit) => {
+        return axiosInstance().get("/deposite-transaction/get-deposite-transaction-history", {
+            params: options.queries
+        })
+    } 
 }
 
 export default depositeTransactionApi
