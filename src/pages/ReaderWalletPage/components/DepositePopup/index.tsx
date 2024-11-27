@@ -181,4 +181,4 @@ function DepositePopup({
     )
 }
 
-export default DepositePopup;
+export default memo(DepositePopup);
