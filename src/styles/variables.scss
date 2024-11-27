@@ -1,6 +1,7 @@
 $primary: #977ef5;
 $black: #000;
 $white: #FFF;
+$light-gray: #F5F5F5;
 $gray: #bdc3c8;
 $dark-gray: #6e6464;
 $desktop-container-w: calc(100% - (48px * 2));
@@ -9,6 +10,7 @@ $desktop-container-w: calc(100% - (48px * 2));
     --primary: #{$primary};
     --black: #{$black};
     --white: #{$white};
+    --light-gray: #{$light-gray};
     --gray: #{$gray};
     --dark-gray: #{$dark-gray};
     --desktop-container-w: #{$desktop-container-w};

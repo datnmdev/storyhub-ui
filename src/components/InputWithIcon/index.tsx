@@ -12,7 +12,8 @@ function InputWithIcon({
     max,
     maxLength,
     minLength,
-    onChange,
+    contentEditable = true,
+    onChange = () => {},
     onFocus,
     onBlur,
 }: InputWithIconProps) {
@@ -37,6 +38,7 @@ function InputWithIcon({
                     max={max}
                     maxLength={maxLength}
                     minLength={minLength}
+                    contentEditable={contentEditable}
                     onChange={onChange}
                     onFocus={onFocus}
                     onBlur={onBlur}
