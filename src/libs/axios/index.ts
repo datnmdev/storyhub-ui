@@ -33,24 +33,26 @@ export default function axiosInstance(token?: string) {
             return false;
           })
 
-          const refreshToken = (await axios({
-            url: `${import.meta.env.VITE_SERVER_HOST}${import.meta.env.VITE_BASE_URI}/auth/refresh-token`,
-            method: "post",
-            data: JSON.parse(localStorage.getItem(TOKEN_KEY) as string)
-          })).data
+          try {
+            const refreshToken = (await axios({
+              url: `${import.meta.env.VITE_SERVER_HOST}${import.meta.env.VITE_BASE_URI}/auth/refresh-token`,
+              method: "post",
+              data: JSON.parse(localStorage.getItem(TOKEN_KEY) as string)
+            })).data
 
-          if (refreshToken) {
-            store.dispatch(authFeature.authAction.saveToken(refreshToken));
-            error.config.headers.Authorization = `Bearer ${refreshToken.accessToken}`;
-            refreshRequestQueue.splice(0, 1);
-            return await axios(error.config);
-          } else {
+            if (refreshToken) {
+              store.dispatch(authFeature.authAction.saveToken(refreshToken));
+              error.config.headers.Authorization = `Bearer ${refreshToken.accessToken}`;
+              refreshRequestQueue.splice(0, 1);
+              return await axios(error.config);
+            }
+          } catch (error) {
             store.dispatch(authFeature.authAction.signOut());
             refreshRequestQueue.splice(0, 1);
           }
         } else {
           store.dispatch(authFeature.authAction.signOut());
-            refreshRequestQueue.splice(0, 1);
+          refreshRequestQueue.splice(0, 1);
         }
       }
       return await Promise.reject(error);

@@ -31,14 +31,26 @@ function SignInPage() {
         if (googleOAuth2Url !== null) {
             setAuthenticating(true);
             const oAutWindow = window.open(googleOAuth2Url, "popupWindow");
+            const params = new URLSearchParams(googleOAuth2Url);
             intervalId = setInterval(async () => {
-                const params = new URLSearchParams(googleOAuth2Url);
                 try {
                     const oAuthState: OAuthState = (await apis.authApi.getTokenAfterOAuth({
                         queries: {
                             state: params.get("state")
                         }
                     })).data
+
+                    if (!oAuthState) {
+                        oAutWindow?.close();
+                        setAuthenticating(false);
+                        dispatch(toastFeature.toastAction.add({
+                            type: ToastType.ERROR,
+                            title: t("reader.signInPage.failedAuth")
+                        }));
+                        clearInterval(intervalId);
+                        return;
+                    }
+
                     switch (oAuthState.status) {
                         case OAuthStatus.SUCCEED:
                             oAutWindow?.close();

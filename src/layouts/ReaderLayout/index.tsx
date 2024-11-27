@@ -11,10 +11,10 @@ function ReaderLayout({
     const themeValue = useSelector(themeFeature.themeSelector.selectValue);
 
     return (
-        <div className={classNames(themeValue === "light" ? "light" : "dark", "min-h-[100vh] flex flex-col justify-between")}>
+        <div className={classNames(themeValue === "light" ? "light" : "dark", "min-h-[100vh] flex flex-col justify-between transition-colors duration-1000 ease-in-out")}>
             <ReaderHeader />
 
-            <div className="grow">
+            <div className="grow flex flex-col">
                 {children}
             </div>
 
