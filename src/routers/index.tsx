@@ -4,7 +4,7 @@ import SignInPage from "@pages/SignInPage";
 import paths from "./router.path";
 import ReaderHomePage from "@pages/ReaderHomePage";
 import Protected from "@components/Protected";
-import AuthorHomePage from "@pages/AuthorHomePage";
+import AuthorHomePage from "@pages/Author/AuthorHomePage";
 import ManagerDashboardPage from "@pages/ManagerDashboardPage";
 import ModeratorHomePage from "@pages/ModeratorHomePage";
 import { Role } from "@constants/auth.constants";
@@ -17,6 +17,11 @@ import ForgotPasswordPage from "@pages/ForgotPasswordPage";
 import ResetPasswordPage from "@pages/ResetPasswordPage";
 import ReaderWalletPage from "@pages/ReaderWalletPage";
 import ReaderDepositeTransHistoryPage from "@pages/ReaderDepositeTransHistoryPage";
+import AuthorLayout from "@layouts/AuthorLayout";
+import AuthorCreateStory from "@pages/Author/AuthorCreateStory";
+import AuthorStoryDetail from "@pages/Author/AuthorStoryDetail";
+import AuthorWallet from "@pages/Author/AuthorWallet";
+import AuthorProfile from "@pages/Author/AuthorProfile";
 
 const router = createBrowserRouter([
     {
@@ -35,7 +40,7 @@ const router = createBrowserRouter([
                     <ReaderLayout>
                         <ReaderHomePage />
                     </ReaderLayout>
-                )
+                ),
             },
             {
                 path: paths.signInPage(),
@@ -115,17 +120,39 @@ const router = createBrowserRouter([
                             <ManagerDashboardPage />
                         </ReaderLayout>
                     </Protected>
-                )
+                ),
             },
             {
                 path: paths.authorHomePage(),
                 element: (
                     <Protected role={Role.AUTHOR}>
-                        <ReaderLayout>
-                            <AuthorHomePage />
-                        </ReaderLayout>
+                    <AuthorLayout>
+                        <Outlet />
+                        </AuthorLayout>
                     </Protected>
-                )
+                ),
+                children: [
+                    {
+                        index: true,
+                        element: <AuthorHomePage />,
+                    },
+                    {
+                        path: paths.authorCreateStory(),
+                        element: <AuthorCreateStory />,
+                    },
+                    {
+                        path: paths.authorStoryDetail(':storyId'),
+                        element: <AuthorStoryDetail />,
+                    },
+                    {
+                        path: paths.authorWallet(),
+                        element: <AuthorWallet />,
+                    },
+                    {
+                        path: paths.authorProfile(),
+                        element: <AuthorProfile />,
+                    },
+                ],
             },
             {
                 path: paths.moderatorHomePage(),
@@ -135,10 +162,10 @@ const router = createBrowserRouter([
                             <ModeratorHomePage />
                         </ReaderLayout>
                     </Protected>
-                )
+                ),
             },
-        ]
-    }
+        ],
+    },
 ]);
 
 export default router;

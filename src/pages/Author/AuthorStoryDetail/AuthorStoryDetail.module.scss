@@ -1,0 +1,204 @@
+.detailPage {
+    font-family: Arial, sans-serif;
+    background-color: #f3f1f1;
+    border-radius: 7px;
+    padding: 15px;
+
+    .headerStoryDetail {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .titleStoryDetail {
+            margin-bottom: 10px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .updateBtn {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+
+            &:hover {
+                background-color: #45a049;
+            }
+        }
+    }
+
+    .mainContent {
+        display: flex;
+        gap: 20px;
+
+        .leftPanel {
+            flex: 1;
+            text-align: center;
+
+            .storyCover {
+                width: 100%;
+                max-width: 200px;
+                margin-bottom: 10px;
+                border-radius: 10px;
+            }
+        }
+
+        .rightPanel {
+            flex: 5;
+
+            .storyInfo {
+                list-style-type: none;
+                padding: 0;
+
+                li {
+                    margin-bottom: 5px;
+                }
+            }
+
+            .actionSpan {
+                display: flex;
+                gap: 10px;
+                margin-top: 20px;
+
+                .customSpan {
+                    color: #f8ad6c;
+                    border: 1px solid #f8ad6c;
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                }
+            }
+        }
+    }
+
+    .storySummary {
+        margin-top: 20px;
+
+        h3 {
+            margin-bottom: 10px;
+        }
+    }
+    .chapterListHeader {
+        font-size: 18px;
+        font-weight: 600;
+        margin-top: 30px;
+    }
+    .chapterList {
+        margin-top: 10px;
+
+        .listHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+
+            .leftActions {
+                .addChapterBtn {
+                    background-color: #4caf50;
+                    color: white;
+                    border: none;
+                    padding: 10px 15px;
+                    cursor: pointer;
+                    border-radius: 5px;
+
+                    &:hover {
+                        background-color: #45a049;
+                    }
+                }
+            }
+
+            .rightActions {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                .customSearch {
+                    display: flex;
+                    align-items: center;
+                    border: 1px solid #ccc; // Đường viền
+                    border-radius: 20px; // Bo tròn góc
+                    max-width: 400px; // Chiều rộng tối đa
+                    margin: auto; // Căn giữa
+
+                    .searchInput {
+                        width: 300px !important;
+                        border: none; // Không có đường viền
+                        outline: none; // Không có viền khi chọn
+                        flex: 1; // Chiếm toàn bộ không gian
+                        padding: 5px; // Khoảng cách bên trong
+                        border-radius: 15px; // Bo tròn góc
+                    }
+                }
+
+                .filterDropdown {
+                    padding: 8px;
+                    border: 1px solid #ddd;
+                    border-radius: 15px;
+
+                    &:focus {
+                        outline: none;
+                        border-color: #007bff;
+                    }
+                }
+            }
+        }
+
+        .chapterTable {
+            width: 100%;
+            border-collapse: collapse;
+
+            th,
+            td {
+                border: none; // Removed border
+                padding: 8px;
+                text-align: center;
+            }
+
+            th {
+                background-color: #f4f4f4;
+            }
+            .actionIcons {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                .editIcon {
+                    font-size: 20px;
+                    color: rgb(6, 6, 6);
+                    cursor: pointer;
+                }
+                .deleteIcon {
+                    font-size: 20px;
+                    color: rgb(250, 8, 8);
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+.storyPagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0px;
+    .pagination {
+        display: flex;
+        flex-direction: row;
+        list-style: none;
+        padding: 0;
+    }
+
+    .pageItem {
+        margin: 0 5px;
+    }
+
+    .pageLink {
+        text-decoration: none;
+        color: #000; // Màu sắc mặc định cho các trang
+    }
+
+    // Định dạng cho trang đang được chọn
+    .active .pageLink {
+        font-weight: bold; // Làm đậm số trang
+        color: #007bff; // Thay đổi màu sắc nếu cần
+    }
+}

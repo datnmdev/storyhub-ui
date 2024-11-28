@@ -1,0 +1,116 @@
+// Biến màu sắc (nếu cần)
+$primary-color: #4caf50;
+$light-color: #f0f0f0;
+$border-color: #ddd;
+$font-color-dark: #444;
+$font-color-light: #888;
+
+// Mã SCSS bắt đầu
+.mangaListContainer {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10px;
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .headerLeft {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .btnAdd {
+        background-color: $primary-color;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .customSearch {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ccc; // Đường viền
+        border-radius: 20px; // Bo tròn góc
+        padding: 5px; // Khoảng cách bên trong
+        max-width: 400px; // Chiều rộng tối đa
+        margin: auto; // Căn giữa
+
+        .searchInput {
+            width: 300px !important;
+            border: none; // Không có đường viền
+            outline: none; // Không có viền khi chọn
+            flex: 1; // Chiếm toàn bộ không gian
+            padding: 0px 5px; // Khoảng cách bên trong
+            border-radius: 10px; // Bo tròn góc
+        }
+    }
+
+    .statusFilterContainer {
+        display: flex;
+        align-items: center;
+        .statusFilter {
+            outline: none;
+            padding: 8px;
+        }
+    }
+
+    // Mảng manga
+    .mangaItemsGrid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr); // Chỉ có tối đa 6 manga mỗi hàng
+        gap: 15px;
+        // Khi màn hình nhỏ hơn, sẽ chuyển thành 2 hoặc 3 cột
+        @media (max-width: 1024px) {
+            grid-template-columns: repeat(4, 1fr); // 4 manga mỗi hàng trên màn hình nhỏ
+        }
+        @media (max-width: 768px) {
+            grid-template-columns: repeat(2, 1fr); // 2 manga mỗi hàng trên màn hình nhỏ hơn
+        }
+        @media (max-width: 480px) {
+            grid-template-columns: 1fr; // 1 manga mỗi hàng trên màn hình rất nhỏ
+        }
+    }
+
+    .mangaItem {
+        background-color: white;
+        border: 1px solid $border-color;
+        border-radius: 10px;
+        overflow: hidden;
+        width: 200px;
+        cursor: pointer;
+        .mangaImage {
+            margin: 10px;
+            width: 180px;
+            height: 246px;
+            object-fit: cover;
+        }
+
+        .mangaInfo {
+            padding: 10px;
+
+            .mangaStatus {
+                font-size: 14px;
+                color: $font-color-light;
+                padding-right: 20px;
+            }
+
+            .mangaPrice {
+                font-size: 12px;
+                color: $font-color-dark;
+            }
+        }
+    }
+}
+
+.storyPagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 10px;
+}

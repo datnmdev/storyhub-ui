@@ -10,7 +10,11 @@ const paths = {
     readerDepositeTransHistoryPage: () => "/wallet/deposite-transaction-history",
     managerDashboardPage: () => "/manager",
     authorHomePage: () => "/author",
-    moderatorHomePage: () => "/moderator"
+    authorCreateStory: () => "/author/create-story",
+    authorStoryDetail: (storyId: string) => `/author/story-detail/${storyId}`,
+    authorWallet: () => "/author/wallet",
+    authorProfile: () => "/author/profile",
+    moderatorHomePage: () => "/moderator",
 };
 
 export default paths;
