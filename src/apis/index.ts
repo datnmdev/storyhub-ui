@@ -8,6 +8,8 @@ import aliasApi from "./alias";
 import walletApi from "./wallet";
 import depositeTransactionApi from "./depositeTransaction";
 import storyApi from "./story";
+import chapterApi from "./Chapter";
+import chapterImageApi from "./chapterImage";
 const apis = {
     authApi,
     userApi,
@@ -19,6 +21,8 @@ const apis = {
     fileUploadApi,
     priceApi,
     aliasApi,
+    chapterApi,
+    chapterImageApi,
 };
 
 export default apis;

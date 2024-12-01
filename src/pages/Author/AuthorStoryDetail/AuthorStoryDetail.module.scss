@@ -1,8 +1,8 @@
 .detailPage {
     font-family: Arial, sans-serif;
-    background-color: #f3f1f1;
+    background-color: #f5f4f4;
     border-radius: 7px;
-    padding: 15px;
+    padding: 15px 20px;
 
     .headerStoryDetail {
         display: flex;
@@ -92,18 +92,8 @@
             margin-bottom: 10px;
 
             .leftActions {
-                .addChapterBtn {
-                    background-color: #4caf50;
-                    color: white;
-                    border: none;
-                    padding: 10px 15px;
-                    cursor: pointer;
-                    border-radius: 5px;
-
-                    &:hover {
-                        background-color: #45a049;
-                    }
-                }
+                display: flex;
+                gap: 10px;
             }
 
             .rightActions {
@@ -118,13 +108,13 @@
                     border-radius: 20px; // Bo tròn góc
                     max-width: 400px; // Chiều rộng tối đa
                     margin: auto; // Căn giữa
-
+                    padding-right: -5px !important;
                     .searchInput {
                         width: 300px !important;
                         border: none; // Không có đường viền
                         outline: none; // Không có viền khi chọn
                         flex: 1; // Chiếm toàn bộ không gian
-                        padding: 5px; // Khoảng cách bên trong
+                        //padding: 5px; // Khoảng cách bên trong
                         border-radius: 15px; // Bo tròn góc
                     }
                 }
@@ -171,34 +161,18 @@
                     color: rgb(250, 8, 8);
                     cursor: pointer;
                 }
+                .listIcon {
+                    font-size: 20px;
+                    color: rgb(46, 114, 65);
+                    cursor: pointer;
+                }
             }
         }
     }
 }
-.storyPagination {
+.storyDetailPagination {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px 0px;
-    .pagination {
-        display: flex;
-        flex-direction: row;
-        list-style: none;
-        padding: 0;
-    }
-
-    .pageItem {
-        margin: 0 5px;
-    }
-
-    .pageLink {
-        text-decoration: none;
-        color: #000; // Màu sắc mặc định cho các trang
-    }
-
-    // Định dạng cho trang đang được chọn
-    .active .pageLink {
-        font-weight: bold; // Làm đậm số trang
-        color: #007bff; // Thay đổi màu sắc nếu cần
-    }
+    padding-top: 10px;
 }

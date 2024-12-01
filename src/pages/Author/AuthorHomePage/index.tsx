@@ -83,7 +83,7 @@ const AuthorHomePage = () => {
                     <Form className={styles.customSearch} onSubmit={(event) => event.preventDefault()}>
                         <Form.Control
                             type="search"
-                            placeholder="Tìm kiếm truyện"
+                            placeholder="Tìm kiếm tên truyện"
                             className={`${styles.searchInput} me-2`}
                             aria-label="Search"
                             value={search}
@@ -95,8 +95,8 @@ const AuthorHomePage = () => {
                         <select className={styles.statusFilter} onChange={(event) => handleFilter(event, "status")}>
                             <option disabled>Trạng thái truyện</option>
                             <option value="0">Chưa phát hành</option>
-                            <option value="1">Chờ Hoàn thành</option>
-                            <option value="2">Đang Hoàn thành</option>
+                            <option value="1">Yêu cầu phát thành</option>
+                            <option value="2">Đang phát hành</option>
                             <option value="4">Hoàn thành</option>
                         </select>
                         <select className={styles.statusFilter}>
@@ -117,7 +117,9 @@ const AuthorHomePage = () => {
                         <div
                             key={`manga-${index}`}
                             className={styles.mangaItem}
-                            onClick={() => navigate(paths.authorStoryDetail(manga.id))}
+                            onClick={() =>
+                                navigate(paths.authorStoryDetail(manga?.node?.id), { state: manga?.node?.id })
+                            }
                         >
                             <img
                                 src={`https://s3bucket2024aws.s3.ap-southeast-1.amazonaws.com/${manga?.node?.coverImage}`}

@@ -27,9 +27,9 @@ const router = createBrowserRouter([
     {
         path: "/",
         element: (
-            <Authentication>
-                <Outlet />
-            </Authentication>
+            //<Authentication>
+            <Outlet />
+            //</Authentication>
         ),
         errorElement: <ErrorBoundary />,
         hasErrorBoundary: true,
@@ -50,7 +50,7 @@ const router = createBrowserRouter([
                             <SignInPage />
                         </ReaderLayout>
                     </Guest>
-                )
+                ),
             },
             {
                 path: paths.signUpPage(),
@@ -60,7 +60,7 @@ const router = createBrowserRouter([
                             <SignUpPage />
                         </ReaderLayout>
                     </Guest>
-                )
+                ),
             },
             {
                 path: paths.otpVerificationPage(),
@@ -70,7 +70,7 @@ const router = createBrowserRouter([
                             <OtpVerificationPage />
                         </ReaderLayout>
                     </Guest>
-                )
+                ),
             },
             {
                 path: paths.forgotPasswordPage(),
@@ -80,7 +80,7 @@ const router = createBrowserRouter([
                             <ForgotPasswordPage />
                         </ReaderLayout>
                     </Guest>
-                )
+                ),
             },
             {
                 path: paths.resetPasswordPage(),
@@ -90,7 +90,7 @@ const router = createBrowserRouter([
                             <ResetPasswordPage />
                         </ReaderLayout>
                     </Guest>
-                )
+                ),
             },
             {
                 path: paths.readerWalletPage(),
@@ -100,7 +100,7 @@ const router = createBrowserRouter([
                             <ReaderWalletPage />
                         </ReaderLayout>
                     </Protected>
-                )
+                ),
             },
             {
                 path: paths.readerDepositeTransHistoryPage(),
@@ -110,7 +110,7 @@ const router = createBrowserRouter([
                             <ReaderDepositeTransHistoryPage />
                         </ReaderLayout>
                     </Protected>
-                )
+                ),
             },
             {
                 path: paths.managerDashboardPage(),
@@ -125,11 +125,11 @@ const router = createBrowserRouter([
             {
                 path: paths.authorHomePage(),
                 element: (
-                    <Protected role={Role.AUTHOR}>
+                    //<Protected role={Role.AUTHOR}>
                     <AuthorLayout>
                         <Outlet />
-                        </AuthorLayout>
-                    </Protected>
+                    </AuthorLayout>
+                    //</Protected>
                 ),
                 children: [
                     {
@@ -141,7 +141,7 @@ const router = createBrowserRouter([
                         element: <AuthorCreateStory />,
                     },
                     {
-                        path: paths.authorStoryDetail(':storyId'),
+                        path: paths.authorStoryDetail(":storyId"),
                         element: <AuthorStoryDetail />,
                     },
                     {

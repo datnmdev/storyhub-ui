@@ -16,7 +16,6 @@ const AuthorCreateStory = () => {
     const navigate = useNavigate();
     const [title, setTitle] = useState<string>("");
     const [aliasTitle, setAliasTitle] = useState<string>("");
-    const [aliasList, setAliasList] = useState<{ name: string; storyId: number }[]>([]);
     const [description, setDescription] = useState<string>("");
     const [notes, setNotes] = useState<string>("");
     const [countries, setCountries] = useState<Country[]>([]);
@@ -42,7 +41,7 @@ const AuthorCreateStory = () => {
         }
     }, [countryList, genreList]);
     const profile = useAppSelector(authFeature.authSelector.selectUser);
-    const { sendModerationRequest } = connectToSocket(profile?.id);
+    const { sendModerationRequest } = connectToSocket(profile?.id ?? 3);
     const {
         data: storyNew,
         setRefetch: setStoryNewRefetch,
@@ -60,11 +59,11 @@ const AuthorCreateStory = () => {
                 status: status === 1 ? 1 : 0,
                 countryId,
                 authorId: profile?.id,
-                genre: genreResult,
+                genres: genreResult,
                 alias: aliasTitle,
-                prices: {
+                price: {
                     amount,
-                    startTime,    
+                    startTime,
                 },
             },
         },
@@ -76,7 +75,7 @@ const AuthorCreateStory = () => {
         isLoading: isUploadingFile,
         error: uploadFileError,
     } = useFetch(
-        apis.fileUploadApi.generateUrlUploadFile,
+        apis.fileUploadApi.generateUrlUploadFileForStory,
         {
             body: {
                 fileName,
@@ -95,7 +94,7 @@ const AuthorCreateStory = () => {
         },
         false
     );
-  
+
     const handleOnchangeImg = async (event: any) => {
         let data = event.target.files;
         let file = data[0];
@@ -165,7 +164,7 @@ const AuthorCreateStory = () => {
             setGenreResult([...genreResult, genreId]);
         }
     };
-  
+
     const handleRemoveGenre = (id: number) => {
         setGenreResult(genreResult.filter((genreId) => genreId !== id));
     };
@@ -278,7 +277,7 @@ const AuthorCreateStory = () => {
                     <label>
                         <span>Trạng thái:</span>
                         <select value={status} onChange={(e) => setStatus(Number(e.target.value))}>
-                            <option value="0">Đăng tải</option>
+                            <option value="0">Ch</option>
                             <option value="1">Yêu cầu phát hành</option>
                         </select>
                     </label>

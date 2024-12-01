@@ -9,10 +9,11 @@ export interface Story {
     createdAt: string;
     updatedAt: string;
     countryId: number;
+    country: Country;
     authorId: number;
     aliases: string;
     genres: Genre[];
-    prices: Price;
+    price: Price;
 }
 
 export interface Alias {
@@ -39,21 +40,41 @@ export interface Price {
     startTime: string;
 }
 
-export interface Image {
+export interface ChapterImage {
     id: number;
-    src: string;
+    order: number;
+    path: string;
+    chapterId: number;
 }
 
-export interface ModalChapterDetailProps {
-    isOpen: boolean;
-    onClose: () => void;
-    chapterTitle: string;
-    images: Image[];
-    onAddClick?: () => void;
-    onDeleteAllClick?: () => void;
+export interface Chapter {
+    id: number;
+    order: number;
+    name: string;
+    content: string;
+    status: number;
+    createdAt: string;
+    updatedAt: string;
+    storyId: number;
 }
 
-export interface AuthorModalCreateChapterProps {
+export interface AuthorModalCreateAndUpdateChapterProps {
     isOpen: boolean;
     onClose: () => void;
+    isUpdate: boolean;
+    storyTitle: string;
+    title: string;
+    storyId: number;
+    index: number | null;
+    chapterList: any[];
+    setRefetchChapterList: (value: any) => void;
+    orderNew: number;
+}
+
+export interface ModalDeleteChapterProps {
+    isOpen: boolean;
+    onClose: () => void;
+    chapterId: number;
+    chapterName: string;
+    setRefetchChapterList: (value: any) => void;
 }
