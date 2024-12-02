@@ -14,13 +14,13 @@ function Breadcrumb({
                         key={index}
                         className="space-x-1 text-[1.1rem] font-[400]"
                     >
-                        <span>{index != 0 && separator}</span>
                         <Link
                             className="hover:underline hover:text-[var(--primary)]"
                             to={item.path}
                         >
                             {item.label}
                         </Link>
+                        <span>{separator}</span>
                     </span>
                 )
             })}
