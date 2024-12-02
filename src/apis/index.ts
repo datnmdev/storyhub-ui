@@ -8,7 +8,7 @@ import aliasApi from "./alias";
 import walletApi from "./wallet";
 import depositeTransactionApi from "./depositeTransaction";
 import storyApi from "./story";
-import chapterApi from "./chapter";
+import chapterApi from "./_chapter";
 import chapterImageApi from "./chapterImage";
 const apis = {
     authApi,
