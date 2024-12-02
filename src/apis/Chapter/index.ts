@@ -14,6 +14,7 @@ const chapterApi = {
     deleteChapter: (options: RequestInit) => {
         return axiosInstance().delete(`/chapter/${options.queries.id}`);
     },
+    
 };
 
 export default chapterApi;
