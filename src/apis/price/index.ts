@@ -14,6 +14,11 @@ const priceApi = {
     deletePrice: (options: RequestInit) => {
         return axiosInstance().delete(`/price/${options.queries.id}`);
     },
+    getCurrentPrice: (options: RequestInit) => {
+        return axiosInstance().get("/price/all/current", {
+            params: options.queries
+        })
+    }
 };
 
 export default priceApi;

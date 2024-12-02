@@ -10,6 +10,7 @@ export default {
             animation: {
                 fadeIn: "fadeIn 0.5s ease-in forwards",
                 fadeOut: "fadeOut 0.5s ease-out forwards",
+                blink: "fadeOut 1s linear infinite alternate, fadeIn 1s linear infinite alternate"
             },
             keyframes: {
                 fadeIn: {
