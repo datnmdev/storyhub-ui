@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./AuthorProfile.module.scss";
-
+import "bootstrap/dist/css/bootstrap.min.css";
 const AuthorProfile: React.FC = () => {
     const [fullName, setFullName] = useState("Trần Đức Bể");
     const [birthDate, setBirthDate] = useState("01/01/2002");

@@ -8,6 +8,8 @@ import useFetch from "@hooks/fetch.hook";
 import apis from "@apis/index";
 import { useAppSelector } from "@hooks/redux.hook";
 import authFeature from "@features/auth";
+import { StoryStatus, StoryStatusLabels } from "../AllEnum/enum";
+import "bootstrap/dist/css/bootstrap.min.css";
 const AuthorHomePage = () => {
     const navigate = useNavigate();
     const [search, setSearch] = useState("");
@@ -33,7 +35,7 @@ const AuthorHomePage = () => {
             status: statusFilter,
             type: typeFilter,
             keyword: search,
-            authorId: profile?.id,
+            authorId: profile?.id ?? 3,
         };
     };
     const { data, isLoading, error, setRefetch } = useFetch(apis.storyApi.getAllStoriesByAuthor, {
@@ -67,6 +69,7 @@ const AuthorHomePage = () => {
             setRefetch({ value: true });
         }
     };
+    console.log("mangaItems", mangaItems);
     return (
         <>
             <div className={styles.mangaListContainer}>
@@ -127,9 +130,20 @@ const AuthorHomePage = () => {
                                 className={styles.mangaImage}
                             />
                             <div className={styles.mangaInfo}>
-                                <h5>{manga?.node?.title}</h5>
-                                <span className={styles.mangaStatus}>{manga?.node?.status}</span>
-                                <span className={styles.mangaPrice}>{manga?.node?.price}</span>
+                                <h5>
+                                    {manga?.node?.title.length > 19
+                                        ? `${manga?.node?.title.substring(0, 19)}...`
+                                        : manga?.node?.title}
+                                </h5>
+                                <span className={styles.mangaPrice}>
+                                    {manga?.node?.prices && manga?.node?.prices.length > 0
+                                        ? manga?.node?.prices[manga?.node?.prices.length - 1]?.amount
+                                        : 0}
+                                    ₫
+                                </span>
+                                <span className={styles.mangaStatus}>
+                                    {StoryStatusLabels[manga?.node?.status as StoryStatus]}
+                                </span>
                             </div>
                         </div>
                     ))}

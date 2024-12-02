@@ -4,7 +4,7 @@ import apis from "@apis/index";
 import useFetch from "@hooks/fetch.hook";
 import { toast } from "react-toastify";
 import { Modal, Button, Form } from "react-bootstrap";
-
+import "bootstrap/dist/css/bootstrap.min.css";
 const AuthorModalCreateAndUpdateChapter: React.FC<AuthorModalCreateAndUpdateChapterProps> = ({
     isOpen,
     onClose,
@@ -52,7 +52,7 @@ const AuthorModalCreateAndUpdateChapter: React.FC<AuthorModalCreateAndUpdateChap
             status: status,
             storyId: storyId,
         },
-    });
+    }, false);
     useEffect(() => {
         if (isUpdate && index != null) {
             setOrder(chapterList?.[index ?? 0]?.node?.order ?? 0);

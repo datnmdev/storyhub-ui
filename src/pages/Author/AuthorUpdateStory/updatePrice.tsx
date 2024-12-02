@@ -15,6 +15,7 @@ interface AuthorModalUpdatePriceProps {
     setAmount: (amount: string) => void;
     startTime: string;
     setStartTime: (startTime: string) => void;
+    storyId: number;
 }
 const AuthorUpdatePrice = ({
     isOpen,
@@ -23,20 +24,29 @@ const AuthorUpdatePrice = ({
     setAmount,
     startTime,
     setStartTime,
+    storyId,
 }: AuthorModalUpdatePriceProps) => {
     const [priceList, setPriceList] = useState<Price[]>([]);
     const { data: list, setRefetch: setRefetchList } = useFetch<Price[]>(
         apis.priceApi.getAllPrices,
         {
-            // queries: {
-            //     storyId: storyId,
-            // },
+            queries: {
+                storyId: storyId,
+            },
         },
         false
     );
+
     const handleOnClickDate = (date: Date) => {
-        setStartTime(moment(date).format("YYYY-MM-DD"));
+        setStartTime(moment(date).format("YYYY-MM-DD HH:mm:ss"));
+        console.log("startTime", startTime);
     };
+
+    useEffect(() => {
+        if (storyId !== 0) {
+            setRefetchList({ value: true });
+        }
+    }, [storyId]);
 
     useEffect(() => {
         if (list) {
@@ -62,7 +72,7 @@ const AuthorUpdatePrice = ({
     const handleSubmit = () => {
         if (!checkValid()) return;
         onClose();
-        toast.success("Cập nhật giá thành công.");
+        toast.success("Tạo giá thành công.");
     };
 
     return (
@@ -86,38 +96,38 @@ const AuthorUpdatePrice = ({
                         <br />
                         <DatePicker
                             className="form-control"
-                            selected={startTime ? new Date(startTime) : null}
-                            onChange={(date) => {
-                                if (date) {
-                                    handleOnClickDate(date);
-                                }
-                            }}
+                            selected={startTime ? new Date(startTime) : undefined}
+                            onChange={(date) => date && handleOnClickDate(date)}
                             minDate={new Date(Date.now())}
                         />
                     </Form.Group>
                 </Form>
-                <Button variant="primary" onClick={handleSubmit}>
-                    Lưu
-                </Button>
+                <div style={{ textAlign: "right" }}>
+                    <Button variant="primary" onClick={handleSubmit}>
+                        Lưu
+                    </Button>
+                </div>
                 <h3>Danh sách giá</h3>
-                <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Giá</th>
-                            <th>Ngày áp dụng</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {priceList.map((entry) => (
-                            <tr key={entry.id}>
-                                <td>{entry.id}</td>
-                                <td>{entry.amount}</td>
-                                <td>{entry.startTime}</td>
+                <div style={{ maxHeight: "200px", overflowY: "auto" }}>
+                    <Table bordered>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Giá</th>
+                                <th>Ngày áp dụng</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </Table>
+                        </thead>
+                        <tbody>
+                            {priceList.map((entry) => (
+                                <tr key={entry.id}>
+                                    <td>{entry.id}</td>
+                                    <td>{entry.amount}</td>
+                                    <td>{moment(entry.startTime).format("DD/MM/YYYY HH:mm:ss")}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </div>
             </Modal.Body>
         </Modal>
     );

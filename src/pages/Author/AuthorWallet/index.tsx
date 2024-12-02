@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./AuthorWallet.module.scss";
-
+import "bootstrap/dist/css/bootstrap.min.css";
 const AuthorWallet: React.FC = () => {
     return (
         <div className={styles.walletContainer}>

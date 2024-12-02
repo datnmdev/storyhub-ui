@@ -92,10 +92,13 @@ $font-color-light: #888;
         }
 
         .mangaInfo {
+            display: flex;
+            flex-direction: column;
             padding: 10px;
 
             .mangaStatus {
                 font-size: 14px;
+                font-weight: 600;
                 color: $font-color-light;
                 padding-right: 20px;
             }

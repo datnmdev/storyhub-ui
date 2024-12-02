@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import styles from "./AuthorCreateStory.module.scss";
-import AuthorCreatePrice from "./createPrice";
+import styles from "./AuthorUpdateStory.module.scss";
+import AuthorUpdatePrice from "./updatePrice";
 import useFetch from "@hooks/fetch.hook";
 import apis from "@apis/index";
 import { v4 as uuidv4 } from "uuid";
@@ -8,13 +8,14 @@ import { toast } from "react-toastify";
 import { useAppSelector } from "@hooks/redux.hook";
 import authFeature from "@features/auth";
 import { Country, Genre, Story } from "../AllInterface/interface";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { connectToSocket } from "../Socket/socket";
-
-const AuthorCreateStory = () => {
+import paths from "@routers/router.path";
+const AuthorUpdateStory = () => {
     const uuid = uuidv4();
     const navigate = useNavigate();
+    const location = useLocation();
     const [title, setTitle] = useState<string>("");
     const [aliasTitle, setAliasTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
@@ -35,41 +36,38 @@ const AuthorCreateStory = () => {
     const [file, setFile] = useState<string | null>(null);
     const { data: countryList } = useFetch<Country[]>(apis.countryApi.getCountryList);
     const { data: genreList } = useFetch<Genre[]>(apis.genreApi.getGenreList);
+    const { story } = location.state as { story: Story };
+    const profile = useAppSelector(authFeature.authSelector.selectUser);
+    const { sendModerationRequest } = connectToSocket(profile?.id ?? 3);
     useEffect(() => {
+        if (story) {
+            setTitle(story.title);
+            setAliasTitle(
+                Array.isArray(story.aliases) ? story.aliases.map((alias) => alias.name).join(", ") : story.aliases
+            );
+            setDescription(story.description);
+            setNotes(story.note);
+            setCountryId(story.countryId);
+            setType(story.type);
+            setStatus(story.status);
+            setGenreResult(story.genres.map((genre) => genre.id));
+            setAmount(
+                story?.prices && story?.prices.length > 0
+                    ? story?.prices[story?.prices.length - 1]?.amount.toString()
+                    : "0"
+            );
+            setStartTime(story?.prices?.[story?.prices?.length - 1]?.startTime ?? "");
+            setPreviewImgURL(
+                story?.coverImage.startsWith("story")
+                    ? `https://s3bucket2024aws.s3.ap-southeast-1.amazonaws.com/${story.coverImage}`
+                    : story.coverImage
+            );
+        }
         if (Array.isArray(countryList) && Array.isArray(genreList)) {
             setCountries(countryList);
             setGenres(genreList);
         }
-    }, [countryList, genreList]);
-    const profile = useAppSelector(authFeature.authSelector.selectUser);
-    const { sendModerationRequest } = connectToSocket(profile?.id ?? 3);
-    const {
-        data: storyNew,
-        setRefetch: setStoryNewRefetch,
-        isLoading: isCreatingStory,
-        error: createStoryError,
-    } = useFetch<Story>(
-        apis.storyApi.createStory,
-        {
-            body: {
-                title,
-                description,
-                note: notes,
-                coverImage: null,
-                type,
-                status: status === 1 ? 1 : 0,
-                countryId,
-                authorId: profile?.id ?? 3,
-                genres: genreResult,
-                alias: aliasTitle,
-                price: {
-                    amount,
-                    startTime,
-                },
-            },
-        },
-        false
-    );
+    }, [story, countryList, genreList]);
     const {
         data: uploadUrl,
         setRefetch: setUploadUrlRefetch,
@@ -80,17 +78,48 @@ const AuthorCreateStory = () => {
         {
             body: {
                 fileName,
-                storyId: storyNew?.id,
+                storyId: story?.id,
             },
         },
         false
     );
-    const { data: updateStory, setRefetch: setUpdateStoryRefetch } = useFetch(
+    const {
+        data: updateStory,
+        setRefetch: setUpdateStoryRefetch,
+        error: updateStoryError,
+        isLoading: isUpdatingStory,
+    } = useFetch(
         apis.storyApi.updateStory,
         {
             body: {
-                id: storyNew?.id,
-                coverImage: `story/${storyNew?.id}/${fileName}`,
+                id: story?.id,
+                coverImage: `story/${story?.id}/${fileName}`,
+                title,
+                description,
+                note: notes,
+                type,
+                status: status === 1 ? 1 : 0,
+                countryId,
+                authorId: profile?.id ?? 3,
+                ...(story.genres.length !== genreResult.length
+                    ? {
+                          genres: genreResult,
+                      }
+                    : {}),
+                ...(aliasTitle !== story.aliases
+                    ? {
+                          alias: aliasTitle,
+                      }
+                    : {}),
+                ...(story?.prices[story?.prices.length - 1]?.amount.toString() !== amount && startTime
+                    ? {
+                          price: {
+                              amount: amount,
+                              startTime: startTime,
+                              storyId: story?.id,
+                          },
+                      }
+                    : {}),
             },
         },
         false
@@ -106,23 +135,6 @@ const AuthorCreateStory = () => {
             setFileType(file.type.split("/")[1]);
             setFile(file);
         }
-    };
-
-    const handleRefresh = () => {
-        setTitle("");
-        setAliasTitle("");
-        setDescription("");
-        setNotes("");
-        setCountries(countryList ?? []);
-        setGenres(genreList ?? []);
-        setGenreResult([1]);
-        setStatus(0);
-        setGenreId(1);
-        setCountryId(1);
-        setAmount("0");
-        setPreviewImgURL(null);
-        setFileType("");
-        setFile(null);
     };
     const checkValid = () => {
         if (!title) {
@@ -145,7 +157,7 @@ const AuthorCreateStory = () => {
             toast.error("Vui lòng chọn thể loại.");
             return false;
         }
-        if (!file) {
+        if (!file && !previewImgURL) {
             toast.error("Vui lòng chọn ảnh truyện.");
             return false;
         }
@@ -181,8 +193,8 @@ const AuthorCreateStory = () => {
         if (uploadResult.ok) {
             console.log("Uploaded File:", uploadResult);
 
-            navigate("/author");
-            toast.success("Đăng tải truyện thành công.");
+            navigate(paths.authorStoryDetail(story?.id.toString() ?? ""), { state: story?.id });
+            toast.success("Cập nhật truyện thành công.");
         } else {
             throw new Error("Upload ảnh truyện thất bại.");
         }
@@ -191,7 +203,6 @@ const AuthorCreateStory = () => {
     useEffect(() => {
         const uploadAndUpdateStory = async () => {
             if (uploadUrl) {
-                setUpdateStoryRefetch({ value: true });
                 await uploadFile(uploadUrl as string);
             } else if (uploadFileError) {
                 toast.error("Upload ảnh truyện thất bại.");
@@ -204,20 +215,18 @@ const AuthorCreateStory = () => {
         if (!checkValid()) {
             return;
         }
-        setStoryNewRefetch({ value: true });
+        setUpdateStoryRefetch({ value: true });
     };
 
     useEffect(() => {
-        if (storyNew) {
-            setUploadUrlRefetch({ value: true });
-            if (status === 1) {
-                sendModerationRequest(storyNew.id, profile?.id ?? 3);
-            }
+        if (updateStory) {
+            file && setUploadUrlRefetch({ value: true });
+            status === 1 && sendModerationRequest(story?.id ?? 0, profile?.id ?? 3);
         }
-    }, [storyNew, createStoryError]);
+    }, [updateStory, updateStoryError]);
     return (
-        <div className={styles.containerCreateStory}>
-            <span className={styles.titleCreateStory}>Đăng tải truyện</span>
+        <div className={styles.containerUpdateStory}>
+            <span className={styles.titleUpdateStory}>Cập nhật truyện</span>
             <div className={styles.formContainer}>
                 {/* Form Inputs */}
                 <div className={styles.formFields}>
@@ -236,10 +245,10 @@ const AuthorCreateStory = () => {
                             onChange={(e) => setType(Number((e.target as HTMLInputElement).value))}
                         >
                             <label>
-                                <input type="radio" name="type" value="1" /> Truyện tranh
+                                <input type="radio" name="type" value="1" defaultChecked={type === 1} /> Truyện tranh
                             </label>
                             <label>
-                                <input type="radio" name="type" value="0" /> Truyện chữ
+                                <input type="radio" name="type" value="0" defaultChecked={type === 0} /> Truyện chữ
                             </label>
                         </div>
                     </label>
@@ -291,11 +300,8 @@ const AuthorCreateStory = () => {
                             ))}
                     </div>
                     <div className={styles.buttonGroup}>
-                        <button className="btn btn-primary mx-2" disabled={isCreatingStory} onClick={handleSubmit}>
+                        <button className="btn btn-primary mx-2" disabled={isUpdatingStory} onClick={handleSubmit}>
                             Lưu
-                        </button>
-                        <button className="btn btn-secondary" onClick={handleRefresh}>
-                            Làm mới
                         </button>
                     </div>
                 </div>
@@ -304,27 +310,28 @@ const AuthorCreateStory = () => {
                 <div className={styles.imageContainer}>
                     <input id="previewImg" type="file" hidden onChange={(event) => handleOnchangeImg(event)} />
                     <img
-                        className={styles.imageCreateStory}
+                        className={styles.imageUpdateStory}
                         onClick={() => document.getElementById("previewImg")?.click()}
                         style={{ backgroundImage: `url(${previewImgURL})` }}
                     />
 
                     <span>giá: {amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} đ</span>
                     <button className="btn btn-success" onClick={() => setShowPrice(true)}>
-                        Tạo giá
+                        Cập nhật giá
                     </button>
                 </div>
-                <AuthorCreatePrice
+                <AuthorUpdatePrice
                     isOpen={showPrice}
                     onClose={() => setShowPrice(false)}
                     amount={amount}
                     setAmount={setAmount}
                     startTime={startTime}
                     setStartTime={setStartTime}
+                    storyId={story?.id ?? 0}
                 />
             </div>
         </div>
     );
 };
 
-export default AuthorCreateStory;
+export default AuthorUpdateStory;

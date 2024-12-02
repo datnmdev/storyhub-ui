@@ -15,9 +15,13 @@ import useFetch from "@hooks/fetch.hook";
 import apis from "@apis/index";
 import { StoryStatus, StoryStatusLabels, StoryType, StoryTypeLabels } from "../AllEnum/enum";
 import ModalDeleteChapter from "./ModalDeleteChapter";
+import paths from "@routers/router.path";
+import { useNavigate } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 const AuthorStoryDetail = () => {
     const location = useLocation();
     const take = 12;
+    const navigate = useNavigate();
     const [statusFilter, setStatusFilter] = useState<number>();
     const [typeFilter, setTypeFilter] = useState<number>();
     const [search, setSearch] = useState("");
@@ -134,7 +138,14 @@ const AuthorStoryDetail = () => {
             <div className={styles.detailPage}>
                 <div className={styles.headerStoryDetail}>
                     <span className={styles.titleStoryDetail}>Chi tiết truyện</span>
-                    <button className="btn btn-success">Cập nhật</button>
+                    <button
+                        className="btn btn-success"
+                        onClick={() =>
+                            navigate(paths.authorUpdateStory(storyId.toString()), { state: { story: storyDetail } })
+                        }
+                    >
+                        Cập nhật
+                    </button>
                 </div>
                 <div className={styles.mainContent}>
                     <div className={styles.leftPanel}>
@@ -147,7 +158,7 @@ const AuthorStoryDetail = () => {
                     <div className={styles.rightPanel}>
                         <span style={{ fontSize: "20px", fontWeight: "bold" }}>{storyDetail?.title}</span>
                         <ul className={styles.storyInfo}>
-                            <li>Giá: đ/chương</li>
+                            <li>Giá: {storyDetail?.prices?.[storyDetail?.prices?.length - 1]?.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} đ/chương</li>
                             <li>Quốc gia: {storyDetail?.country.name}</li>
                             <li>Loại truyện: {StoryTypeLabels[storyDetail?.type as StoryType]}</li>
                             <li>Trạng thái: {StoryStatusLabels[storyDetail?.status as StoryStatus]}</li>

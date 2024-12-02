@@ -13,7 +13,7 @@ export interface Story {
     authorId: number;
     aliases: string;
     genres: Genre[];
-    price: Price;
+    prices: Price[];
 }
 
 export interface Alias {
@@ -38,6 +38,7 @@ export interface Price {
     id: number;
     amount: number;
     startTime: string;
+    storyId: number;
 }
 
 export interface ChapterImage {

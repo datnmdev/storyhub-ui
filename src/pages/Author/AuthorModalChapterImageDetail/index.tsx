@@ -9,7 +9,7 @@ import {
     useFetchListUrlUploadFileForChapter,
     useFetchUpdateOrderImage,
 } from "./useFetch";
-
+import "bootstrap/dist/css/bootstrap.min.css";
 export interface ModalChapterImageDetailProps {
     isOpen: boolean;
     onClose: () => void;

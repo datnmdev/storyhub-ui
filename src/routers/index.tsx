@@ -22,14 +22,15 @@ import AuthorCreateStory from "@pages/Author/AuthorCreateStory";
 import AuthorStoryDetail from "@pages/Author/AuthorStoryDetail";
 import AuthorWallet from "@pages/Author/AuthorWallet";
 import AuthorProfile from "@pages/Author/AuthorProfile";
+import AuthorUpdateStory from "@pages/Author/AuthorUpdateStory";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: (
-            //<Authentication>
-            <Outlet />
-            //</Authentication>
+            <Authentication>
+                <Outlet />
+            </Authentication>
         ),
         errorElement: <ErrorBoundary />,
         hasErrorBoundary: true,
@@ -143,6 +144,10 @@ const router = createBrowserRouter([
                     {
                         path: paths.authorStoryDetail(":storyId"),
                         element: <AuthorStoryDetail />,
+                    },
+                    {
+                        path: paths.authorUpdateStory(":storyId"),
+                        element: <AuthorUpdateStory />,
                     },
                     {
                         path: paths.authorWallet(),

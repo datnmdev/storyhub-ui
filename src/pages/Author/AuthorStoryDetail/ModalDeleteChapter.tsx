@@ -24,7 +24,6 @@ const ModalDeleteChapter: React.FC<ModalDeleteChapterProps> = ({
         },
         false
     );
-    console.log(chapterId);
     useEffect(() => {
         if (deleteChapter) {
             setRefetchChapterList({ value: true });
