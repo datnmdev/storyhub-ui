@@ -1,7 +1,7 @@
 import { CallApiFunction, RequestInit } from "apis/api.type";
 import { useState, useEffect } from "react";
 
-function useFetch<R>(callApiFunc: CallApiFunction, options: RequestInit = {}, auto: boolean = true) {
+function useFetch<R = any>(callApiFunc: CallApiFunction, options: RequestInit = {}, auto: boolean = true) {
     const [data, setData] = useState<R | null>(null);
     const [error, setError] = useState<Error | null>(null);
     const [isLoading, setLoading] = useState<boolean>(false);

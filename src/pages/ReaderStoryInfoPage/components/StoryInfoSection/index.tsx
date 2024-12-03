@@ -1,4 +1,4 @@
-import { memo, useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import WhiteCoinIcon from "@assets/icons/static/white-coin.png";
@@ -17,8 +17,13 @@ import { StoryStatus, StoryType } from "@constants/story.constants";
 import NumberUtils from "@utilities/number.util";
 import useFetch from "@hooks/fetch.hook";
 import { Story } from "@pages/ReaderHomePage/components/NewUpdateStorySection/NewUpdateStorySection.type";
+import { useDispatch } from "react-redux";
+import toastFeature from "@features/toast";
+import { ToastType } from "@constants/toast.constants";
+import { RatingSummary } from "@apis/rating";
 
 function StoryInfoSection() {
+    const dispatch = useDispatch();
     const { t } = useTranslation();
     const { storyId } = useParams();
     const themeValue = useAppSelector(themeFeature.themeSelector.selectValue);
@@ -103,8 +108,39 @@ function StoryInfoSection() {
                     storyId
                 }
             }
-        ]
+        ],
+        [
+            apis.ratingApi.getRating,
+            {
+                queries: {
+                    storyId
+                }
+            }
+        ],
     ], false);
+    const [stars, setStars] = useState<number | null>(null);
+    const { data: isEvoluated, error: createRatingError, setRefetch: setReCreateRating } = useFetch(apis.ratingApi.createRating, {
+        body: {
+            storyId: Number(storyId),
+            stars
+        }
+    }, false)
+    const { data: isUpdatedRating, error: updateRatingError, setRefetch: setReUpdateRating } = useFetch(apis.ratingApi.updateRating, {
+        body: {
+            storyId: Number(storyId),
+            stars
+        }
+    }, false)
+    const { data: ratingSumaryData, setRefetch: setReGetRatingSummary } = useFetch<RatingSummary>(apis.ratingApi.getRatingSummary, {
+        queries: {
+            storyId
+        }
+    }, false);
+    const { data: ratingData, setRefetch: setReGetRating } = useFetch(apis.ratingApi.getRating, {
+        queries: {
+            storyId
+        }
+    }, false);
 
     useEffect(() => {
         if (storyData) {
@@ -113,6 +149,63 @@ function StoryInfoSection() {
             })
         }
     }, [storyData])
+
+    useEffect(() => {
+        if (stars) {
+            if (data?.[9] || ratingData) {
+                setReUpdateRating({
+                    value: true
+                })
+            } else {
+                setReCreateRating({
+                    value: true
+                })
+            }
+        }
+    }, [stars])
+
+    useEffect(() => {
+        if (isEvoluated || isUpdatedRating) {
+            setReGetRating({
+                value: true
+            })
+            setReGetRatingSummary({
+                value: true
+            })
+        }
+    }, [isEvoluated, isUpdatedRating])
+
+    useEffect(() => {
+        if (isEvoluated) {
+            dispatch(toastFeature.toastAction.add({
+                type: ToastType.SUCCESS,
+                title: t("notification.createRatingSuccess")
+            }))
+        } else {
+            if (createRatingError) {
+                dispatch(toastFeature.toastAction.add({
+                    type: ToastType.ERROR,
+                    title: t("notification.createRatingFailed")
+                }))
+            }
+        }
+    }, [isEvoluated, createRatingError])
+
+    useEffect(() => {
+        if (isUpdatedRating) {
+            dispatch(toastFeature.toastAction.add({
+                type: ToastType.SUCCESS,
+                title: t("notification.updateRatingSuccess")
+            }))
+        } else {
+            if (updateRatingError) {
+                dispatch(toastFeature.toastAction.add({
+                    type: ToastType.ERROR,
+                    title: t("notification.updateRatingFailed")
+                }))
+            }
+        }
+    }, [isUpdatedRating, updateRatingError])
 
     if (data) {
         return (
@@ -275,7 +368,7 @@ function StoryInfoSection() {
 
                                 <div className="space-x-2">
                                     <span className="px-4 py-2 bg-[var(--primary)] rounded-[4px] text-[var(--white)] font-bold">
-                                        {data[7].ratingCount === 0 ? (0).toFixed(1) : (data[7].starCount / (data[7].ratingCount * 5)).toFixed(1)}
+                                        {ratingSumaryData ? (ratingSumaryData.ratingCount === 0 ? (0).toFixed(1) : (ratingSumaryData.starCount / ratingSumaryData.ratingCount).toFixed(1)) : (data[7].ratingCount === 0 ? (0).toFixed(1) : (data[7].starCount / data[7].ratingCount).toFixed(1))}
                                     </span>
 
                                     <span className="text-[1.2rem]">-</span>
@@ -291,7 +384,8 @@ function StoryInfoSection() {
                             <div className="mr-2">
                                 <Rating
                                     defaultValue={0}
-                                    precision={0.1}
+                                    value={ratingData?.stars || data[9].stars}
+                                    precision={1}
                                     icon={(<StarRounded fontSize="inherit" />)}
                                     emptyIcon={(
                                         <StarBorderRounded
@@ -309,11 +403,12 @@ function StoryInfoSection() {
                                         },
                                         marginLeft: -1
                                     }}
+                                    onChange={(e, value) => setStars(value)}
                                 />
                             </div>
 
                             <div>
-                                ({t("reader.storyInfoPage.storyInfoSection.rating.status.notEvaluated", { value: 5 })})
+                                ({data[9] ? t("reader.storyInfoPage.storyInfoSection.rating.status.evaluated", { value: ratingData?.stars || data[9].stars }) : t("reader.storyInfoPage.storyInfoSection.rating.status.notEvaluated")})
                             </div>
                         </div>
 

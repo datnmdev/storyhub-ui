@@ -165,13 +165,13 @@ function StoryItem({
                 <div className="flex items-center">
                     <div className="flex items-center leading-4">
                         <div className="bg-[var(--primary)] text-[var(--white)] px-2 py-1 rounded-[12px] text-[0.9rem] font-semibold">
-                            {responsesData[4].ratingCount === 0 ? (0).toFixed(1) : (responsesData[4].starCount / (responsesData[4].ratingCount * 5)).toFixed(1)}
+                            {responsesData[4].ratingCount === 0 ? (0).toFixed(1) : (responsesData[4].starCount / responsesData[4].ratingCount).toFixed(1)}
                         </div>
 
                         <div className="flex items-center">
                             <Rating
                                 defaultValue={0}
-                                value={NumberUtils.roundToDecimal(responsesData[4].ratingCount === 0 ? 0 : ((responsesData[4].starCount / (responsesData[4].ratingCount * 5)) * 5), 1)}
+                                value={NumberUtils.roundToDecimal(responsesData[4].ratingCount === 0 ? 0 : (responsesData[4].starCount / responsesData[4].ratingCount), 1)}
                                 precision={0.1}
                                 icon={(<StarRounded fontSize="inherit" />)}
                                 emptyIcon={(
