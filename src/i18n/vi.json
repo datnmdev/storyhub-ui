@@ -217,7 +217,8 @@
                 },
                 "btn": {
                     "readFromBeginning": "Đọc từ đầu",
-                    "follow": "Theo dõi"
+                    "follow": "Theo dõi",
+                    "unfollow": "Bỏ theo dõi"
                 },
                 "note": {
                     "label": "Thông báo từ tác giả",
@@ -273,7 +274,9 @@
         "createRatingSuccess": "Đánh giá truyện thành công",
         "createRatingFailed": "Đánh giá truyện thất bại. Vui lòng thử lại",
         "updateRatingSuccess": "Cập nhật đánh giá thành công",
-        "updateRatingFailed": "Cập nhật đánh giá thất bại. Vui lòng thử lại"
+        "updateRatingFailed": "Cập nhật đánh giá thất bại. Vui lòng thử lại",
+        "followSuccess": "Theo dõi truyện thành công",
+        "unfollowSuccess": "Bỏ theo dõi truyện thành công"
     },
     "pagination": {
         "next": "Sau",

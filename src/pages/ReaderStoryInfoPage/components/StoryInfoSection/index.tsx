@@ -117,6 +117,14 @@ function StoryInfoSection() {
                 }
             }
         ],
+        [
+            apis.followApi.getFollow,
+            {
+                queries: {
+                    storyId
+                }
+            }
+        ],
     ], false);
     const [stars, setStars] = useState<number | null>(null);
     const { data: isEvoluated, error: createRatingError, setRefetch: setReCreateRating } = useFetch(apis.ratingApi.createRating, {
@@ -141,6 +149,22 @@ function StoryInfoSection() {
             storyId
         }
     }, false);
+    const [isFollow, setFollow] = useState<boolean>(false);
+    const { data: createfollowData, setRefetch: setReCreateFollow } = useFetch(apis.followApi.follow, {
+        body: {
+            storyId: Number(storyId)
+        }
+    }, false)
+    const { data: isUnfollow, setRefetch: setReUnfollow } = useFetch(apis.followApi.unfollow, {
+        queries: {
+            storyId
+        }
+    }, false)
+    const { data: followCount, setRefetch: setReGetFollowCount } = useFetch(apis.followApi.getFollowerCount, {
+        queries: {
+            storyId
+        }
+    }, false)
 
     useEffect(() => {
         if (storyData) {
@@ -206,6 +230,38 @@ function StoryInfoSection() {
             }
         }
     }, [isUpdatedRating, updateRatingError])
+
+    useEffect(() => {
+        if (createfollowData) {
+            dispatch(toastFeature.toastAction.add({
+                type: ToastType.SUCCESS,
+                title: t("notification.followSuccess")
+            }))
+            setFollow(true);
+        }
+    }, [createfollowData])
+
+    useEffect(() => {
+        if (isUnfollow) {
+            dispatch(toastFeature.toastAction.add({
+                type: ToastType.SUCCESS,
+                title: t("notification.unfollowSuccess")
+            }))
+            setFollow(false);
+        }
+    }, [isUnfollow])
+
+    useEffect(() => {
+        if (data?.[10]) {
+            setFollow(true);
+        }
+    }, [data])
+
+    useEffect(() => {
+        setReGetFollowCount({
+            value: true
+        })
+    }, [isFollow])
 
     if (data) {
         return (
@@ -319,7 +375,7 @@ function StoryInfoSection() {
                                 </div>
 
                                 <div>
-                                    {t("reader.storyInfoPage.storyInfoSection.followerCount.content", { value: NumberUtils.formatNumberWithSeparator(String(data[4])) })}
+                                    {t("reader.storyInfoPage.storyInfoSection.followerCount.content", { value: NumberUtils.formatNumberWithSeparator(String(followCount !== null ? followCount : data[4])) })}
                                 </div>
                             </div>
 
@@ -439,14 +495,25 @@ function StoryInfoSection() {
                             </IconButton>
 
                             <IconButton
-                                icon={(<i className="fa-regular fa-heart text-[1.4rem]"></i>)}
+                                icon={isFollow ? ((<i className="fa-solid fa-heart text-[1.4rem]"></i>)) : (<i className="fa-regular fa-heart text-[1.4rem]"></i>)}
                                 bgColor="#ff3860"
                                 width={130}
                                 height={42}
                                 borderRadius="4px"
                                 color="var(--white)"
+                                onClick={() => {
+                                    if (isFollow) {
+                                        setReUnfollow({
+                                            value: true
+                                        })
+                                    } else {
+                                        setReCreateFollow({
+                                            value: true
+                                        })
+                                    }
+                                }}
                             >
-                                {t("reader.storyInfoPage.storyInfoSection.btn.follow")}
+                                {isFollow ? t("reader.storyInfoPage.storyInfoSection.btn.unfollow") : t("reader.storyInfoPage.storyInfoSection.btn.follow")}
                             </IconButton>
                         </div>
                     </div>
