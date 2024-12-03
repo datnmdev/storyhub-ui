@@ -16,6 +16,7 @@ import useFetchAll from "@hooks/fetchAll.hook";
 import apis from "@apis/index";
 import NumberUtils from "@utilities/number.util";
 import { Chapter } from "@apis/chapter";
+import paths from "@routers/router.path";
 
 function StoryItem({
     data
@@ -92,7 +93,8 @@ function StoryItem({
                 <div>
                     <Link
                         className="block h-[270px] overflow-hidden"
-                        to="#"
+                        to={paths.readerStoryInfoPage(String(data.id))}
+                        state={data}
                     >
                         <img
                             className="w-full h-full object-cover object-center transition-transform duration-300 ease-in hover:scale-150"
@@ -153,7 +155,8 @@ function StoryItem({
                 <div>
                     <Link
                         className="hover:text-[var(--primary)]"
-                        to="#"
+                        to={paths.readerStoryInfoPage(String(data.id))}
+                        state={data}
                     >
                         <h3 className="text-[1.2rem] font-[450] line-clamp-1">{data.title}</h3>
                     </Link>

@@ -22,14 +22,15 @@ import AuthorCreateStory from "@pages/Author/AuthorCreateStory";
 import AuthorStoryDetail from "@pages/Author/AuthorStoryDetail";
 import AuthorWallet from "@pages/Author/AuthorWallet";
 import AuthorProfile from "@pages/Author/AuthorProfile";
+import ReaderStoryInfoPage from "@pages/ReaderStoryInfoPage";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: (
-            //<Authentication>
-            <Outlet />
-            //</Authentication>
+            <Authentication>
+                <Outlet />
+            </Authentication>
         ),
         errorElement: <ErrorBoundary />,
         hasErrorBoundary: true,
@@ -39,6 +40,14 @@ const router = createBrowserRouter([
                 element: (
                     <ReaderLayout>
                         <ReaderHomePage />
+                    </ReaderLayout>
+                ),
+            },
+            {
+                path: paths.readerStoryInfoPage(),
+                element: (
+                    <ReaderLayout>
+                        <ReaderStoryInfoPage />
                     </ReaderLayout>
                 ),
             },

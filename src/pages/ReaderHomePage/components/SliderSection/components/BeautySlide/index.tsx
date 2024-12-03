@@ -15,6 +15,7 @@ import apis from "@apis/index";
 import UrlUtils from "@utilities/url.util";
 import { StoryType } from "@constants/story.constants";
 import NumberUtils from "@utilities/number.util";
+import paths from "@routers/router.path";
 
 function BeautySlide({
     data
@@ -107,7 +108,8 @@ function BeautySlide({
                         <div>
                             <Link
                                 className="hover:text-[var(--primary)]"
-                                to="#"
+                                to={paths.readerStoryInfoPage(String(data.id))}
+                                state={data}
                             >
                                 <h3 className="font-semibold text-[1.2rem] line-clamp-2">
                                     {data.title}

@@ -1,6 +1,7 @@
 
 const paths = {
     readerHomePage: () => "/",
+    readerStoryInfoPage: (storyId: string = ":storyId") => `/story/${storyId}`,
     signInPage: () => "/sign-in",
     signUpPage: () => "/sign-up",
     otpVerificationPage: () => "/otp-verification",

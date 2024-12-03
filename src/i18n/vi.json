@@ -178,6 +178,56 @@
                     "year": "{{value}} năm trước"
                 }
             }
+        },
+        "storyInfoPage": {
+            "storyInfoSection": {
+                "storyType": {
+                    "comic": "Truyện tranh",
+                    "novel": "Tiểu thuyết"
+                },
+                "ortherInfo": {
+                    "priceCount": "{{value}}đ/chương"
+                },
+                "alias": {
+                    "label": "Tên khác",
+                    "notData": "Đang cập nhật"
+                },
+                "author": "Tác giả",
+                "status": {
+                    "label": "Tình trạng",
+                    "publishing": "Đang phát hành",
+                    "finished": "Đã hoàn thành"
+                },
+                "followerCount": {
+                    "label": "Lượt theo dõi",
+                    "content": "{{value}}"
+                },
+                "viewCount": {
+                    "label": "Lượt xem",
+                    "content":"{{value}}"
+                },
+                "country": "Quốc gia",
+                "rating": {
+                    "label": "Đánh giá",
+                    "content": "{{value}} lượt",
+                    "status": {
+                        "evaluated": "Bạn đã đánh giá {{value}} sao",
+                        "notEvaluated": "Bạn chưa đánh giá"
+                    }
+                },
+                "btn": {
+                    "readFromBeginning": "Đọc từ đầu",
+                    "follow": "Theo dõi"
+                },
+                "note": {
+                    "label": "Thông báo từ tác giả",
+                    "notData": "Hiện tác giả chưa có thông báo nào..."
+                },
+                "contentIntroduction": {
+                    "label": "Giới thiệu nội dung",
+                    "notData": "Không có dữ liệu..."
+                }
+            }
         }
     },
     "validation": {
