@@ -204,7 +204,7 @@
                 },
                 "viewCount": {
                     "label": "Lượt xem",
-                    "content":"{{value}}"
+                    "content": "{{value}}"
                 },
                 "country": "Quốc gia",
                 "rating": {
@@ -227,6 +227,33 @@
                 "contentIntroduction": {
                     "label": "Giới thiệu nội dung",
                     "notData": "Không có dữ liệu..."
+                }
+            },
+            "chapterListSection": {
+                "title": "Danh sách chương",
+                "header": {
+                    "chapterName": "Tên chương",
+                    "updatedTime": "Thời gian cập nhật",
+                    "viewCount": "Lượt xem",
+                    "status": {
+                        "label": "Trạng thái",
+                        "paid": "Đã thanh toán",
+                        "unpaid": "Chưa thanh toán"
+                    }
+                },
+                "paymentRemindPopup": {
+                    "title": "Xác nhận thanh toán chương",
+                    "content": "Bạn sẽ mất <span style='color:red;font-weight:500;'>{{value}}đ</span> để đọc chương này. Bạn có muốn tiếp tục không?",
+                    "btn": {
+                        "ok": "Tiếp tục",
+                        "cancel": "Quay lại"
+                    },
+                    "loadingWrapper": {
+                        "message": "Đang thanh toán. Vui đợi trong giây lát..."
+                    },
+                    "paymentSuccess": "Thanh toán chương thành công. Chúc bạn đọc truyện vui vẻ...",
+                    "paymentFailed": "Bạn không đủ tiền để thanh toán chương này. Vui lòng nạp thêm tiền..."
+
                 }
             }
         }

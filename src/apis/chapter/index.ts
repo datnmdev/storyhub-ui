@@ -31,6 +31,11 @@ const chapterApi = {
         return axiosInstance().get("/chapter/all/filter", {
             params: options.queries
         })
+    },
+    getChapterContent: (options: RequestInit) => {
+        return axiosInstance().get("/chapter/reader/content", {
+            params: options.queries
+        })
     }
 }
 

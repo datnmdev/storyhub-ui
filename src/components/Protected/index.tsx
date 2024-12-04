@@ -13,36 +13,39 @@ import Loading from "@components/Loading";
 
 function Protected({
     children,
-    role
+    role,
+    enable = true
 }: ProtectedProps) {
     const location: Location<LocationState> = useLocation();
     const isAuthenticated = useAppSelector(authFeature.authSelector.selectAuthenticated);
 
-    if (isAuthenticated === null) {
-        return (
-            <Loading />
-        )
-    }
-
-    if (isAuthenticated) {
-        const tokenJson = localStorage.getItem(TOKEN_KEY);
-        if (tokenJson) {
-            const payload = jwtDecode(tokenJson) as JwtPayload;
-            if (payload.role != role) {
-                throw ForbiddenError()
-            }
+    if (enable) {
+        if (isAuthenticated === null) {
+            return (
+                <Loading />
+            )
         }
-    } else {
-        return (
-            <Navigate
-                to={paths.signInPage()}
-                replace
-                state={{
-                    from: location.pathname,
-                    role
-                }}
-            />
-        );
+
+        if (isAuthenticated) {
+            const tokenJson = localStorage.getItem(TOKEN_KEY);
+            if (tokenJson) {
+                const payload = jwtDecode(tokenJson) as JwtPayload;
+                if (payload.role != role) {
+                    throw ForbiddenError()
+                }
+            }
+        } else {
+            return (
+                <Navigate
+                    to={paths.signInPage()}
+                    replace
+                    state={{
+                        from: location.pathname,
+                        role
+                    }}
+                />
+            );
+        }
     }
 
     return children;

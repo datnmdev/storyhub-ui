@@ -3,7 +3,7 @@ import { InputData as InputDataType, InputError as InputErrorType } from "@hooks
 import { Dispatch, SetStateAction } from "react";
 
 export interface DepositePopupProps extends PopupProps {
-    setReGetBalance: Dispatch<SetStateAction<{ value: boolean }>>
+    setReGetBalance?: Dispatch<SetStateAction<{ value: boolean }>>
 }
 
 export interface InputData extends InputDataType {

@@ -8,6 +8,7 @@ import useFetch from "@hooks/fetch.hook";
 import apis from "@apis/index";
 import { useParams } from "react-router-dom";
 import { Story } from "@pages/ReaderHomePage/components/NewUpdateStorySection/NewUpdateStorySection.type";
+import ChapterSection from "./components/ChapterSection";
 
 function ReaderStoryInfoPage() {
     const { t } = useTranslation();
@@ -45,6 +46,10 @@ function ReaderStoryInfoPage() {
 
             <div>
                 <StoryInfoSection />
+            </div>
+
+            <div>
+                <ChapterSection />
             </div>
         </div>
     )

@@ -9,6 +9,7 @@ const paths = {
     resetPasswordPage: () => "/reset-password",
     readerWalletPage: () => "/wallet",
     readerDepositeTransHistoryPage: () => "/wallet/deposite-transaction-history",
+    readerChapterContentPage: (storyId: string | number = ":storyId", chapterId: string | number = ":chapterId") => `/story/${storyId}/chapter/${chapterId}`,
     managerDashboardPage: () => "/manager",
     authorHomePage: () => "/author",
     authorCreateStory: () => "/author/create-story",

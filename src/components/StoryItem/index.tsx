@@ -70,7 +70,12 @@ function StoryItem({
                 queries: {
                     storyId: data.id,
                     page: 1,
-                    limit: 3
+                    limit: 3,
+                    orderBy: JSON.stringify([
+                        ["order", "DESC"],
+                        ["updated_at", "DESC"],
+                        ["id", "DESC"]
+                    ])
                 }
             }
         ]

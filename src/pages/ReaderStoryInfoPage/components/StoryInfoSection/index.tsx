@@ -21,6 +21,8 @@ import { useDispatch } from "react-redux";
 import toastFeature from "@features/toast";
 import { ToastType } from "@constants/toast.constants";
 import { RatingSummary } from "@apis/rating";
+import Protected from "@components/Protected";
+import { Role } from "@constants/auth.constants";
 
 function StoryInfoSection() {
     const dispatch = useDispatch();
@@ -108,25 +110,10 @@ function StoryInfoSection() {
                     storyId
                 }
             }
-        ],
-        [
-            apis.ratingApi.getRating,
-            {
-                queries: {
-                    storyId
-                }
-            }
-        ],
-        [
-            apis.followApi.getFollow,
-            {
-                queries: {
-                    storyId
-                }
-            }
-        ],
+        ]
     ], false);
     const [stars, setStars] = useState<number | null>(null);
+    const [isEnableProtected, setEnableProtected] = useState<boolean>(false);
     const { data: isEvoluated, error: createRatingError, setRefetch: setReCreateRating } = useFetch(apis.ratingApi.createRating, {
         body: {
             storyId: Number(storyId),
@@ -148,7 +135,7 @@ function StoryInfoSection() {
         queries: {
             storyId
         }
-    }, false);
+    }, true);
     const [isFollow, setFollow] = useState<boolean>(false);
     const { data: createfollowData, setRefetch: setReCreateFollow } = useFetch(apis.followApi.follow, {
         body: {
@@ -165,6 +152,11 @@ function StoryInfoSection() {
             storyId
         }
     }, false)
+    const { data: followData, isLoading: isGettingFollow } = useFetch(apis.followApi.getFollow,{
+        queries: {
+            storyId
+        }
+    })
 
     useEffect(() => {
         if (storyData) {
@@ -176,7 +168,7 @@ function StoryInfoSection() {
 
     useEffect(() => {
         if (stars) {
-            if (data?.[9] || ratingData) {
+            if (ratingData) {
                 setReUpdateRating({
                     value: true
                 })
@@ -252,10 +244,12 @@ function StoryInfoSection() {
     }, [isUnfollow])
 
     useEffect(() => {
-        if (data?.[10]) {
-            setFollow(true);
+        if (!isGettingFollow) {
+            if (followData) {
+                setFollow(true);
+            }
         }
-    }, [data])
+    }, [isGettingFollow])
 
     useEffect(() => {
         setReGetFollowCount({
@@ -430,7 +424,7 @@ function StoryInfoSection() {
                                     <span className="text-[1.2rem]">-</span>
 
                                     <span>
-                                        {t("reader.storyInfoPage.storyInfoSection.rating.content", { value: NumberUtils.formatNumberWithSeparator(String(data[7].ratingCount)) })}
+                                        {t("reader.storyInfoPage.storyInfoSection.rating.content", { value: NumberUtils.formatNumberWithSeparator(String(ratingSumaryData?.ratingCount || data[7].ratingCount)) })}
                                     </span>
                                 </div>
                             </div>
@@ -438,33 +432,41 @@ function StoryInfoSection() {
 
                         <div className="mt-2 flex items-center">
                             <div className="mr-2">
-                                <Rating
-                                    defaultValue={0}
-                                    value={ratingData?.stars || data[9].stars}
-                                    precision={1}
-                                    icon={(<StarRounded fontSize="inherit" />)}
-                                    emptyIcon={(
-                                        <StarBorderRounded
-                                            fontSize="inherit"
-                                            sx={{
-                                                color: "var(--gray)"
-                                            }}
-                                        />
-                                    )}
-                                    sx={{
-                                        fontSize: "2.8rem",
-                                        padding: 0,
-                                        "& .MuiRating-icon": {
-                                            width: '2.2rem'
-                                        },
-                                        marginLeft: -1
-                                    }}
-                                    onChange={(e, value) => setStars(value)}
-                                />
+                                <Protected
+                                    role={Role.READER}
+                                    enable={isEnableProtected}
+                                >
+                                    <Rating
+                                        defaultValue={0}
+                                        value={ratingData?.stars ? ratingData.stars : 0}
+                                        precision={1}
+                                        icon={(<StarRounded fontSize="inherit" />)}
+                                        emptyIcon={(
+                                            <StarBorderRounded
+                                                fontSize="inherit"
+                                                sx={{
+                                                    color: "var(--gray)"
+                                                }}
+                                            />
+                                        )}
+                                        sx={{
+                                            fontSize: "2.8rem",
+                                            padding: 0,
+                                            "& .MuiRating-icon": {
+                                                width: '2.2rem'
+                                            },
+                                            marginLeft: -1
+                                        }}
+                                        onChange={(e, value) => {
+                                            setEnableProtected(true);
+                                            setStars(value)
+                                        }}
+                                    />
+                                </Protected>
                             </div>
 
                             <div>
-                                ({data[9] ? t("reader.storyInfoPage.storyInfoSection.rating.status.evaluated", { value: ratingData?.stars || data[9].stars }) : t("reader.storyInfoPage.storyInfoSection.rating.status.notEvaluated")})
+                                ({ratingData?.stars ? t("reader.storyInfoPage.storyInfoSection.rating.status.evaluated", { value: ratingData.stars }) : t("reader.storyInfoPage.storyInfoSection.rating.status.notEvaluated")})
                             </div>
                         </div>
 
@@ -494,27 +496,33 @@ function StoryInfoSection() {
                                 {t("reader.storyInfoPage.storyInfoSection.btn.readFromBeginning")}
                             </IconButton>
 
-                            <IconButton
-                                icon={isFollow ? ((<i className="fa-solid fa-heart text-[1.4rem]"></i>)) : (<i className="fa-regular fa-heart text-[1.4rem]"></i>)}
-                                bgColor="#ff3860"
-                                width={130}
-                                height={42}
-                                borderRadius="4px"
-                                color="var(--white)"
-                                onClick={() => {
-                                    if (isFollow) {
-                                        setReUnfollow({
-                                            value: true
-                                        })
-                                    } else {
-                                        setReCreateFollow({
-                                            value: true
-                                        })
-                                    }
-                                }}
+                            <Protected
+                                role={Role.READER}
+                                enable={isEnableProtected}
                             >
-                                {isFollow ? t("reader.storyInfoPage.storyInfoSection.btn.unfollow") : t("reader.storyInfoPage.storyInfoSection.btn.follow")}
-                            </IconButton>
+                                <IconButton
+                                    icon={isFollow ? ((<i className="fa-solid fa-heart text-[1.4rem]"></i>)) : (<i className="fa-regular fa-heart text-[1.4rem]"></i>)}
+                                    bgColor="#ff3860"
+                                    width={130}
+                                    height={42}
+                                    borderRadius="4px"
+                                    color="var(--white)"
+                                    onClick={() => {
+                                        setEnableProtected(true);
+                                        if (isFollow) {
+                                            setReUnfollow({
+                                                value: true
+                                            })
+                                        } else {
+                                            setReCreateFollow({
+                                                value: true
+                                            })
+                                        }
+                                    }}
+                                >
+                                    {isFollow ? t("reader.storyInfoPage.storyInfoSection.btn.unfollow") : t("reader.storyInfoPage.storyInfoSection.btn.follow")}
+                                </IconButton>
+                            </Protected>
                         </div>
                     </div>
                 </div>
