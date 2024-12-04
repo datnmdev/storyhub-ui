@@ -54,9 +54,11 @@ function DepositePopup({
                                 type: ToastType.SUCCESS,
                                 title: t("notification.paymentSuccess")
                             }))
-                            setReGetBalance({
-                                value: true
-                            })
+                            if (setReGetBalance) {
+                                setReGetBalance({
+                                    value: true
+                                })
+                            }
                             clearInterval(intervalId);
                             break;
 

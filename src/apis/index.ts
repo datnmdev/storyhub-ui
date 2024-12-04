@@ -13,6 +13,8 @@ import chapterImageApi from "./chapterImage";
 import followApi from "./follow"
 import ratingApi from "./rating"
 import viewApi from "./view"
+import authorApi from "./author";
+import invoiceApi from "./invoice";
 
 const apis = {
     authApi,
@@ -30,6 +32,8 @@ const apis = {
     followApi,
     ratingApi,
     viewApi,
+    authorApi,
+    invoiceApi
 };
 
 export default apis;

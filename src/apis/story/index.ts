@@ -21,6 +21,11 @@ const storyApi = {
         return axiosInstance().get("/story/all/filter", {
             params: options.queries
         })
+    },
+    getGenres: (options: RequestInit) => {
+        return axiosInstance().get("/story/all/get-genres", {
+            params: options.queries
+        })
     }
 };
 

@@ -16,6 +16,7 @@ import useFetchAll from "@hooks/fetchAll.hook";
 import apis from "@apis/index";
 import NumberUtils from "@utilities/number.util";
 import { Chapter } from "@apis/chapter";
+import paths from "@routers/router.path";
 
 function StoryItem({
     data
@@ -69,7 +70,12 @@ function StoryItem({
                 queries: {
                     storyId: data.id,
                     page: 1,
-                    limit: 3
+                    limit: 3,
+                    orderBy: JSON.stringify([
+                        ["order", "DESC"],
+                        ["updated_at", "DESC"],
+                        ["id", "DESC"]
+                    ])
                 }
             }
         ]
@@ -92,7 +98,8 @@ function StoryItem({
                 <div>
                     <Link
                         className="block h-[270px] overflow-hidden"
-                        to="#"
+                        to={paths.readerStoryInfoPage(String(data.id))}
+                        state={data}
                     >
                         <img
                             className="w-full h-full object-cover object-center transition-transform duration-300 ease-in hover:scale-150"
@@ -153,7 +160,8 @@ function StoryItem({
                 <div>
                     <Link
                         className="hover:text-[var(--primary)]"
-                        to="#"
+                        to={paths.readerStoryInfoPage(String(data.id))}
+                        state={data}
                     >
                         <h3 className="text-[1.2rem] font-[450] line-clamp-1">{data.title}</h3>
                     </Link>
@@ -162,13 +170,13 @@ function StoryItem({
                 <div className="flex items-center">
                     <div className="flex items-center leading-4">
                         <div className="bg-[var(--primary)] text-[var(--white)] px-2 py-1 rounded-[12px] text-[0.9rem] font-semibold">
-                            {responsesData[4].ratingCount === 0 ? (0).toFixed(1) : (responsesData[4].starCount / (responsesData[4].ratingCount * 5)).toFixed(1)}
+                            {responsesData[4].ratingCount === 0 ? (0).toFixed(1) : (responsesData[4].starCount / responsesData[4].ratingCount).toFixed(1)}
                         </div>
 
                         <div className="flex items-center">
                             <Rating
                                 defaultValue={0}
-                                value={NumberUtils.roundToDecimal(responsesData[4].ratingCount === 0 ? 0 : ((responsesData[4].starCount / (responsesData[4].ratingCount * 5)) * 5), 1)}
+                                value={NumberUtils.roundToDecimal(responsesData[4].ratingCount === 0 ? 0 : (responsesData[4].starCount / responsesData[4].ratingCount), 1)}
                                 precision={0.1}
                                 icon={(<StarRounded fontSize="inherit" />)}
                                 emptyIcon={(

@@ -15,6 +15,7 @@ import apis from "@apis/index";
 import UrlUtils from "@utilities/url.util";
 import { StoryType } from "@constants/story.constants";
 import NumberUtils from "@utilities/number.util";
+import paths from "@routers/router.path";
 
 function BeautySlide({
     data
@@ -107,7 +108,8 @@ function BeautySlide({
                         <div>
                             <Link
                                 className="hover:text-[var(--primary)]"
-                                to="#"
+                                to={paths.readerStoryInfoPage(String(data.id))}
+                                state={data}
                             >
                                 <h3 className="font-semibold text-[1.2rem] line-clamp-2">
                                     {data.title}
@@ -126,13 +128,13 @@ function BeautySlide({
                         <div className="flex justify-between items-center">
                             <div className="flex items-center leading-7">
                                 <div className="bg-[var(--primary)] text-[var(--white)] px-4 py-1 rounded-[4px] font-semibold">
-                                    {responsesData[4].ratingCount === 0 ? (0).toFixed(1) : (responsesData[4].starCount / (responsesData[4].ratingCount * 5)).toFixed(1)}
+                                    {responsesData[4].ratingCount === 0 ? (0).toFixed(1) : (responsesData[4].starCount / responsesData[4].ratingCount).toFixed(1)}
                                 </div>
 
                                 <div className="flex items-center">
                                     <Rating
                                         defaultValue={0}
-                                        value={NumberUtils.roundToDecimal(responsesData[4].ratingCount === 0 ? 0 : ((responsesData[4].starCount / (responsesData[4].ratingCount * 5)) * 5), 1)}
+                                        value={NumberUtils.roundToDecimal(responsesData[4].ratingCount === 0 ? 0 : (responsesData[4].starCount / responsesData[4].ratingCount), 1)}
                                         precision={0.1}
                                         icon={(<StarRounded fontSize="inherit" />)}
                                         emptyIcon={(
