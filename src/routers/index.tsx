@@ -24,6 +24,7 @@ import AuthorWallet from "@pages/Author/AuthorWallet";
 import AuthorProfile from "@pages/Author/AuthorProfile";
 import ReaderStoryInfoPage from "@pages/ReaderStoryInfoPage";
 import ReaderChapterContentPage from "@pages/ReaderChapterContentPage";
+import ReaderInvoiceHistoryPage from "@pages/ReaderInvoiceHistoryPage";
 
 const router = createBrowserRouter([
     {
@@ -118,6 +119,16 @@ const router = createBrowserRouter([
                     <Protected role={Role.READER}>
                         <ReaderLayout>
                             <ReaderDepositeTransHistoryPage />
+                        </ReaderLayout>
+                    </Protected>
+                ),
+            },
+            {
+                path: paths.readerInvoiceHistoryPage(),
+                element: (
+                    <Protected role={Role.READER}>
+                        <ReaderLayout>
+                            <ReaderInvoiceHistoryPage />
                         </ReaderLayout>
                     </Protected>
                 ),
