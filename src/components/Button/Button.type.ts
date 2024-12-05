@@ -7,5 +7,6 @@ export interface ButtonProps extends PropsWithChildren {
     bgColor?: string,
     borderRadius?: string,
     padding?: string,
-    onClick?: MouseEventHandler<HTMLDivElement>
+    onClick?: MouseEventHandler<HTMLDivElement>,
+    disabled?: boolean
 }

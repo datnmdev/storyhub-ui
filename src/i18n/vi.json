@@ -237,8 +237,8 @@
                     "viewCount": "Lượt xem",
                     "status": {
                         "label": "Trạng thái",
-                        "paid": "Đã thanh toán",
-                        "unpaid": "Chưa thanh toán"
+                        "paid": "Đã mở khoá",
+                        "unpaid": "Cần mở khoá"
                     }
                 },
                 "paymentRemindPopup": {
@@ -256,6 +256,22 @@
 
                 }
             }
+        },
+        "chapterContentPage": {
+            "btn": {
+                "chapterPrevious": "Chương trước",
+                "chapterNext": "Chương sau"
+            },
+            "loadingWrapper": {
+                "message": "Đang tải dữ liệu vui lòng đợi"
+            },
+            "blockedContent": {
+                "content": "Bạn chưa mở khoá chương này. Vui lòng mở khoá để tiếp tục...",
+                "btn": {
+                    "unlock": "Mở khoá chương"
+                }
+            },
+            "page": "Trang"
         }
     },
     "validation": {

@@ -70,7 +70,10 @@ function BeautySlide({
                 queries: {
                     storyId: data.id,
                     page: 1,
-                    limit: 1
+                    limit: 1,
+                    orderBy: JSON.stringify([
+                        ["order", "DESC"]
+                    ])
                 }
             }
         ]
@@ -163,7 +166,7 @@ function BeautySlide({
                                     height={28}
                                     borderRadius="4px"
                                     bgColor="#48b528"
-                                    onClick={() => navigate("#")}
+                                    onClick={() => navigate(paths.readerChapterContentPage(data.id, responsesData[5][0][0].id))}
                                 >
                                     {t("reader.homePage.topViewSlider.btn.readBtn")}
                                 </Button>

@@ -208,7 +208,7 @@ function StoryItem({
                             <li key={chapter.id}>
                                 <Link
                                     className="w-full flex justify-between items-center space-x-2 py-1 group"
-                                    to="#"
+                                    to={paths.readerChapterContentPage(data.id, chapter.id)}
                                 >
                                     <div className="line-clamp-1 grow font-[400] group-hover:text-[var(--primary)]">
                                         {chapter.name}

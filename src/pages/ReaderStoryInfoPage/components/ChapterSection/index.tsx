@@ -13,6 +13,8 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import PaymentRemindPopup from "./components/PaymentRemindPopup";
 import paths from "@routers/router.path";
+import Protected from "@components/Protected";
+import { Role } from "@constants/auth.constants";
 
 function ChaperSection() {
     const { t } = useTranslation();
@@ -44,6 +46,7 @@ function ChaperSection() {
     const [viewCountApis, setViewCountApi] = useState<ApiFuncArray | null>(null);
     const { data: viewCountsData, isLoading: isGettingViewCounts, setRefetch: setReGetViewCounts } = useFetchAll(viewCountApis as ApiFuncArray, false);
     const [selectedChapter, setSelectChapter] = useState<{ isPaid: boolean, chapter: Chapter } | null>(null);
+    const [isProtected, setProtected] = useState<boolean>(false);
 
     useEffect(() => {
         if (!isGettingCurrentPrice) {
@@ -211,11 +214,16 @@ function ChaperSection() {
 
             {selectedChapter && !selectedChapter.isPaid
                 && (
-                    <PaymentRemindPopup
-                        chapter={selectedChapter.chapter}
-                        price={currentPrice}
-                        onClose={() => setSelectChapter(null)}
-                    />
+                    <Protected 
+                        role={Role.READER}
+                        enable={!isAuthentication}
+                    >
+                        <PaymentRemindPopup
+                            chapter={selectedChapter.chapter}
+                            price={currentPrice}
+                            onClose={() => setSelectChapter(null)}
+                        />
+                    </Protected>
                 )}
         </div>
     )

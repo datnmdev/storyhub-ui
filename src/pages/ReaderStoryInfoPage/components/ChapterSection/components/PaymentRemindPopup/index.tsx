@@ -36,6 +36,7 @@ function PaymentRemindPopup({
                     title: t("reader.storyInfoPage.chapterListSection.paymentRemindPopup.paymentSuccess")
                 }))
                 navigate(paths.readerChapterContentPage(chapter.storyId, chapter.id))
+                window.location.reload();
             } else {
                 if (createInvoiceError?.response?.status === HttpStatus.PAYMENT_REQUIRED) {
                     dispatch(toastFeature.toastAction.add({
