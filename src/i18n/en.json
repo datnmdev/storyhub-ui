@@ -22,7 +22,25 @@
                 "setting": "Settings",
                 "signOut": "Sign Out"
             },
-            "signingOut": "Signing out..."
+            "signingOut": "Signing out...",
+            "searchSection": {
+                "placeholder": "Enter the name of the story you want to search for...",
+                "item": {
+                    "type": {
+                        "label": "Type:",
+                        "comic": "Comic",
+                        "novel": "Novel"
+                    },
+                    "author": "Author:",
+                    "country": "Country",
+                    "status": {
+                        "label": "Status:",
+                        "publishing": "Publishing",
+                        "finished": "Finished"
+                    }
+                },
+                "resultTitle": "Total number of results found:"
+            }
         },
         "footer": {
             "contact": {
