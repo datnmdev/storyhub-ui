@@ -1,6 +1,6 @@
 import { memo, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import WhiteCoinIcon from "@assets/icons/static/white-coin.png";
 import { useAppSelector } from "@hooks/redux.hook";
 import themeFeature from "@features/theme";
@@ -23,9 +23,11 @@ import { ToastType } from "@constants/toast.constants";
 import { RatingSummary } from "@apis/rating";
 import Protected from "@components/Protected";
 import { Role } from "@constants/auth.constants";
+import paths from "@routers/router.path";
 
 function StoryInfoSection() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { t } = useTranslation();
     const { storyId } = useParams();
     const themeValue = useAppSelector(themeFeature.themeSelector.selectValue);
@@ -110,7 +112,21 @@ function StoryInfoSection() {
                     storyId
                 }
             }
-        ]
+        ],
+        [
+            apis.chapterApi.getChapterWithFilter,
+            {
+                queries: {
+                    page: 1,
+                    limit: 1,
+                    storyId,
+                    orderBy: JSON.stringify([
+                        ["order", "ASC"],
+                        ["id", "ASC"]
+                    ])
+                }
+            }
+        ],
     ], false);
     const [stars, setStars] = useState<number | null>(null);
     const [isEnableProtected, setEnableProtected] = useState<boolean>(false);
@@ -492,6 +508,7 @@ function StoryInfoSection() {
                                 height={42}
                                 borderRadius="4px"
                                 color="var(--white)"
+                                onClick={() => navigate(paths.readerChapterContentPage(data[9][0][0].storyId, data[9][0][0].id))}
                             >
                                 {t("reader.storyInfoPage.storyInfoSection.btn.readFromBeginning")}
                             </IconButton>

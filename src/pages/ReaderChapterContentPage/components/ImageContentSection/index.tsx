@@ -53,7 +53,7 @@ function ImageContentSection() {
 
     return (
         <LoadingWrapper
-            isLoading={!isRender}
+            isLoading={isGettingChapterContent}
             message={t("reader.chapterContentPage.loadingWrapper.message")}
         >
             {getChapterContentError
@@ -61,18 +61,23 @@ function ImageContentSection() {
                     <BlockedContent />
                 )
                 : (
-                    <div className="flex flex-col items-center">
-                        {isRender
-                            && (chapterContent?.images.map((image, index) => {
-                                return (
-                                    <img
-                                        key={image.id}
-                                        src={URL.createObjectURL(images?.[index])}
-                                        alt={`${chapterContent.name} - ${t("reader.chapterContentPage.page")} ${image.order}`}
-                                    />
-                                )
-                            }))}
-                    </div>
+                    <LoadingWrapper
+                        isLoading={!isRender}
+                        message={t("reader.chapterContentPage.loadingWrapper.message")}
+                    >
+                        <div className="flex flex-col items-center">
+                            {isRender
+                                && (chapterContent?.images.map((image, index) => {
+                                    return (
+                                        <img
+                                            key={image.id}
+                                            src={URL.createObjectURL(images?.[index])}
+                                            alt={`${chapterContent.name} - ${t("reader.chapterContentPage.page")} ${image.order}`}
+                                        />
+                                    )
+                                }))}
+                        </div>
+                    </LoadingWrapper>
                 )}
         </LoadingWrapper>
     )
