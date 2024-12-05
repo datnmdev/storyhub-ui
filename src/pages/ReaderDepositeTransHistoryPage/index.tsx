@@ -141,7 +141,10 @@ function ReaderDepositeTransHistoryPage() {
                                             }
 
                                             return (
-                                                <tr className="text-center border-b-[1px] border-solid border-[var(--gray)]">
+                                                <tr 
+                                                    key={row.id}
+                                                    className="text-center border-b-[1px] border-solid border-[var(--gray)]"
+                                                >
                                                     <td className="py-2">{row.orderId}</td>
                                                     <td className="py-2">{row.bankCode}</td>
                                                     <td className="py-2">{row.cardType}</td>

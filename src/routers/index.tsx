@@ -125,11 +125,9 @@ const router = createBrowserRouter([
             {
                 path: paths.readerChapterContentPage(),
                 element: (
-                    <Protected role={Role.READER}>
-                        <ReaderLayout>
-                            <ReaderChapterContentPage />
-                        </ReaderLayout>
-                    </Protected>
+                    <ReaderLayout>
+                        <ReaderChapterContentPage />
+                    </ReaderLayout>
                 ),
             },
             {

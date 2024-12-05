@@ -12,6 +12,23 @@ export interface Chapter {
     storyId: number
 }
 
+export interface ChapterImage {
+    id: number
+    order: number
+    path: string
+    chapterId: number
+}
+
+export interface ImageContent {
+    id: number
+    order: number
+    name: string
+    images: ChapterImage[]
+    createdAt: string
+    updatedAt: string
+    storyId: number
+}
+
 export type GetChapterWithFilterResponseData = [Chapter[], number]
 
 const chapterApi = {
@@ -36,6 +53,11 @@ const chapterApi = {
         return axiosInstance().get("/chapter/reader/content", {
             params: options.queries
         })
+    },
+    getImage: (options?: RequestInit) => {
+        return axiosInstance().get(options?.uri as string, {
+            responseType: "blob"
+        });
     }
 }
 
