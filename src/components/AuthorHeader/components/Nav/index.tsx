@@ -8,13 +8,19 @@ const Nav = () => {
 
     return (
         <nav className="flex font-[350]">
-            <div className={classNames(styles.navItem, "px-2 cursor-pointer")} onClick={() => navigate(paths.authorHomePage())}>
+            <div
+                className={classNames(styles.navItem, "px-2 cursor-pointer")}
+                onClick={() => navigate(paths.authorHomePage())}
+            >
                 Truyện
             </div>
-            <div className={classNames(styles.navItem, "px-2 cursor-pointer")} onClick={() => navigate(paths.authorWallet())}>
+            {/* <div className={classNames(styles.navItem, "px-2 cursor-pointer")} onClick={() => navigate(paths.authorWallet())}>
                 Ví
-            </div>
-            <div className={classNames(styles.navItem, "px-2 cursor-pointer")} onClick={() => navigate("/thong-ke")}>
+            </div> */}
+            <div
+                className={classNames(styles.navItem, "px-2 cursor-pointer")}
+                onClick={() => navigate(paths.authorStatistic())}
+            >
                 Thống kê
             </div>
         </nav>

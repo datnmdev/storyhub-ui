@@ -10,7 +10,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { PiListBulletsFill } from "react-icons/pi";
 import AuthorModalCreateAndUpdateChapter from "../AuthorModalCreateAndUpdateChapter";
 import { useLocation } from "react-router-dom";
-import { Chapter, ChapterImage, Story } from "../AllInterface/interface";
+import { Chapter, ChapterImage, Story, Alias } from "../AllInterface/interface";
 import useFetch from "@hooks/fetch.hook";
 import apis from "@apis/index";
 import { StoryStatus, StoryStatusLabels, StoryType, StoryTypeLabels } from "../AllEnum/enum";
@@ -18,6 +18,7 @@ import ModalDeleteChapter from "./ModalDeleteChapter";
 import paths from "@routers/router.path";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import moment from "moment";
 const AuthorStoryDetail = () => {
     const location = useLocation();
     const take = 12;
@@ -150,7 +151,9 @@ const AuthorStoryDetail = () => {
                 <div className={styles.mainContent}>
                     <div className={styles.leftPanel}>
                         <img
-                            src={`https://s3bucket2024aws.s3.ap-southeast-1.amazonaws.com/${storyDetail?.coverImage}`}
+                            src={`${import.meta.env.VITE_SERVER_HOST}${import.meta.env.VITE_BASE_URI}${
+                                storyDetail?.coverImage
+                            }`}
                             alt={storyDetail?.title}
                             className={styles.storyCover}
                         />
@@ -158,14 +161,31 @@ const AuthorStoryDetail = () => {
                     <div className={styles.rightPanel}>
                         <span style={{ fontSize: "20px", fontWeight: "bold" }}>{storyDetail?.title}</span>
                         <ul className={styles.storyInfo}>
-                            <li>Giá: {storyDetail?.prices?.[storyDetail?.prices?.length - 1]?.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} đ/chương</li>
-                            <li>Quốc gia: {storyDetail?.country.name}</li>
+                            <li>
+                                Tên khác:
+                                {storyDetail?.aliases &&
+                                    storyDetail?.aliases?.map((alias: Alias) => alias.name).join(", ")}
+                            </li>
+                            <li>
+                                Giá:{" "}
+                                {storyDetail?.prices?.[storyDetail?.prices?.length - 1]?.amount
+                                    .toString()
+                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}{" "}
+                                đ/chương
+                            </li>
+                            <li>Quốc gia: {storyDetail?.country?.name}</li>
                             <li>Loại truyện: {StoryTypeLabels[storyDetail?.type as StoryType]}</li>
                             <li>Trạng thái: {StoryStatusLabels[storyDetail?.status as StoryStatus]}</li>
-                            <li>Lượt thích: </li>
-                            <li>Lượt theo dõi: </li>
-                            <li>Lượt xem: </li>
-                            <li>Đánh giá: lượt</li>
+                            <li>
+                                Lượt thích:{" "}
+                                {storyDetail?.chapters?.reduce((acc, chapter) => acc + chapter.views.length, 0)}
+                            </li>
+                            <li>Lượt theo dõi: {storyDetail?.followDetails.length}</li>
+                            <li>
+                                Lượt xem:{" "}
+                                {storyDetail?.chapters?.reduce((acc, chapter) => acc + chapter.views.length, 0)}
+                            </li>
+                            <li>Đánh giá: {storyDetail?.ratingDetails.length} lượt</li>
                         </ul>
 
                         <div className={styles.actionSpan}>
@@ -234,8 +254,8 @@ const AuthorStoryDetail = () => {
                                     <td>{chapter?.node?.order}</td>
                                     <td>{chapter?.node?.name}</td>
                                     <td>{StoryStatusLabels[chapter?.node?.status as StoryStatus]}</td>
-                                    <td>{chapter?.node?.createdAt}</td>
-                                    <td>{chapter?.node?.updatedAt}</td>
+                                    <td>{moment(chapter?.node?.createdAt).format("DD/MM/YYYY HH:mm:ss")}</td>
+                                    <td>{moment(chapter?.node?.updatedAt).format("DD/MM/YYYY HH:mm:ss")}</td>
                                     <td className={styles.actionIcons}>
                                         <MdEdit
                                             className={styles.editIcon}

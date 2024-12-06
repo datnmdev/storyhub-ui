@@ -6,6 +6,7 @@ export interface Token {
 }
 
 export interface User {
+    id: number
     name: string
     dob: Date | null
     gender: Gender | null

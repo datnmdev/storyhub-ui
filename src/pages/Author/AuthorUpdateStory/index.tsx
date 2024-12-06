@@ -10,7 +10,8 @@ import authFeature from "@features/auth";
 import { Country, Genre, Story } from "../AllInterface/interface";
 import { useLocation, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { connectToSocket } from "../Socket/socket";
+import TextEditor from "@components/TextEditorforAuthor";
+//import { connectToSocket } from "../Socket/socket";
 import paths from "@routers/router.path";
 const AuthorUpdateStory = () => {
     const uuid = uuidv4();
@@ -38,7 +39,7 @@ const AuthorUpdateStory = () => {
     const { data: genreList } = useFetch<Genre[]>(apis.genreApi.getGenreList);
     const { story } = location.state as { story: Story };
     const profile = useAppSelector(authFeature.authSelector.selectUser);
-    const { sendModerationRequest } = connectToSocket(profile?.id ?? 3);
+    //const { sendModerationRequest } = connectToSocket(profile?.id);
     useEffect(() => {
         if (story) {
             setTitle(story.title);
@@ -58,8 +59,8 @@ const AuthorUpdateStory = () => {
             );
             setStartTime(story?.prices?.[story?.prices?.length - 1]?.startTime ?? "");
             setPreviewImgURL(
-                story?.coverImage.startsWith("story")
-                    ? `https://s3bucket2024aws.s3.ap-southeast-1.amazonaws.com/${story.coverImage}`
+                story?.coverImage.startsWith("/url-resolver")
+                    ? `${import.meta.env.VITE_SERVER_HOST}${import.meta.env.VITE_BASE_URI}${story.coverImage}`
                     : story.coverImage
             );
         }
@@ -93,20 +94,20 @@ const AuthorUpdateStory = () => {
         {
             body: {
                 id: story?.id,
-                coverImage: `story/${story?.id}/${fileName}`,
                 title,
-                description,
-                note: notes,
+                description: description ? description.replace(/<p>/g, "").replace(/<\/p>/g, "") : "",
+                note: notes ? notes.replace(/<p>/g, "").replace(/<\/p>/g, "") : "",
                 type,
-                status: status === 1 ? 1 : 0,
+                status: status,
                 countryId,
-                authorId: profile?.id ?? 3,
+                authorId: profile?.id,
                 ...(story.genres.length !== genreResult.length
                     ? {
                           genres: genreResult,
                       }
                     : {}),
-                ...(aliasTitle !== story.aliases
+                ...(aliasTitle !==
+                (Array.isArray(story.aliases) ? story.aliases.map((alias) => alias.name).join(", ") : story.aliases)
                     ? {
                           alias: aliasTitle,
                       }
@@ -143,10 +144,6 @@ const AuthorUpdateStory = () => {
         }
         if (!description) {
             toast.error("Vui lòng nhập mô tả.");
-            return false;
-        }
-        if (!notes) {
-            toast.error("Vui lòng nhập ghi chú.");
             return false;
         }
         if (!countryId) {
@@ -221,7 +218,11 @@ const AuthorUpdateStory = () => {
     useEffect(() => {
         if (updateStory) {
             file && setUploadUrlRefetch({ value: true });
-            status === 1 && sendModerationRequest(story?.id ?? 0, profile?.id ?? 3);
+            if (!file) {
+                navigate(paths.authorStoryDetail(story?.id.toString() ?? ""), { state: story?.id });
+                toast.success("Cập nhật truyện thành công.");
+            }
+            //status === 1 && sendModerationRequest(story?.id ?? 0, profile?.id);
         }
     }, [updateStory, updateStoryError]);
     return (
@@ -254,11 +255,23 @@ const AuthorUpdateStory = () => {
                     </label>
                     <label>
                         <span>Tóm tắt nội dung:</span>
-                        <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+                        <TextEditor
+                            value={description}
+                            height={240}
+                            placeholder="Nhập tóm tắt nội dung"
+                            disabled={false}
+                            onChange={(value) => setDescription(value)}
+                        />
                     </label>
                     <label>
                         <span>Ghi chú:</span>
-                        <textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
+                        <TextEditor
+                            value={notes}
+                            height={240}
+                            placeholder="Nhập ghi chú"
+                            disabled={false}
+                            onChange={(value) => setNotes(value)}
+                        />
                     </label>
                     <label>
                         <span>Quốc gia:</span>
@@ -273,8 +286,11 @@ const AuthorUpdateStory = () => {
                     <label>
                         <span>Trạng thái:</span>
                         <select value={status} onChange={(e) => setStatus(Number(e.target.value))}>
-                            <option value="0">Chưa phát hành</option>
-                            <option value="1">Yêu cầu phát hành</option>
+                            {status === 0 && <option value="0">Chưa phát hành</option>}
+                            {status === 1 && <option value="1">Yêu cầu phát hành</option>}
+                            {status === 2 && <option value="2">Đang phát hành</option>}
+                            {status !== 1 && <option value="5">Hoàn thành</option>}
+                            {status === 0 && <option value="6">Xóa</option>}
                         </select>
                     </label>
                     <label>

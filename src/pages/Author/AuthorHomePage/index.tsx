@@ -20,14 +20,18 @@ const AuthorHomePage = () => {
     const [totalPage, setTotalPage] = useState<number>(1);
     const [mangaItems, setMangaItems] = useState<any[]>([]);
     const profile = useAppSelector(authFeature.authSelector.selectUser);
-
-    const refetch = () => {
+    const handleRefetch = () => {
         setSearch("");
         setStatusFilter(undefined);
         setCurrentPage(1);
         setTypeFilter(undefined);
         setRefetch({ value: true });
     };
+
+    useEffect(() => {
+        setRefetch({ value: true });
+    }, [profile]);
+
     const getValues = (currentPage: number) => {
         return {
             take: take,
@@ -35,7 +39,7 @@ const AuthorHomePage = () => {
             status: statusFilter,
             type: typeFilter,
             keyword: search,
-            authorId: profile?.id ?? 3,
+            authorId: profile?.id,
         };
     };
     const { data, isLoading, error, setRefetch } = useFetch(apis.storyApi.getAllStoriesByAuthor, {
@@ -69,7 +73,6 @@ const AuthorHomePage = () => {
             setRefetch({ value: true });
         }
     };
-    console.log("mangaItems", mangaItems);
     return (
         <>
             <div className={styles.mangaListContainer}>
@@ -78,7 +81,7 @@ const AuthorHomePage = () => {
                         <button className="btn btn-primary" onClick={() => navigate(paths.authorCreateStory())}>
                             Thêm mới
                         </button>
-                        <button className="btn btn-secondary" onClick={refetch}>
+                        <button className="btn btn-secondary" onClick={handleRefetch}>
                             Làm mới
                         </button>
                     </div>
@@ -116,37 +119,41 @@ const AuthorHomePage = () => {
                     </div>
                 </div>
                 <div className={styles.mangaItemsGrid}>
-                    {mangaItems.map((manga, index) => (
-                        <div
-                            key={`manga-${index}`}
-                            className={styles.mangaItem}
-                            onClick={() =>
-                                navigate(paths.authorStoryDetail(manga?.node?.id), { state: manga?.node?.id })
-                            }
-                        >
-                            <img
-                                src={`https://s3bucket2024aws.s3.ap-southeast-1.amazonaws.com/${manga?.node?.coverImage}`}
-                                alt={manga?.node?.title}
-                                className={styles.mangaImage}
-                            />
-                            <div className={styles.mangaInfo}>
-                                <h5>
-                                    {manga?.node?.title.length > 19
-                                        ? `${manga?.node?.title.substring(0, 19)}...`
-                                        : manga?.node?.title}
-                                </h5>
-                                <span className={styles.mangaPrice}>
-                                    {manga?.node?.prices && manga?.node?.prices.length > 0
-                                        ? manga?.node?.prices[manga?.node?.prices.length - 1]?.amount
-                                        : 0}
-                                    ₫
-                                </span>
-                                <span className={styles.mangaStatus}>
-                                    {StoryStatusLabels[manga?.node?.status as StoryStatus]}
-                                </span>
+                    {mangaItems &&
+                        mangaItems.length > 0 &&
+                        mangaItems.map((manga, index) => (
+                            <div
+                                key={`manga-${index}`}
+                                className={styles.mangaItem}
+                                onClick={() =>
+                                    navigate(paths.authorStoryDetail(manga?.node?.id), { state: manga?.node?.id })
+                                }
+                            >
+                                <img
+                                    src={`${import.meta.env.VITE_SERVER_HOST}${import.meta.env.VITE_BASE_URI}${
+                                        manga?.node?.coverImage
+                                    }`}
+                                    alt={manga?.node?.title}
+                                    className={styles.mangaImage}
+                                />
+                                <div className={styles.mangaInfo}>
+                                    <h5>
+                                        {manga?.node?.title.length > 19
+                                            ? `${manga?.node?.title.substring(0, 19)}...`
+                                            : manga?.node?.title}
+                                    </h5>
+                                    <span className={styles.mangaPrice}>
+                                        {manga?.node?.prices && manga?.node?.prices.length > 0
+                                            ? manga?.node?.prices[manga?.node?.prices.length - 1]?.amount
+                                            : 0}
+                                        ₫
+                                    </span>
+                                    <span className={styles.mangaStatus}>
+                                        {StoryStatusLabels[manga?.node?.status as StoryStatus]}
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
                 </div>
             </div>
             <div className={styles.storyPagination}>

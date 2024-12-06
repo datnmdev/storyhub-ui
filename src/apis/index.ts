@@ -16,6 +16,8 @@ import viewApi from "./view"
 import authorApi from "./author";
 import invoiceApi from "./invoice";
 
+import notificationUserApi from "./notificationUser";
+import statisticApi from "./statistic";
 const apis = {
     authApi,
     userApi,
@@ -33,7 +35,9 @@ const apis = {
     ratingApi,
     viewApi,
     authorApi,
-    invoiceApi
+    invoiceApi,
+    notificationUserApi,
+    statisticApi,
 };
 
 export default apis;

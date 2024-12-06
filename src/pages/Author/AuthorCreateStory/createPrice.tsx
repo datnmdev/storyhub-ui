@@ -1,9 +1,8 @@
-
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import { toast } from "react-toastify";
-import { Modal, Button, Form} from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 interface AuthorModalCreatePriceProps {
     isOpen: boolean;
@@ -27,7 +26,7 @@ const AuthorCreatePrice = ({
 
     if (!isOpen) return null;
     const checkValid = () => {
-        if (!amount ) {
+        if (!amount) {
             toast.error("Vui lòng điền giá.");
             return false;
         }

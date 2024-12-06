@@ -121,38 +121,43 @@ const ModalChapterImageDetail: React.FC<ModalChapterImageDetailProps> = ({
     }, [updateOrderImage, updateOrderImageError]);
 
     const handleOnchangeImg = async (event: any) => {
-        let data = event.target.files;
-        let file = data[0];
-        if (file && chapter && chapter.storyId) {
-            let objectUrl = window.URL.createObjectURL(file);
-            const uniqueFileName = `${uuidv4()}.${file.type.split("/")[1]}`;
+        const files = event.target.files;
+        if (files && chapter && chapter.storyId) {
+            let order = imageList.length === 0 ? 0 : Math.max(...imageList.map((image) => image.order)) + 1;
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                let objectUrl = window.URL.createObjectURL(file);
+                const uniqueFileName = `${uuidv4()}.${file.type.split("/")[1]}`;
 
-            const newImage = {
-                id: imageList.length === 0 ? 1 : Math.max(...imageList.map((image) => image.id)) + 1,
-                chapterId: chapter.id,
-                path: objectUrl,
-                order: imageList.length === 0 ? 0 : Math.max(...imageList.map((image) => image.order)) + 1,
-            };
-            setImageOldList((prev) => [...prev, newImage]);
+                const newImage = {
+                    id: imageList.length === 0 ? 1 : Math.max(...imageList.map((image) => image.id)) + 1,
+                    chapterId: chapter.id,
+                    path: objectUrl,
+                    order: order,
+                };
+                setImageOldList((prev) => [...prev, newImage]);
 
-            imageNewList.push({
-                order: imageList.length === 0 ? 0 : Math.max(...imageList.map((image) => image.order)) + 1,
-                path: `story/${chapter.storyId}/chapter/${chapter.id}/${uniqueFileName}`,
-                chapterId: chapter.id,
-            });
+                imageNewList.push({
+                    order: order,
+                    path: `@internal:aws-s3:story/${chapter.storyId}/chapter/${chapter.id}/${uniqueFileName}`,
+                    chapterId: chapter.id,
+                });
 
-            const dataForFileUpload = {
-                storyId: chapter.storyId,
-                chapterId: chapter.id,
-                fileName: uniqueFileName,
-            };
-            setDataForFileUploads([...dataForFileUploads, dataForFileUpload]);
+                const dataForFileUpload = {
+                    storyId: chapter.storyId,
+                    chapterId: chapter.id,
+                    fileName: uniqueFileName,
+                };
+                setDataForFileUploads((prev) => [...prev, dataForFileUpload]);
 
-            const dataFile = {
-                file: file,
-                fileType: file.type.split("/")[1],
-            };
-            setFileList([...fileList, dataFile]);
+                const dataFile = {
+                    file: file,
+                    fileType: file.type.split("/")[1],
+                };
+                setFileList((prev) => [...prev, dataFile]);
+
+                order++;
+            }
         } else {
             toast.error("Vui lòng chọn file");
             console.log("chapter", chapter);
@@ -253,7 +258,7 @@ const ModalChapterImageDetail: React.FC<ModalChapterImageDetailProps> = ({
                     </button>
                 </header>
                 <footer className={styles.modalFooter}>
-                    <input id="previewImg" type="file" hidden onChange={(event) => handleOnchangeImg(event)} />
+                    <input id="previewImg" type="file" hidden multiple onChange={(event) => handleOnchangeImg(event)} />
                     <button className="btn btn-primary" onClick={() => document.getElementById("previewImg")?.click()}>
                         Thêm ảnh
                     </button>
@@ -275,8 +280,10 @@ const ModalChapterImageDetail: React.FC<ModalChapterImageDetailProps> = ({
                                 >
                                     <img
                                         src={
-                                            image.path.startsWith("story")
-                                                ? `https://s3bucket2024aws.s3.ap-southeast-1.amazonaws.com/${image.path}`
+                                            image.path.startsWith("/url-resolver")
+                                                ? `${import.meta.env.VITE_SERVER_HOST}${import.meta.env.VITE_BASE_URI}${
+                                                      image.path
+                                                  }`
                                                 : image.path
                                         }
                                         alt={`Page ${image.id}`}
@@ -319,8 +326,10 @@ const ModalChapterImageDetail: React.FC<ModalChapterImageDetailProps> = ({
                             {selectedImage && selectedImage.path ? (
                                 <img
                                     src={
-                                        selectedImage.path.startsWith("story")
-                                            ? `https://s3bucket2024aws.s3.ap-southeast-1.amazonaws.com/${selectedImage.path}`
+                                        selectedImage.path.startsWith("/url-resolver")
+                                            ? `${import.meta.env.VITE_SERVER_HOST}${import.meta.env.VITE_BASE_URI}${
+                                                  selectedImage.path
+                                              }`
                                             : selectedImage.path
                                     }
                                     alt={`Selected Page ${selectedImage.order}`}

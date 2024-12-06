@@ -28,6 +28,9 @@ import ReaderChapterContentPage from "@pages/ReaderChapterContentPage";
 import ReaderInvoiceHistoryPage from "@pages/ReaderInvoiceHistoryPage";
 import ReaderStoryFilterPage from "@pages/ReaderStoryFilterPage";
 
+import AuthorStatistic from "@pages/Author/AuthorStatistic";
+import ModeratorLayout from "@layouts/ModeratorLayout";
+import ModeratorProfile from "@pages/ModeratorHomePage/ModeratorProfile";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -164,11 +167,11 @@ const router = createBrowserRouter([
             {
                 path: paths.authorHomePage(),
                 element: (
-                    //<Protected role={Role.AUTHOR}>
-                    <AuthorLayout>
-                        <Outlet />
-                    </AuthorLayout>
-                    //</Protected>
+                    <Protected role={Role.AUTHOR}>
+                        <AuthorLayout>
+                            <Outlet />
+                        </AuthorLayout>
+                    </Protected>
                 ),
                 children: [
                     {
@@ -195,17 +198,31 @@ const router = createBrowserRouter([
                         path: paths.authorProfile(),
                         element: <AuthorProfile />,
                     },
+                    {
+                        path: paths.authorStatistic(),
+                        element: <AuthorStatistic />,
+                    },
                 ],
             },
             {
                 path: paths.moderatorHomePage(),
                 element: (
                     <Protected role={Role.MODERATOR}>
-                        <ReaderLayout>
-                            <ModeratorHomePage />
-                        </ReaderLayout>
+                        <ModeratorLayout>
+                            <Outlet />
+                        </ModeratorLayout>
                     </Protected>
                 ),
+                children: [
+                    {
+                        index: true,
+                        element: <ModeratorHomePage />,
+                    },
+                    {
+                        path: paths.moderatorProfile(),
+                        element: <ModeratorProfile />,
+                    },
+                ],
             },
         ],
     },

@@ -1,0 +1,74 @@
+.modalApproveStory {
+    .modal-header {
+        background-color: #f8f9fa;
+    }
+
+    .modal-footer {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .storyDetails {
+        .infoTop {
+            display: flex;
+            gap: 10px;
+            .storyImage {
+                width: 100%;
+                max-width: 150px;
+                margin-bottom: 10px;
+                border-radius: 10px;
+            }
+
+            .approveStoryInfo {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+
+                h5 {
+                    margin: 0;
+                }
+
+                span {
+                    margin-bottom: 5px;
+                }
+            }
+        }
+    }
+    .actionSpanApproveStory {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+
+        .customSpanApproveStory {
+            color: #f8ad6c;
+            border: 1px solid #f8ad6c;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+    }
+    .storyNote {
+        display: flex;
+        flex-direction: column;
+        margin-top: 10px;
+    }
+    .storyDescription {
+        margin-top: 20px;
+    }
+}
+
+.modalRejectStory {
+    .modal-header {
+        background-color: #f8f9fa;
+    }
+
+    .modal-footer {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .textarea {
+        width: 100%;
+        resize: none;
+        margin-top: 10px;
+    }
+}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import styles from "./AuthorCreateStory.module.scss";
 import AuthorCreatePrice from "./createPrice";
 import useFetch from "@hooks/fetch.hook";
@@ -10,7 +10,8 @@ import authFeature from "@features/auth";
 import { Country, Genre, Story } from "../AllInterface/interface";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { connectToSocket } from "../Socket/socket";
+import TextEditor from "@components/TextEditorforAuthor";
+//import WebSocketService from "@components/AuthorHeader/Socket/socket";
 
 const AuthorCreateStory = () => {
     const uuid = uuidv4();
@@ -42,7 +43,12 @@ const AuthorCreateStory = () => {
         }
     }, [countryList, genreList]);
     const profile = useAppSelector(authFeature.authSelector.selectUser);
-    const { sendModerationRequest } = connectToSocket(profile?.id ?? 3);
+    // const webSocketService = useMemo(() => {
+    //     if (profile != undefined && profile != null) {
+    //         return new WebSocketService(profile.id.toString());
+    //     }
+    //     return null;
+    // }, [profile]);
     const {
         data: storyNew,
         setRefetch: setStoryNewRefetch,
@@ -53,13 +59,13 @@ const AuthorCreateStory = () => {
         {
             body: {
                 title,
-                description,
-                note: notes,
-                coverImage: null,
+                description: description ? description.replace(/<p>/g, "").replace(/<\/p>/g, "") : "",
+                note: notes ? notes.replace(/<p>/g, "").replace(/<\/p>/g, "") : "",
+                coverImage: "tem",
                 type,
                 status: status === 1 ? 1 : 0,
                 countryId,
-                authorId: profile?.id ?? 3,
+                authorId: profile?.id,
                 genres: genreResult,
                 alias: aliasTitle,
                 price: {
@@ -81,16 +87,6 @@ const AuthorCreateStory = () => {
             body: {
                 fileName,
                 storyId: storyNew?.id,
-            },
-        },
-        false
-    );
-    const { data: updateStory, setRefetch: setUpdateStoryRefetch } = useFetch(
-        apis.storyApi.updateStory,
-        {
-            body: {
-                id: storyNew?.id,
-                coverImage: `story/${storyNew?.id}/${fileName}`,
             },
         },
         false
@@ -131,10 +127,6 @@ const AuthorCreateStory = () => {
         }
         if (!description) {
             toast.error("Vui lòng nhập mô tả.");
-            return false;
-        }
-        if (!notes) {
-            toast.error("Vui lòng nhập ghi chú.");
             return false;
         }
         if (!countryId) {
@@ -191,7 +183,7 @@ const AuthorCreateStory = () => {
     useEffect(() => {
         const uploadAndUpdateStory = async () => {
             if (uploadUrl) {
-                setUpdateStoryRefetch({ value: true });
+                //setUpdateStoryRefetch({ value: true });
                 await uploadFile(uploadUrl as string);
             } else if (uploadFileError) {
                 toast.error("Upload ảnh truyện thất bại.");
@@ -210,9 +202,9 @@ const AuthorCreateStory = () => {
     useEffect(() => {
         if (storyNew) {
             setUploadUrlRefetch({ value: true });
-            if (status === 1) {
-                sendModerationRequest(storyNew.id, profile?.id ?? 3);
-            }
+            // if (status === 1) {
+            //     webSocketService?.sendModerationRequest(storyNew.id, profile?.id);
+            // }
         }
     }, [storyNew, createStoryError]);
     return (
@@ -245,11 +237,23 @@ const AuthorCreateStory = () => {
                     </label>
                     <label>
                         <span>Tóm tắt nội dung:</span>
-                        <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+                        <TextEditor
+                            value={description}
+                            height={240}
+                            placeholder="Nhập tóm tắt nội dung"
+                            disabled={false}
+                            onChange={(value) => setDescription(value)}
+                        />
                     </label>
                     <label>
                         <span>Ghi chú:</span>
-                        <textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
+                        <TextEditor
+                            value={notes}
+                            height={240}
+                            placeholder="Nhập ghi chú"
+                            disabled={false}
+                            onChange={(value) => setNotes(value)}
+                        />
                     </label>
                     <label>
                         <span>Quốc gia:</span>

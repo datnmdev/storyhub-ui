@@ -14,12 +14,14 @@ const paths = {
     storyFilterPage: () => "/story-filter",
     managerDashboardPage: () => "/manager",
     authorHomePage: () => "/author",
+    authorStatistic: () => "/author/statistic",
     authorCreateStory: () => "/author/create-story",
     authorUpdateStory: (storyId: string) => `/author/update-story/${storyId}`,
     authorStoryDetail: (storyId: string) => `/author/story-detail/${storyId}`,
     authorWallet: () => "/author/wallet",
     authorProfile: () => "/author/profile",
     moderatorHomePage: () => "/moderator",
+    moderatorProfile: () => "/moderator/profile",
 };
 
 export default paths;

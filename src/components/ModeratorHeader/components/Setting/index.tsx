@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from "react";
 import DefaultAvatar from "@assets/avatars/user-default.png";
 import { useNavigate } from "react-router-dom";
-import styles from "./Setting.module.scss"; // Đã thay đổi tên file SCSS
+import styles from "./Setting.module.scss";
 import paths from "@routers/router.path";
 import { TOKEN_KEY } from "@constants/auth.constants";
 import apis from "@apis/index";
@@ -20,7 +20,6 @@ function Setting() {
         isLoading: isSigningOut,
         setRefetch: setSignOut,
     } = useFetch(apis.authApi.signOut, { body: JSON.parse(localStorage.getItem(TOKEN_KEY) as string) }, false);
-
     const toggleDropdown = () => {
         setShowDropdown((prevState) => !prevState); // Toggle trạng thái
     };
@@ -49,7 +48,7 @@ function Setting() {
                 className="inline-block w-[3rem] h-[3rem] object-cover object-center rounded-full"
                 src={
                     profile?.avatar
-                        ? `${import.meta.env.VITE_SERVER_HOST}${import.meta.env.VITE_BASE_URI}${profile.avatar}`
+                        ? `https://s3bucket2024aws.s3.ap-southeast-1.amazonaws.com/${profile.avatar}`
                         : DefaultAvatar
                 }
                 onClick={toggleDropdown} // Toggle trạng thái khi click
@@ -76,7 +75,7 @@ function Setting() {
                     <div
                         className={styles.customDropdownItem}
                         onClick={() => {
-                            navigate(paths.authorProfile());
+                            navigate(paths.moderatorProfile());
                             closeDropdown();
                         }}
                     >

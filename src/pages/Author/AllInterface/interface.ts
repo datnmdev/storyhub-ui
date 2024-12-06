@@ -11,9 +11,53 @@ export interface Story {
     countryId: number;
     country: Country;
     authorId: number;
-    aliases: string;
+    aliases: Alias[];
     genres: Genre[];
     prices: Price[];
+    moderationRequests: ModerationRequest[];
+    author: Author;
+    followDetails: FollowDetails[];
+    ratingDetails: any[];
+    chapters: Chapter[];
+}
+
+export interface FollowDetails {
+    readerId: number;
+    storyId: number;
+    createdAt: string;
+}
+
+export interface Comments {}
+
+export interface RatingDetails {}
+
+export interface ModerationRequest {
+    id: number;
+    reason: string;
+    status: number;
+    type: number;
+    createdAt: string;
+    processAt: string;
+    storyId: number;
+    chapterId: number;
+    requesterId: number;
+    responserId: number;
+}
+
+export interface Author {
+    id: number;
+    user: User;
+}
+
+export interface User {
+    id: number;
+    name: string;
+    dob: string | null;
+    gender: string | null;
+    phone: string | null;
+    avatar: string | null;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface Alias {
@@ -57,6 +101,7 @@ export interface Chapter {
     createdAt: string;
     updatedAt: string;
     storyId: number;
+    views: any[];
 }
 
 export interface AuthorModalCreateAndUpdateChapterProps {
@@ -78,4 +123,22 @@ export interface ModalDeleteChapterProps {
     chapterId: number;
     chapterName: string;
     setRefetchChapterList: (value: any) => void;
+}
+
+export interface NotificationUser {
+    receiverId: number;
+    notificationId: number;
+    status: number;
+    createdAt: string;
+    updatedAt: string;
+    notification: Notification;
+}
+
+export interface Notification {
+    id: number;
+    type: number;
+    createdAt: string;
+    updatedAt: string;
+    moderationRequestId: number;
+    moderationRequest: ModerationRequest;
 }

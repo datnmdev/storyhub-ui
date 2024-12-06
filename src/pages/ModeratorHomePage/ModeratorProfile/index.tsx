@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "./AuthorProfile.module.scss";
+import styles from "./ModeratorProfile.module.scss";
 import DefaultAvatar from "@assets/avatars/user-default.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useAppDispatch, useAppSelector } from "@hooks/redux.hook";
@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Gender } from "@constants/auth.constants";
-const AuthorProfile: React.FC = () => {
+const ModeratorProfile: React.FC = () => {
     const uuid = uuidv4();
     const dispatch = useAppDispatch();
     const [fullName, setFullName] = useState<string | null>(null);
@@ -38,7 +38,7 @@ const AuthorProfile: React.FC = () => {
                 dob: birthDate,
                 gender: gender,
                 phone: phone,
-                avatar: file ? `@internal:aws-s3:user/${profile?.id}/${fileName}` : profile?.avatar,
+                avatar: file ? `user/${profile?.id}/${fileName}` : profile?.avatar,
             },
         },
         false
@@ -68,7 +68,7 @@ const AuthorProfile: React.FC = () => {
             setPhone(profile.phone);
             setPreviewImgURL(
                 profile?.avatar
-                    ? `${import.meta.env.VITE_SERVER_HOST}${import.meta.env.VITE_BASE_URI}${profile.avatar}`
+                    ? `https://s3bucket2024aws.s3.ap-southeast-1.amazonaws.com/${profile.avatar}`
                     : DefaultAvatar
             );
         }
@@ -89,13 +89,6 @@ const AuthorProfile: React.FC = () => {
             throw new Error("Upload ảnh truyện thất bại.");
         }
     };
-
-    useEffect(() => {
-        if (updateProfile) {
-            toast.success("Cập nhật hồ sơ thành công.");
-            dispatch(authFeature.authAction.setUser(updateProfile));
-        }
-    }, [updateProfile]);
 
     useEffect(() => {
         const uploadAndUpdateStory = async () => {
@@ -134,12 +127,16 @@ const AuthorProfile: React.FC = () => {
         if (!handleValidate()) {
             return;
         }
-
         file && setUploadUrlUserRefetch({ value: true });
-
         !file && setUpdateProfileRefetch({ value: true });
     };
 
+    useEffect(() => {
+        if (updateProfile) {
+            dispatch(authFeature.authAction.setUser(updateProfile));
+            toast.success("Cập nhật hồ sơ thành công.");
+        }
+    }, [updateProfile]);
     return (
         <div className={styles.profileContainer}>
             <h1 className={styles.profileTitle}>Hồ sơ cá nhân</h1>
@@ -206,4 +203,4 @@ const AuthorProfile: React.FC = () => {
     );
 };
 
-export default AuthorProfile;
+export default ModeratorProfile;
