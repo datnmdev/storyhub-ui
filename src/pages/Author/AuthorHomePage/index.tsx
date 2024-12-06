@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import styles from "./AuthorHomePage.module.scss";
 import ReactPaginate from "react-paginate";
 import Form from "react-bootstrap/Form";
@@ -10,8 +10,13 @@ import { useAppSelector } from "@hooks/redux.hook";
 import authFeature from "@features/auth";
 import { StoryStatus, StoryStatusLabels } from "../AllEnum/enum";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useDispatch } from "react-redux";
+import { setWebSocketService } from "@store/webSocketSlice";
+import WebSocketService from "@components/AuthorHeader/Socket/socket";
+
 const AuthorHomePage = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [search, setSearch] = useState("");
     const take = 12;
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -20,6 +25,16 @@ const AuthorHomePage = () => {
     const [totalPage, setTotalPage] = useState<number>(1);
     const [mangaItems, setMangaItems] = useState<any[]>([]);
     const profile = useAppSelector(authFeature.authSelector.selectUser);
+
+    useEffect(() => {
+        if (profile) {
+            const webSocketService = new WebSocketService(profile.id.toString());
+            dispatch(setWebSocketService(webSocketService));
+        } else {
+            dispatch(setWebSocketService(null)); // Nếu không có profile, đặt service là null
+        }
+    }, [profile, dispatch]);
+
     const handleRefetch = () => {
         setSearch("");
         setStatusFilter(undefined);

@@ -2,18 +2,13 @@ import { io, Socket } from "socket.io-client";
 
 class WebSocketService {
     private socket: Socket;
-    private isConnected: boolean;
 
     constructor(id: string) {
         this.socket = io(`http://localhost:3000?id=${id}`);
-        this.isConnected = false;
 
         // Lắng nghe sự kiện kết nối thành công
         this.socket.on("connect", () => {
-            if (!this.isConnected) {
-                this.isConnected = true;
-                console.log("Kết nối thành công với WebSocket server");
-            }
+            console.log("Kết nối thành công với WebSocket server");
         });
 
         // Lắng nghe sự kiện kết nối thất bại
@@ -40,34 +35,61 @@ class WebSocketService {
     }
 
     // Kiểm duyệt viên lắng nghe yêu cầu kiểm duyệt
-    public listenNewReviewRequest(callback: (reviewRequest: any) => void): void {
+    public listenNewReviewRequestForModerator(callback: (reviewRequest: any) => void): void {
         this.socket.on("newReviewRequest", (reviewRequest: any) => {
             console.log("New review request received:", reviewRequest);
             callback(reviewRequest); // Gọi callback với dữ liệu nhận được
         });
     }
 
+    // Tác giả lắng nghe yêu cầu kiểm duyệt
+    public listenNewReviewRequestForAuthor(callback: (reviewRequest: any) => void): void {
+        this.socket.on("review_request_created", (reviewRequest: any) => {
+            console.log("review request created received:", reviewRequest);
+            callback(reviewRequest); // Gọi callback với dữ liệu nhận được
+        });
+    }
+
     // Phương thức để xử lý yêu cầu kiểm duyệt
-    public handleModerationRequest(reqId: number, reqStatus: number, storyId: number, storyStatus: number): void {
+    public handleModerationRequest(
+        reqId: number,
+        reqStatus: number,
+        storyId: number,
+        storyStatus: number,
+        reason: string
+    ): void {
+        console.log(reqId, reqStatus, storyId, storyStatus, reason);
         this.socket.emit("handle_moderation_request", {
             reqId: reqId,
             reqStatus: reqStatus,
             storyId: storyId,
             storyStatus: storyStatus,
+            reason: reason ? reason : "",
         });
     }
 
-    // Gửi thông báo tới tác giả khi có sự thay đổi về truyện
-    public sendNotificationToAuthor(storyId: number, reason: string): void {
-        this.socket.emit("story_updated", {
-            storyId: storyId,
-            reason: reason,
+    // Tác giả lắng nghe sự kiện thay đổi về truyện
+    public listenStoryUpdateEventForAuthor(callback: (storyId: number, reason: string) => void): void {
+        this.socket.on("story_handled", (data: { storyId: number; reason: string }) => {
+            console.log("story handled event received:", data);
+            callback(data.storyId, data.reason); // Gọi callback với dữ liệu nhận được
         });
     }
 
-    // Phương thức để gửi yêu cầu
-    public createModerationRequest(data: any): void {
-        this.socket.emit("create_moderation_request", data);
+    // Kiểm duyệt viên lắng nghe sự kiện thay đổi về truyện
+    public listenStoryUpdateEventforModerator(callback: (mess: string) => void): void {
+        this.socket.on("moderation_request_updated", (mess: string) => {
+            console.log("Story update event received:", mess);
+            callback(mess); // Gọi callback với dữ liệu nhận được
+        });
+    }
+
+    // Độc giả lắng nghe sự kiện cập nhật truyện
+    public listenStoryUpdateEventforReader(callback: (mess: string) => void): void {
+        this.socket.on("moderation_request_updated", (mess: string) => {
+            console.log("Story update event received:", mess);
+            callback(mess); // Gọi callback với dữ liệu nhận được
+        });
     }
 }
 

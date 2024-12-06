@@ -6,21 +6,34 @@ import { useAppSelector } from "@hooks/redux.hook";
 import authFeature from "@features/auth";
 import useFetch from "@hooks/fetch.hook";
 import apis from "@apis/index";
-import { NotificationUser } from "@pages/Author/AllInterface/interface";
+import { NotificationUser, Story } from "@pages/Author/AllInterface/interface";
 import moment from "moment";
-//import WebSocketService from "@components/AuthorHeader/Socket/socket";
+import ModalApproveStory from "@pages/ModeratorHomePage/ModalApproveStory";
+import { useSelector } from "react-redux";
+import { AppRootState } from "@store/store.type";
+interface NotificationProps {
+    setRefetch: (value: { value: boolean }) => void; // Định nghĩa kiểu cho prop
+}
 
-function Notification() {
+function Notification({ setRefetch }: NotificationProps) {
     const [showDropdown, setShowDropdown] = useState(false);
     const [countNotificationUnseen, setCountNotificationUnseen] = useState<number | null>(null);
     const [notificationId, setNotificationId] = useState<number | null>(null);
+    const [storyId, setStoryId] = useState<number | null>(null);
+    const [showModalApprove, setShowModalApprove] = useState(false);
+    const webSocketService = useSelector((state: AppRootState) => state.webSocket.service);
     const profile = useAppSelector(authFeature.authSelector.selectUser);
-    // const webSocketService = useMemo(() => {
-    //     if (profile != undefined && profile != null) {
-    //         return new WebSocketService(profile.id.toString());
-    //     }
-    //     return null;
-    // }, [profile]);
+
+    const { data: storyDetail, setRefetch: setRefetchStoryDetail } = useFetch<Story>(
+        apis.storyApi.getStoryDetail,
+        {
+            queries: {
+                id: storyId,
+            },
+        },
+        false
+    );
+
     const { data: notificationData, setRefetch: setRefetchNotification } = useFetch<NotificationUser[]>(
         apis.notificationUserApi.getAllNotificationUser,
         {
@@ -39,24 +52,30 @@ function Notification() {
         false
     );
 
-    // useEffect(() => {
-    //     // Lắng nghe yêu cầu kiểm duyệt
-    //     const handleNewReviewRequest = (reviewRequest: any) => {
-    //         console.log("Yêu cầu kiểm duyệt mới nhận được:", reviewRequest);
-    //         setRefetchNotification({ value: true });
-    //     };
+    useEffect(() => {
+        // Lắng nghe yêu cầu kiểm duyệt
+        const listenEvent = (mess: any) => {
+            console.log("Yêu cầu kiểm duyệt mới nhận được:", mess);
+            setRefetchNotification({ value: true });
+        };
 
-    //     // Gọi hàm để lắng nghe yêu cầu kiểm duyệt
-    //     if (webSocketService) {
-    //         webSocketService.listenNewReviewRequest(handleNewReviewRequest);
-    //     }
+        // Gọi hàm để lắng nghe yêu cầu kiểm duyệt
+        if (webSocketService) {
+            webSocketService.listenNewReviewRequestForModerator(listenEvent);
+        }
 
-    //     // Cleanup listener nếu cần
-    //     return () => {
-    //         // Nếu bạn muốn dọn dẹp, bạn có thể thêm logic để tắt lắng nghe
-    //         // Tuy nhiên, trong trường hợp này, socket.on không cần phải tắt
-    //     };
-    // }, [webSocketService]);
+        // Cleanup listener nếu cần
+        return () => {
+            // Nếu bạn muốn dọn dẹp, bạn có thể thêm logic để tắt lắng nghe
+            // Tuy nhiên, trong trường hợp này, socket.on không cần phải tắt
+        };
+    }, [webSocketService]);
+
+    useEffect(() => {
+        if (profile && storyId != null) {
+            setRefetchStoryDetail({ value: true });
+        }
+    }, [storyId]);
 
     useEffect(() => {
         if (profile) {
@@ -68,7 +87,7 @@ function Notification() {
         if (updatedNotification) {
             setRefetchNotification({ value: true });
         }
-    }, [profile, notificationId, updatedNotification]);
+    }, [profile, notificationId, updatedNotification, storyId]);
 
     useEffect(() => {
         if (notificationData) {
@@ -83,8 +102,10 @@ function Notification() {
         setShowDropdown((prevState) => !prevState); // Toggle trạng thái
     };
 
-    const handleNotificationClick = (id: number) => {
-        setNotificationId(id);
+    const handleNotificationClick = (notificationId: number, storyId: number) => {
+        setNotificationId(notificationId);
+        setStoryId(storyId);
+        setShowModalApprove(true);
         setShowDropdown(false); // Đóng dropdown
     };
     return (
@@ -144,7 +165,12 @@ function Notification() {
                                     className={`${styles.customDropdownItem} ${
                                         item.status === 0 ? "font-bold" : "font-normal"
                                     }`}
-                                    onClick={() => handleNotificationClick(item.notificationId)}
+                                    onClick={() =>
+                                        handleNotificationClick(
+                                            item.notificationId,
+                                            item.notification.moderationRequest.storyId
+                                        )
+                                    }
                                 >
                                     <span className={styles.notificationConnect}>
                                         {item.notification.moderationRequest.reason &&
@@ -160,6 +186,12 @@ function Notification() {
                     </div>
                 )}
             </div>
+            <ModalApproveStory
+                show={showModalApprove}
+                handleClose={() => setShowModalApprove(false)}
+                story={storyDetail ?? ({} as Story)}
+                setRefetch={() => setRefetch({ value: true })}
+            />
         </div>
     );
 }

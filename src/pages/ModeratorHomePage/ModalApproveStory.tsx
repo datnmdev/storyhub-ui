@@ -6,26 +6,43 @@ import { StoryType, StoryTypeLabels } from "@pages/Author/AllEnum/enum";
 import { FaInfoCircle } from "react-icons/fa";
 import TextEditor from "@components/TextEditorforAuthor";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { AppRootState } from "@store/store.type";
 interface ModalApproveStoryProps {
     show: boolean;
     handleClose: () => void;
     story: Story;
-    onApprove: () => void;
     setRefetch: () => void;
 }
 
-const ModalApproveStory: React.FC<ModalApproveStoryProps> = ({ show, handleClose, story, onApprove, setRefetch }) => {
+const ModalApproveStory: React.FC<ModalApproveStoryProps> = ({ show, handleClose, story, setRefetch }) => {
     const [showModalReject, setShowModalReject] = useState(false);
     const [storyTemp, setStoryTemp] = useState<Story>();
     const [reason, setReason] = useState("");
-
+    const webSocketService = useSelector((state: AppRootState) => state.webSocket.service);
     useEffect(() => {
         if (story) {
             setStoryTemp(story);
         }
     }, [story]);
 
-    const handleSave = () => {
+    const handleApprove = () => {
+        const reqId =
+            story != undefined && story?.moderationRequests?.length > 0
+                ? story.moderationRequests[story.moderationRequests.length - 1].id
+                : 0;
+        const reqStatus = 1;
+        const storyId = story?.id ?? 0;
+        const storyStatus = 2;
+
+        if (webSocketService) {
+            webSocketService.handleModerationRequest(reqId, reqStatus, storyId, storyStatus, reason);
+        }
+        toast.success("Phê duyệt truyện thành công");
+        handleClose();
+    };
+
+    const handleReject = () => {
         if (reason === "") {
             toast.error("Vui lòng nhập lý do từ chối duyệt truyện");
             return;
@@ -36,14 +53,35 @@ const ModalApproveStory: React.FC<ModalApproveStoryProps> = ({ show, handleClose
                 : 0;
         const reqStatus = 2;
         const storyId = story?.id ?? 0;
-        const storyStatus = 1;
-        //handleModerationRequest(reqId, reqStatus, storyId, storyStatus);
-        setRefetch();
+        const storyStatus = 0;
+
+        if (webSocketService) {
+            webSocketService.handleModerationRequest(reqId, reqStatus, storyId, storyStatus, reason);
+        }
         toast.success("Truyện đã bị từ chối.");
         setShowModalReject(false);
     };
 
-    const handleReject = () => {
+    useEffect(() => {
+        // Lắng nghe yêu cầu kiểm duyệt
+        const listenEvent = (mess: any) => {
+            console.log("Yêu cầu kiểm duyệt mới nhận được:", mess);
+            setRefetch();
+        };
+
+        // Gọi hàm để lắng nghe yêu cầu kiểm duyệt
+        if (webSocketService) {
+            webSocketService.listenStoryUpdateEventforModerator(listenEvent);
+        }
+
+        // Cleanup listener nếu cần
+        return () => {
+            // Nếu bạn muốn dọn dẹp, bạn có thể thêm logic để tắt lắng nghe
+            // Tuy nhiên, trong trường hợp này, socket.on không cần phải tắt
+        };
+    }, [webSocketService]);
+
+    const handleShowReject = () => {
         setShowModalReject(true);
         handleClose();
     };
@@ -118,12 +156,16 @@ const ModalApproveStory: React.FC<ModalApproveStoryProps> = ({ show, handleClose
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary" onClick={onApprove}>
-                        Phê duyệt
-                    </Button>
-                    <Button variant="danger" onClick={handleReject}>
-                        Từ chối
-                    </Button>
+                    {story && story.status === 1 && (
+                        <>
+                            <Button variant="primary" onClick={handleApprove}>
+                                Phê duyệt
+                            </Button>
+                            <Button variant="danger" onClick={handleShowReject}>
+                                Từ chối
+                            </Button>
+                        </>
+                    )}
                 </Modal.Footer>
             </Modal>
             <Modal
@@ -150,7 +192,7 @@ const ModalApproveStory: React.FC<ModalApproveStoryProps> = ({ show, handleClose
                     </label>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary" onClick={handleSave}>
+                    <Button variant="primary" onClick={handleReject}>
                         Lưu
                     </Button>
                 </Modal.Footer>

@@ -176,10 +176,6 @@ const AuthorStoryDetail = () => {
                             <li>Quốc gia: {storyDetail?.country?.name}</li>
                             <li>Loại truyện: {StoryTypeLabels[storyDetail?.type as StoryType]}</li>
                             <li>Trạng thái: {StoryStatusLabels[storyDetail?.status as StoryStatus]}</li>
-                            <li>
-                                Lượt thích:{" "}
-                                {storyDetail?.chapters?.reduce((acc, chapter) => acc + chapter.views.length, 0)}
-                            </li>
                             <li>Lượt theo dõi: {storyDetail?.followDetails.length}</li>
                             <li>
                                 Lượt xem:{" "}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./ModeratorHomePage.module.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ReactPaginate from "react-paginate";
@@ -11,9 +11,14 @@ import { StoryStatus } from "@pages/Author/AllEnum/enum";
 import { StoryStatusLabels } from "@pages/Author/AllEnum/enum";
 import ModalApproveStory from "./ModalApproveStory";
 import { Story } from "@pages/Author/AllInterface/interface";
-import { toast } from "react-toastify";
-
+import Notification from "@components/ModeratorHeader/components/Notification";
+import { setWebSocketService } from "@store/webSocketSlice";
+import WebSocketService from "@components/AuthorHeader/Socket/socket";
+import authFeature from "@features/auth";
+import { useAppSelector } from "@hooks/redux.hook";
+import { useDispatch } from "react-redux";
 const ModeratorHomePage = () => {
+    const dispatch = useDispatch(); 
     const [search, setSearch] = useState("");
     const take = 12;
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -21,7 +26,15 @@ const ModeratorHomePage = () => {
     const [stories, setStories] = useState<any[]>([]);
     const [showModalApprove, setShowModalApprove] = useState(false);
     const [selectedStory, setSelectedStory] = useState<Story | undefined>(undefined);
-
+    const profile = useAppSelector(authFeature.authSelector.selectUser);
+    useEffect(() => {
+        if (profile) {
+            const webSocketService = new WebSocketService(profile.id.toString());
+            dispatch(setWebSocketService(webSocketService));
+        } else {
+            dispatch(setWebSocketService(null)); // Nếu không có profile, đặt service là null
+        }
+    }, [profile, dispatch]);
     const getValues = (currentPage: number) => {
         return {
             take: take,
@@ -68,20 +81,6 @@ const ModeratorHomePage = () => {
     const handleShowModal = (story: Story) => {
         setSelectedStory(story);
         setShowModalApprove(true);
-    };
-
-    const handleApprove = () => {
-        const reqId =
-            selectedStory != undefined && selectedStory?.moderationRequests?.length > 0
-                ? selectedStory.moderationRequests[selectedStory.moderationRequests.length - 1].id
-                : 0;
-        const reqStatus = 1;
-        const storyId = selectedStory?.id ?? 0;
-        const storyStatus = 2;
-        //handleModerationRequest(reqId, reqStatus, storyId, storyStatus);
-        setRefetch({ value: true });
-        toast.success("Phê duyệt truyện thành công");
-        setShowModalApprove(false);
     };
 
     return (
@@ -166,9 +165,11 @@ const ModeratorHomePage = () => {
                 show={showModalApprove}
                 handleClose={() => setShowModalApprove(false)}
                 story={selectedStory ?? ({} as Story)}
-                onApprove={handleApprove}
                 setRefetch={() => setRefetch({ value: true })}
             />
+            <div style={{ display: "none" }}>
+                <Notification setRefetch={setRefetch} />
+            </div>
         </div>
     );
 };

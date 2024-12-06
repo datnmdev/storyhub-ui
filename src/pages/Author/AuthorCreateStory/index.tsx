@@ -11,8 +11,8 @@ import { Country, Genre, Story } from "../AllInterface/interface";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import TextEditor from "@components/TextEditorforAuthor";
-//import WebSocketService from "@components/AuthorHeader/Socket/socket";
-
+import { useSelector } from "react-redux";
+import { AppRootState } from "@store/store.type";
 const AuthorCreateStory = () => {
     const uuid = uuidv4();
     const navigate = useNavigate();
@@ -43,12 +43,7 @@ const AuthorCreateStory = () => {
         }
     }, [countryList, genreList]);
     const profile = useAppSelector(authFeature.authSelector.selectUser);
-    // const webSocketService = useMemo(() => {
-    //     if (profile != undefined && profile != null) {
-    //         return new WebSocketService(profile.id.toString());
-    //     }
-    //     return null;
-    // }, [profile]);
+    const webSocketService = useSelector((state: AppRootState) => state.webSocket.service);
     const {
         data: storyNew,
         setRefetch: setStoryNewRefetch,
@@ -202,9 +197,9 @@ const AuthorCreateStory = () => {
     useEffect(() => {
         if (storyNew) {
             setUploadUrlRefetch({ value: true });
-            // if (status === 1) {
-            //     webSocketService?.sendModerationRequest(storyNew.id, profile?.id);
-            // }
+            if (status === 1 && webSocketService) {
+                webSocketService?.sendModerationRequest(storyNew.id, profile?.id);
+            }
         }
     }, [storyNew, createStoryError]);
     return (
