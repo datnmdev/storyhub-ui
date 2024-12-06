@@ -10,6 +10,12 @@ import depositeTransactionApi from "./depositeTransaction";
 import storyApi from "./story";
 import chapterApi from "./chapter";
 import chapterImageApi from "./chapterImage";
+import followApi from "./follow"
+import ratingApi from "./rating"
+import viewApi from "./view"
+import authorApi from "./author";
+import invoiceApi from "./invoice";
+
 const apis = {
     authApi,
     userApi,
@@ -23,6 +29,11 @@ const apis = {
     aliasApi,
     chapterApi,
     chapterImageApi,
+    followApi,
+    ratingApi,
+    viewApi,
+    authorApi,
+    invoiceApi
 };
 
 export default apis;

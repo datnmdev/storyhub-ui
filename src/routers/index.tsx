@@ -23,6 +23,10 @@ import AuthorStoryDetail from "@pages/Author/AuthorStoryDetail";
 import AuthorWallet from "@pages/Author/AuthorWallet";
 import AuthorProfile from "@pages/Author/AuthorProfile";
 import AuthorUpdateStory from "@pages/Author/AuthorUpdateStory";
+import ReaderStoryInfoPage from "@pages/ReaderStoryInfoPage";
+import ReaderChapterContentPage from "@pages/ReaderChapterContentPage";
+import ReaderInvoiceHistoryPage from "@pages/ReaderInvoiceHistoryPage";
+import ReaderStoryFilterPage from "@pages/ReaderStoryFilterPage";
 
 const router = createBrowserRouter([
     {
@@ -40,6 +44,14 @@ const router = createBrowserRouter([
                 element: (
                     <ReaderLayout>
                         <ReaderHomePage />
+                    </ReaderLayout>
+                ),
+            },
+            {
+                path: paths.readerStoryInfoPage(),
+                element: (
+                    <ReaderLayout>
+                        <ReaderStoryInfoPage />
                     </ReaderLayout>
                 ),
             },
@@ -111,6 +123,32 @@ const router = createBrowserRouter([
                             <ReaderDepositeTransHistoryPage />
                         </ReaderLayout>
                     </Protected>
+                ),
+            },
+            {
+                path: paths.readerInvoiceHistoryPage(),
+                element: (
+                    <Protected role={Role.READER}>
+                        <ReaderLayout>
+                            <ReaderInvoiceHistoryPage />
+                        </ReaderLayout>
+                    </Protected>
+                ),
+            },
+            {
+                path: paths.readerChapterContentPage(),
+                element: (
+                    <ReaderLayout>
+                        <ReaderChapterContentPage />
+                    </ReaderLayout>
+                ),
+            },
+            {
+                path: paths.storyFilterPage(),
+                element: (
+                    <ReaderLayout>
+                        <ReaderStoryFilterPage />
+                    </ReaderLayout>
                 ),
             },
             {

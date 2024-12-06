@@ -12,7 +12,7 @@ export default function axiosInstance(token?: string) {
   const axiosInstance = axios.create({
     baseURL: `${import.meta.env.VITE_SERVER_HOST}${import.meta.env.VITE_BASE_URI}`,
     headers: {
-      Authorization: `Bearer ${token || tokens?.accessToken}`
+      Authorization: `Bearer ${token || tokens?.accessToken || import.meta.env.VITE_GUEST_TOKEN}`
     }
   })
 

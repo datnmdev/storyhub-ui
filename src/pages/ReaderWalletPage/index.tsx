@@ -70,7 +70,7 @@ function ReaderWalletPage() {
                         <li>
                             <Link
                                 className="px-4 rounded-[4px] hover:text-[var(--primary)] leading-[38px] space-x-2 flex items-center"
-                                to={paths.readerWalletPage()}
+                                to={paths.readerInvoiceHistoryPage()}
                             >
                                 <span className="text-[1.2rem]">
                                     <i className="fa-solid fa-money-bills"></i>

@@ -22,7 +22,25 @@
                 "setting": "Cài đặt",
                 "signOut": "Đăng xuất"
             },
-            "signingOut": "Đang đăng xuất..."
+            "signingOut": "Đang đăng xuất...",
+            "searchSection": {
+                "placeholder": "Nhập tên truyện mà bạn muốn tìm kiếm...",
+                "item": {
+                    "type": {
+                        "label": "Loại:",
+                        "comic": "Truyện tranh",
+                        "novel":"Tiểu thuyết"
+                    },
+                    "author": "Tác giả:",
+                    "country": "Quốc gia",
+                    "status": {
+                        "label": "Tình trạng:",
+                        "publishing": "Đang phát hành",
+                        "finished":"Đã hoàn thành"
+                    }
+                },
+                "resultTitle": "Tổng số kết quả tìm thấy:"
+            }
         },
         "footer": {
             "contact": {
@@ -138,6 +156,194 @@
                     "failed": "Thất bại"
                 }
             }
+        },
+        "invoiceHistoryPage": {
+            "content": {
+                "invoiceNumber": "Số hoá đơn",
+                "chapterId": "Mã chương",
+                "totalAmount": "Tổng tiền",
+                "createdAt": "Thời điểm tạo"
+            }
+        },
+        "homePage": {
+            "topViewSlider": {
+                "title": "Truyện được xem nhiều nhất",
+                "btn": {
+                    "readBtn": "Đọc"
+                },
+                "ortherInfo": {
+                    "priceCount": "{{value}}đ/chương",
+                    "viewCount": "{{value}} lượt xem",
+                    "followerCount": "{{value}} lượt theo dõi"
+                },
+                "storyType": {
+                    "comic": "Truyện tranh",
+                    "novel": "Tiểu thuyết"
+                }
+            },
+            "newUpdatedSection": {
+                "title": "Truyện vừa mới cập nhật",
+                "ortherInfo": {
+                    "priceCount": "{{value}}đ/c",
+                    "viewCount": "{{value}}",
+                    "followerCount": "{{value}}",
+                    "ratingCount": "{{value}}",
+                    "ratingCountText": "{{value}} lượt"
+                },
+                "storyType": {
+                    "comic": "Truyện tranh",
+                    "novel": "Tiểu thuyết"
+                },
+                "timestamps": {
+                    "second": "{{value}} giây trước",
+                    "minute": "{{value}} phút trước",
+                    "hour": "{{value}} giờ trước",
+                    "day": "{{value}} ngày trước",
+                    "week": "{{value}} tuần trước",
+                    "month": "{{value}} tháng trước",
+                    "year": "{{value}} năm trước"
+                }
+            }
+        },
+        "storyInfoPage": {
+            "storyInfoSection": {
+                "storyType": {
+                    "comic": "Truyện tranh",
+                    "novel": "Tiểu thuyết"
+                },
+                "ortherInfo": {
+                    "priceCount": "{{value}}đ/chương"
+                },
+                "alias": {
+                    "label": "Tên khác",
+                    "notData": "Đang cập nhật"
+                },
+                "author": "Tác giả",
+                "status": {
+                    "label": "Tình trạng",
+                    "publishing": "Đang phát hành",
+                    "finished": "Đã hoàn thành"
+                },
+                "followerCount": {
+                    "label": "Lượt theo dõi",
+                    "content": "{{value}}"
+                },
+                "viewCount": {
+                    "label": "Lượt xem",
+                    "content": "{{value}}"
+                },
+                "country": "Quốc gia",
+                "rating": {
+                    "label": "Đánh giá",
+                    "content": "{{value}} lượt",
+                    "status": {
+                        "evaluated": "Bạn đã đánh giá {{value}} sao",
+                        "notEvaluated": "Bạn chưa đánh giá"
+                    }
+                },
+                "btn": {
+                    "readFromBeginning": "Đọc từ đầu",
+                    "follow": "Theo dõi",
+                    "unfollow": "Bỏ theo dõi"
+                },
+                "note": {
+                    "label": "Thông báo từ tác giả",
+                    "notData": "Hiện tác giả chưa có thông báo nào..."
+                },
+                "contentIntroduction": {
+                    "label": "Giới thiệu nội dung",
+                    "notData": "Không có dữ liệu..."
+                }
+            },
+            "chapterListSection": {
+                "title": "Danh sách chương",
+                "header": {
+                    "chapterName": "Tên chương",
+                    "updatedTime": "Thời gian cập nhật",
+                    "viewCount": "Lượt xem",
+                    "status": {
+                        "label": "Trạng thái",
+                        "paid": "Đã mở khoá",
+                        "unpaid": "Cần mở khoá"
+                    }
+                },
+                "paymentRemindPopup": {
+                    "title": "Xác nhận thanh toán chương",
+                    "content": "Bạn sẽ mất <span style='color:red;font-weight:500;'>{{value}}đ</span> để đọc chương này. Bạn có muốn tiếp tục không?",
+                    "btn": {
+                        "ok": "Tiếp tục",
+                        "cancel": "Quay lại"
+                    },
+                    "loadingWrapper": {
+                        "message": "Đang thanh toán. Vui đợi trong giây lát..."
+                    },
+                    "paymentSuccess": "Thanh toán chương thành công. Chúc bạn đọc truyện vui vẻ...",
+                    "paymentFailed": "Bạn không đủ tiền để thanh toán chương này. Vui lòng nạp thêm tiền..."
+
+                }
+            }
+        },
+        "chapterContentPage": {
+            "btn": {
+                "chapterPrevious": "Chương trước",
+                "chapterNext": "Chương sau"
+            },
+            "loadingWrapper": {
+                "message": "Đang tải dữ liệu. Vui lòng đợi trong giây lát..."
+            },
+            "blockedContent": {
+                "content": "Bạn chưa mở khoá chương này. Vui lòng mở khoá để tiếp tục...",
+                "btn": {
+                    "unlock": "Mở khoá chương"
+                }
+            },
+            "page": "Trang"
+        },
+        "storyFilterPage": {
+            "breadcrumb": {
+                "items": {
+                    "homePage": "Trang chủ",
+                    "storyFilterPage": "Tìm truyện"
+                }
+            },
+            "filterFormSection": {
+                "title": "Tìm kiếm nâng cao",
+                "btn": {
+                    "hideBtn": "Ẩn",
+                    "visibleBtn": "Hiện",
+                    "resetBtn": "Làm mới",
+                    "submitBtn": "Tìm kiếm"
+                },
+                "form": {
+                    "all": "Tất cả",
+                    "author": "Tác giả",
+                    "status": {
+                        "label": "Tình trạng",
+                        "publishing": "Đang phát hành",
+                        "finished": "Đã hoàn thành"
+                    },
+                    "country": "Quốc gia",
+                    "type": {
+                        "label": "Loại truyện",
+                        "comic": "Truyện tranh",
+                        "novel": "Tiểu thuyết"
+                    },
+                    "orderBy": {
+                        "label": "Sắp xếp theo",
+                        "datePostedAsscending": "Ngày đăng tăng dần",
+                        "datePostedDescending": "Ngày đăng giảm dần",
+                        "dateUpdatedAsscending": "Ngày cập nhật tăng dần",
+                        "dateUpdatedDescending": "Ngày cập nhật giảm dần"
+                    },
+                    "genre": "Thể loại truyện"
+                }
+            },
+            "resultSection": {
+                "title": "Kết quả tìm kiếm (tổng cộng {{value}} kết quả)",
+                "loading": {
+                    "message": "Đang tìm kiếm thông tin. Vui lòng chờ trong giây lát..."
+                }
+            }
         }
     },
     "validation": {
@@ -179,15 +385,22 @@
         "resetPasswordFailed": "Đã có lỗi xảy ra. Vui lòng thử lại",
         "paymentSuccess": "Thanh toán thành công",
         "paymentFailed": "Thanh toán thất bại",
-        "paymentExpired": "Đã hết thời hạn thanh toán. Vui lòng thử lại"
+        "paymentExpired": "Đã hết thời hạn thanh toán. Vui lòng thử lại",
+        "createRatingSuccess": "Đánh giá truyện thành công",
+        "createRatingFailed": "Đánh giá truyện thất bại. Vui lòng thử lại",
+        "updateRatingSuccess": "Cập nhật đánh giá thành công",
+        "updateRatingFailed": "Cập nhật đánh giá thất bại. Vui lòng thử lại",
+        "followSuccess": "Theo dõi truyện thành công",
+        "unfollowSuccess": "Bỏ theo dõi truyện thành công"
     },
     "pagination": {
         "next": "Sau",
         "previous": "Trước",
         "first": "Đầu",
         "last": "Cuối"
-    }, 
+    },
     "loading": {
-        "getDepositeTransHistory": "Đang lấy lịch sử nạp tiền..."
+        "getDepositeTransHistory": "Đang lấy lịch sử nạp tiền...",
+        "getInvoiceHistory": "Đang lấy lịch sử thanh toán..."
     }
 }

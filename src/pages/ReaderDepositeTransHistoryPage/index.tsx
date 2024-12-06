@@ -41,12 +41,6 @@ function ReaderDepositeTransHistoryPage() {
         })
     }, [queries.page])
 
-    useEffect(() => {
-        if (data) {
-            console.log(data);
-        }
-    }, [data])
-
     return (
         <div className="grow desktop:w-[var(--desktop-container-w)] mx-auto py-8">
             <div>
@@ -86,7 +80,7 @@ function ReaderDepositeTransHistoryPage() {
                         <li>
                             <Link
                                 className="px-4 rounded-[4px] hover:text-[var(--primary)] leading-[38px] space-x-2 flex items-center"
-                                to={paths.readerWalletPage()}
+                                to={paths.readerInvoiceHistoryPage()}
                             >
                                 <span className="text-[1.2rem]">
                                     <i className="fa-solid fa-money-bills"></i>
@@ -141,12 +135,15 @@ function ReaderDepositeTransHistoryPage() {
                                             }
 
                                             return (
-                                                <tr className="text-center border-b-[1px] border-solid border-[var(--gray)]">
+                                                <tr 
+                                                    key={row.id}
+                                                    className="text-center border-b-[1px] border-solid border-[var(--gray)]"
+                                                >
                                                     <td className="py-2">{row.orderId}</td>
                                                     <td className="py-2">{row.bankCode}</td>
                                                     <td className="py-2">{row.cardType}</td>
                                                     <td className="py-2 text-red-500">{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(Number(row.amount) / 100)}</td>
-                                                    <td className="py-2">{moment(row.createdAt).format("DD/MM/YYYY HH:MM:SS")}</td>
+                                                    <td className="py-2">{moment(row.createdAt).format("DD/MM/YYYY HH:mm:ss")}</td>
                                                     {statusElement}
                                                 </tr>
                                             )
@@ -155,7 +152,7 @@ function ReaderDepositeTransHistoryPage() {
                                 </table>
                             </div>
 
-                            <div className="flex justify-center items-center">
+                            <div className="flex justify-center items-center mt-4">
                                 <Pagination
                                     count={data?.[1] ? Math.ceil(data[1] / queries.limit) : 0}
                                     page={queries.page}

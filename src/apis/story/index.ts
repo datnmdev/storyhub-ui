@@ -17,6 +17,22 @@ const storyApi = {
     deleteStory: (options: RequestInit) => {
         return axiosInstance().delete(`/story/${options.queries.id}`);
     },
+    getStoryWithFilter: (options: RequestInit) => {
+        return axiosInstance().get("/story/all/filter", {
+            params: options.queries
+        })
+    },
+    getGenres: (options: RequestInit) => {
+        return axiosInstance().get("/story/all/get-genres", {
+            params: options.queries
+        })
+    },
+    search: (options: RequestInit) => {
+        return axiosInstance().get("/story/all/search", {
+            params: options.queries
+        })
+    }
 };
+
 
 export default storyApi;

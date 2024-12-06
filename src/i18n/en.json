@@ -5,7 +5,7 @@
                 "home": "HOME",
                 "novel": "NOVEL",
                 "comic": "COMIC",
-                "search": "SEARCH",
+                "search": "ADVANCED SEARCH",
                 "rank": "RANK"
             },
             "btn": {
@@ -22,15 +22,35 @@
                 "setting": "Settings",
                 "signOut": "Sign Out"
             },
-            "signingOut": "Signing Out..."
+            "signingOut": "Signing out...",
+            "searchSection": {
+                "placeholder": "Enter the name of the story you want to search for...",
+                "item": {
+                    "type": {
+                        "label": "Type:",
+                        "comic": "Comic",
+                        "novel": "Novel"
+                    },
+                    "author": "Author:",
+                    "country": "Country",
+                    "status": {
+                        "label": "Status:",
+                        "publishing": "Publishing",
+                        "finished": "Finished"
+                    }
+                },
+                "resultTitle": "Total number of results found:"
+            }
         },
         "footer": {
             "contact": {
-                "heading": "Contact",
+                "heading": "Contact Information",
+                "email": "htkh.story@gmail.com",
+                "phone": "0378450500",
                 "address": "97 Man Thien St., Hiep Phu, District 9, Ho Chi Minh City 70000"
             },
             "about": {
-                "heading": "About",
+                "heading": "About Story For All",
                 "privacy": "Privacy Policy",
                 "term": "Terms of Use"
             }
@@ -38,15 +58,15 @@
         "signInPage": {
             "signIn": "Sign In",
             "signUp": "Sign Up",
-            "email": "Email",
+            "email": "Email Address",
             "password": "Password",
             "forgotPassword": "Forgot password?",
             "or": "Or",
             "noAccount": "Don't have an account?",
             "signUpNow": "Sign up now",
-            "getOAuthUrl": "Fetching authentication URL...",
-            "authenticating": "Authenticating. Please wait a moment...",
-            "failedAuth": "Authentication and authorization failed. Please try again..."
+            "getOAuthUrl": "Getting authentication URL...",
+            "authenticating": "Authenticating, please wait a moment...",
+            "failedAuth": "Authentication failed. Please try again..."
         },
         "signUpPage": {
             "signIn": "Sign In",
@@ -70,40 +90,270 @@
             "repeatPassword": "Repeat Password",
             "or": "Or",
             "hadAccount": "Already have an account?",
-            "signInNow": "Sign In Now"
+            "signInNow": "Sign in now"
         },
         "otpVerificationPage": {
             "btn": {
-                "goBack": "Go back"
+                "resendOtp": "Request Resend OTP"
             },
-            "sentOtpMessage": "The OTP verification code has been sent to the address {{email}}. Please check your inbox to retrieve the verification code.",
-            "otp": "OTP code"
+            "sentOtpMessage": "OTP has been sent to {{email}}. Please check your inbox to retrieve the verification code.",
+            "otp": "OTP",
+            "notReceiveOtp": "Didn't receive the code?",
+            "resendRequest": "You can request to resend the code after {{second}} seconds"
+        },
+        "forgotPasswordPage": {
+            "btn": {
+                "goBack": "Go Back"
+            },
+            "title": "Reset Password"
+        },
+        "resetPasswordPage": {
+            "title": "Set New Password",
+            "password": "New Password",
+            "repeatPassword": "Repeat New Password"
+        },
+        "walletPage": {
+            "breadcrumb": {
+                "items": {
+                    "homePage": "Home",
+                    "walletPage": "Wallet"
+                }
+            },
+            "sidebar": {
+                "heading": "My Wallet",
+                "walletInfo": "Wallet Information",
+                "depositeHistory": "Deposit History",
+                "paymentHistory": "Payment History"
+            },
+            "content": {
+                "balanceTitle": "Available Balance",
+                "depositeBtn": "Deposit More",
+                "depositePopupTitle": "Deposit Money",
+                "depositePopup": {
+                    "amount": "Amount to Deposit",
+                    "bankCode": {
+                        "label": "Payment Method",
+                        "vnpayQl": "Pay via VNPAYQR",
+                        "vnBank": "Pay via ATM/Local Bank Account",
+                        "intCard": "Pay via International Card"
+                    },
+                    "formatedMoney": "Entered Amount",
+                    "waitingPayment": "Waiting for you to make payment"
+                }
+            }
+        },
+        "depositeTransHistoryPage": {
+            "content": {
+                "orderId": "Transaction ID",
+                "bankCode": "Bank Code",
+                "cardType": "Card/Account Type",
+                "amount": "Amount",
+                "createDate": "Transaction Time",
+                "status": {
+                    "title": "Status",
+                    "initialize": "Initializing",
+                    "succeed": "Succeeded",
+                    "failed": "Failed"
+                }
+            }
+        },
+        "invoiceHistoryPage": {
+            "content": {
+                "invoiceNumber": "Invoice Number",
+                "chapterId": "Chapter ID",
+                "totalAmount": "Total Amount",
+                "createdAt": "Creation Time"
+            }
+        },
+        "homePage": {
+            "topViewSlider": {
+                "title": "Most Viewed Stories",
+                "btn": {
+                    "readBtn": "Read"
+                },
+                "ortherInfo": {
+                    "priceCount": "{{value}} VND/chapter",
+                    "viewCount": "{{value}} views",
+                    "followerCount": "{{value}} followers"
+                },
+                "storyType": {
+                    "comic": "Comic",
+                    "novel": "Novel"
+                }
+            },
+            "newUpdatedSection": {
+                "title": "Recently Updated Stories",
+                "ortherInfo": {
+                    "priceCount": "{{value}} VND/ch",
+                    "viewCount": "{{value}}",
+                    "followerCount": "{{value}}",
+                    "ratingCount": "{{value}}",
+                    "ratingCountText": "{{value}} votes"
+                },
+                "storyType": {
+                    "comic": "Comic",
+                    "novel": "Novel"
+                },
+                "timestamps": {
+                    "second": "{{value}} seconds ago",
+                    "minute": "{{value}} minutes ago",
+                    "hour": "{{value}} hours ago",
+                    "day": "{{value}} days ago",
+                    "week": "{{value}} weeks ago",
+                    "month": "{{value}} months ago",
+                    "year": "{{value}} years ago"
+                }
+            }
+        },
+        "storyInfoPage": {
+            "storyInfoSection": {
+                "storyType": {
+                    "comic": "Comic",
+                    "novel": "Novel"
+                },
+                "ortherInfo": {
+                    "priceCount": "{{value}} VND/chapter"
+                },
+                "alias": {
+                    "label": "Other Names",
+                    "notData": "Updating"
+                },
+                "author": "Author",
+                "status": {
+                    "label": "Status",
+                    "publishing": "Publishing",
+                    "finished": "Finished"
+                },
+                "followerCount": {
+                    "label": "Followers",
+                    "content": "{{value}}"
+                },
+                "viewCount": {
+                    "label": "Views",
+                    "content": "{{value}}"
+                },
+                "country": "Country",
+                "rating": {
+                    "label": "Rating",
+                    "content": "{{value}} votes",
+                    "status": {
+                        "evaluated": "You rated {{value}} stars",
+                        "notEvaluated": "You have not rated yet"
+                    }
+                },
+                "btn": {
+                    "readFromBeginning": "Read first",
+                    "follow": "Follow",
+                    "unfollow": "Unfollow"
+                },
+                "note": {
+                    "label": "Author's Note",
+                    "notData": "No notes from the author yet..."
+                },
+                "contentIntroduction": {
+                    "label": "Content Introduction",
+                    "notData": "No data..."
+                }
+            },
+            "chapterListSection": {
+                "title": "Chapter List",
+                "header": {
+                    "chapterName": "Chapter Name",
+                    "updatedTime": "Updated Time",
+                    "viewCount": "Views",
+                    "status": {
+                        "label": "Status",
+                        "paid": "Unlocked",
+                        "unpaid": "Needs Unlocking"
+                    }
+                },
+                "paymentRemindPopup": {
+                    "title": "Confirm Chapter Payment",
+                    "content": "You will lose <span style='color:red;font-weight:500;'>{{value}} VND</span> to read this chapter. Do you want to continue?",
+                    "btn": {
+                        "ok": "Continue",
+                        "cancel": "Go Back"
+                    },
+                    "loadingWrapper": {
+                        "message": "Processing payment, please wait..."
+                    },
+                    "paymentSuccess": "Chapter payment successful. Enjoy reading...",
+                    "paymentFailed": "You don't have enough funds to pay for this chapter. Please add more money..."
+                }
+            }
+        },
+        "chapterContentPage": {
+            "btn": {
+                "chapterPrevious": "Previous Chapter",
+                "chapterNext": "Next Chapter"
+            },
+            "loadingWrapper": {
+                "message": "Loading data, please wait..."
+            },
+            "blockedContent": {
+                "content": "You haven't unlocked this chapter. Please unlock it to continue...",
+                "btn": {
+                    "unlock": "Unlock Chapter"
+                }
+            },
+            "page": "Page"
         }
     },
     "validation": {
         "required": "This field is required",
+        "accountType": "Invalid account type",
         "email": "Invalid email",
-        "password": "Password must be at least 8 characters, including at least one uppercase letter, one lowercase letter, one number, and one special character",
-        "dob": "Date of birth must be a past date",
+        "password": "Password must be at least 8 characters long, including at least one uppercase letter, one lowercase letter, one number, and one special character",
+        "dob": "Date of birth must be a date in the past",
         "gender": "Invalid gender",
         "phone": "Invalid phone number",
         "repeatPassword": "This field must match the password field",
-        "emailExisted": "Email already exists"
+        "emailExisted": "Email already exists",
+        "length": "This field must be {{length}} characters long",
+        "numberString": "This field must contain only digits",
+        "amount": "Minimum deposit amount is 10,000 VND",
+        "bankCode": "Invalid payment method",
+        "number": "This field must contain only numbers"
     },
     "errorPage": {
         "notFoundPage": {
             "message": "Sorry! We couldn't find this page"
         },
         "forbiddenPage": {
-            "message": "Sorry! You do not have permission to access this page"
+            "message": "Sorry! You don't have permission to access this page"
         },
         "button": {
-            "goHome": "Go home"
+            "goHome": "Go to Home Page"
         }
     },
     "notification": {
         "signInWithEmailPasswordFailure": "Incorrect email or password",
         "loginSuccess": "Login successful",
-        "undefinedError": "An undefined error occurred, please try again"
+        "undefinedError": "An undefined error occurred. Please try again",
+        "signUpSuccess": "Account registration successful",
+        "verifyAccountSuccess": "Account verification successful",
+        "verifyOtpError": "Incorrect OTP. Please try again",
+        "needToVerifyAccount": "Your account needs to be verified",
+        "resetPasswordSuccess": "Password reset successful",
+        "resetPasswordFailed": "An error occurred. Please try again",
+        "paymentSuccess": "Payment successful",
+        "paymentFailed": "Payment failed",
+        "paymentExpired": "Payment expired. Please try again",
+        "createRatingSuccess": "Story rating successful",
+        "createRatingFailed": "Story rating failed. Please try again",
+        "updateRatingSuccess": "Rating updated successfully",
+        "updateRatingFailed": "Rating update failed. Please try again",
+        "followSuccess": "Successfully followed the story",
+        "unfollowSuccess": "Successfully unfollowed the story"
+    },
+    "pagination": {
+        "next": "Next",
+        "previous": "Previous",
+        "first": "First",
+        "last": "Last"
+    },
+    "loading": {
+        "getDepositeTransHistory": "Fetching deposit history...",
+        "getInvoiceHistory": "Fetching payment history..."
     }
 }
