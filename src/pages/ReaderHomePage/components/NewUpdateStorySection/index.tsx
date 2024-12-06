@@ -35,6 +35,7 @@ function NewUpdateStorySection() {
             <h3 className="text-[1.4rem] font-semibold">
                 {t("reader.homePage.newUpdatedSection.title")}
             </h3>
+            
             <div>
                 <div className="space-y-4">
                     <div className="grid grid-cols-6 gap-4">

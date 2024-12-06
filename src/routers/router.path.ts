@@ -11,6 +11,7 @@ const paths = {
     readerDepositeTransHistoryPage: () => "/reader/wallet/deposite-transaction-history",
     readerInvoiceHistoryPage: () => "/reader/wallet/invoice-history",
     readerChapterContentPage: (storyId: string | number = ":storyId", chapterId: string | number = ":chapterId") => `/story/${storyId}/chapter/${chapterId}`,
+    storyFilterPage: () => "/story-filter",
     managerDashboardPage: () => "/manager",
     authorHomePage: () => "/author",
     authorCreateStory: () => "/author/create-story",

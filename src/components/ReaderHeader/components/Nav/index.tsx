@@ -33,7 +33,7 @@ function Nav() {
 
             <Link
                 className={classNames("px-2 cursor-pointer", styles.item)}
-                to="#"
+                to={paths.storyFilterPage()}
             >
                 {t("reader.header.nav.search")}
             </Link>
