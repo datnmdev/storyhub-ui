@@ -27,6 +27,8 @@ import ReaderStoryInfoPage from "@pages/ReaderStoryInfoPage";
 import ReaderChapterContentPage from "@pages/ReaderChapterContentPage";
 import ReaderInvoiceHistoryPage from "@pages/ReaderInvoiceHistoryPage";
 import ReaderStoryFilterPage from "@pages/ReaderStoryFilterPage";
+import ManagerLayout from "@layouts/ManagerLayout";
+import ManagerEmployeeManagementPage from "@pages/ManagerEmployeeManagementPage";
 
 import AuthorStatistic from "@pages/Author/AuthorStatistic";
 import ModeratorLayout from "@layouts/ModeratorLayout";
@@ -158,9 +160,19 @@ const router = createBrowserRouter([
                 path: paths.managerDashboardPage(),
                 element: (
                     <Protected role={Role.MANAGER}>
-                        <ReaderLayout>
+                        <ManagerLayout>
                             <ManagerDashboardPage />
-                        </ReaderLayout>
+                        </ManagerLayout>
+                    </Protected>
+                ),
+            },
+            {
+                path: paths.managerEmployeeManagementPage(),
+                element: (
+                    <Protected role={Role.MANAGER}>
+                        <ManagerLayout>
+                            <ManagerEmployeeManagementPage />
+                        </ManagerLayout>
                     </Protected>
                 ),
             },
