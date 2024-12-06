@@ -13,6 +13,7 @@ const paths = {
     readerChapterContentPage: (storyId: string | number = ":storyId", chapterId: string | number = ":chapterId") => `/story/${storyId}/chapter/${chapterId}`,
     storyFilterPage: () => "/story-filter",
     managerDashboardPage: () => "/manager",
+    managerEmployeeManagementPage: () => "/manager/employee-management",
     authorHomePage: () => "/author",
     authorStatistic: () => "/author/statistic",
     authorCreateStory: () => "/author/create-story",

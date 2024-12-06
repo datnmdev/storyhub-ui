@@ -15,6 +15,7 @@ import ratingApi from "./rating"
 import viewApi from "./view"
 import authorApi from "./author";
 import invoiceApi from "./invoice";
+import moderatorApi from "./moderator";
 
 import notificationUserApi from "./notificationUser";
 import statisticApi from "./statistic";
@@ -38,6 +39,7 @@ const apis = {
     invoiceApi,
     notificationUserApi,
     statisticApi,
+    moderatorApi
 };
 
 export default apis;
