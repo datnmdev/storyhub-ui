@@ -2,7 +2,7 @@ import Popup from "@components/Popup";
 import { useFormValidation } from "@hooks/validate.hook";
 import { memo, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { InputData, InputError } from "./CreateEmployeeForm.type";
+import { CreateEmployeePopupProps, InputData, InputError } from "./CreateEmployeeForm.type";
 import { generateValidateSchema } from "./CreateEmployeeForm.schema";
 import useFetch from "@hooks/fetch.hook";
 import apis from "@apis/index";
@@ -13,22 +13,19 @@ import moment from "moment";
 import { Gender } from "@constants/auth.constants";
 import Button from "@components/Button";
 import Select from "@components/Select";
-import AvatarDefault from "@assets/avatars/user-default.png";
-import classNames from "classnames";
-import themeFeature from "@features/theme";
-import { useAppDispatch, useAppSelector } from "@hooks/redux.hook";
+import { useAppDispatch } from "@hooks/redux.hook";
 import { ModeratorStatus } from "@constants/moderator.constants";
 import toastFeature from "@features/toast";
 import { ToastType } from "@constants/toast.constants";
-import { PopupProps } from "@components/Popup/Popup.type";
 import { RequestInit } from "@apis/api.type";
+import AvatarUploader from "@components/AvatarUploader";
 
 function CreateEmployeePopup({
-    onClose
-}: PopupProps) {
+    onClose,
+    setReGetEmployeeList
+}: CreateEmployeePopupProps) {
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
-    const themeValue = useAppSelector(themeFeature.themeSelector.selectValue);
     const { values, handleChange, errors, validateAll } = useFormValidation<InputData, InputError>({
         cccd: "",
         name: "",
@@ -37,15 +34,37 @@ function CreateEmployeePopup({
         phone: "",
         address: "",
         status: String(ModeratorStatus.WORKING),
-        doj: undefined,
-        avatar: undefined
+        doj: undefined
     }, generateValidateSchema())
-    const [requestInit, setRequestInit] = useState<RequestInit>({});
+    const [requestInit, setRequestInit] = useState<RequestInit>();
     const { data: createEmployeeResponseData, isLoading: isCreatingEmployee, error: createEmployeeError, setRefetch: setReCreateEmployee } = useFetch(apis.moderatorApi.createModerator, requestInit, false);
+    const [checkCccdRequest, setCheckCccdRequest] = useState<RequestInit>();
+    const { data: isCccdExisted, setRefetch: setReCheckCccd } = useFetch(apis.moderatorApi.checkCccd, checkCccdRequest, false);
+    const [avatarfile, setAvatarFile] = useState<File>();
+    const [getPreUploadUrlRequest, setGetPreUploadUrlRequest] = useState<RequestInit>();
+    const { data: getPreUploadAvatarUrlResData, isLoading: isGetingPreUploadAvatarUrl, setRefetch: setReGetPreUploadAvatarUrl } = useFetch(apis.fileUploadApi.getPreUploadUrl, getPreUploadUrlRequest, false);
+    const [uploadAvatarRequest, setUploadAvatarRequest] = useState<RequestInit>();
+    const { setRefetch: setReUploadAvatar } = useFetch(apis.fileUploadApi.upload, uploadAvatarRequest, false);
 
     useEffect(() => {
-        console.log(requestInit);
-        
+        if (values) {
+            setCheckCccdRequest({
+                queries: {
+                    cccd: values.cccd
+                }
+            })
+        }
+    }, [values])
+
+    useEffect(() => {
+        if (checkCccdRequest) {
+            setReCheckCccd({
+                value: true
+            })
+        }
+    }, [checkCccdRequest])
+
+    useEffect(() => {
         if (requestInit) {
             setReCreateEmployee({
                 value: true
@@ -60,6 +79,12 @@ function CreateEmployeePopup({
                     type: ToastType.SUCCESS,
                     title: t("notification.createEmployeeSuccess")
                 }))
+                if (onClose) {
+                    onClose(1);
+                }
+                setReGetEmployeeList({
+                    value: true
+                })
             } else {
                 if (createEmployeeError) {
                     dispatch(toastFeature.toastAction.add({
@@ -70,6 +95,43 @@ function CreateEmployeePopup({
             }
         }
     }, [isCreatingEmployee])
+
+    useEffect(() => {
+        if (avatarfile) {
+            setGetPreUploadUrlRequest({
+                queries: {
+                    fileType: avatarfile.type
+                }
+            })
+        }
+    }, [avatarfile])
+
+    useEffect(() => {
+        if (getPreUploadUrlRequest) {
+            setReGetPreUploadAvatarUrl({
+                value: true
+            })            
+        }
+    }, [getPreUploadUrlRequest])
+
+    useEffect(() => {
+        if (!isGetingPreUploadAvatarUrl) {
+            if (getPreUploadAvatarUrlResData) {
+                setUploadAvatarRequest({
+                    uri: getPreUploadAvatarUrlResData.preUploadUrl,
+                    body: avatarfile
+                })
+            }
+        }
+    }, [isGetingPreUploadAvatarUrl])
+
+    useEffect(() => {
+        if (uploadAvatarRequest) {
+            setReUploadAvatar({
+                value: true
+            })
+        }
+    }, [uploadAvatarRequest])
 
     return (
         <Popup
@@ -96,6 +158,7 @@ function CreateEmployeePopup({
                                     onChange={handleChange}
                                 />
                                 {errors.cccd && <ErrorMessage message={errors.cccd} />}
+                                {isCccdExisted !== null && isCccdExisted && <ErrorMessage message={t("validation.CCCD_EXISTED_INPUT_ERROR")} />}
                             </div>
                         </div>
 
@@ -232,27 +295,10 @@ function CreateEmployeePopup({
                         </div>
                     </div>
 
-                    <div className="w-[40%] space-y-4">
-                        <div className="flex justify-center items-center">
-                            <img
-                                className={classNames(
-                                    "w-[128px] h-[158px] object-cover object-center",
-                                    themeValue === "light" ? "light__boxShadow" : "dark__boxShadow"
-                                )}
-                                src={AvatarDefault}
-                                alt="Avatar"
-                            />
-                        </div>
-
-                        <div className="flex justify-center items-center">
-                            <Button>
-                                {t("manager.employeeManagementPage.createEmployeePopup.changeAvatarBtn")}
-                            </Button>
-                        </div>
-
-                        <div className="flex justify-center items-center text-[0.9rem] italic px-10 text-center">
-                            {t("manager.employeeManagementPage.createEmployeePopup.uploadImageNote")}
-                        </div>
+                    <div className="w-[40%]">
+                        <AvatarUploader 
+                            onChange={file => setAvatarFile(file)}
+                        />
                     </div>
                 </div>
 
@@ -262,12 +308,10 @@ function CreateEmployeePopup({
                         color="var(--white)"
                         onClick={async () => {
                             if (await validateAll()) {
-                                console.log(1111);
-                                
                                 setRequestInit({
-                                    ...requestInit,
                                     body: {
-                                        ...values
+                                        ...values,
+                                        avatar: getPreUploadAvatarUrlResData?.fileKey
                                     }
                                 })
                             }
