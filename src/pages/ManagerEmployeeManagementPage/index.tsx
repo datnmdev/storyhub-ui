@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import CreateEmployeePopup from "./components/CreateEmployeePopup";
 import LoadingWrapper from "@components/LoadingWrapper";
 import EmployeeList from "./components/EmployeeList";
+import EmployeeFilter from "./components/EmployeeFilter";
 
 function ManagerEmployeeManagementPage() {
     const { t } = useTranslation();
@@ -73,15 +74,15 @@ function ManagerEmployeeManagementPage() {
                         })}
                     />
 
-                    <IconButton
-                        icon={(<i className="fa-solid fa-filter text-[1.2rem]"></i>)}
-                        bgColor="var(--primary)"
-                        padding="8px 24px"
-                        color="var(--white)"
-                        borderRadius="4px"
-                    >
-                        {t("manager.employeeManagementPage.btn.filterBtn")}
-                    </IconButton>
+                    <EmployeeFilter
+                        onChange={data => setRequestInit({
+                            queries: {
+                                ...requestInit.queries,
+                                gender: data.gender.length > 0 ? JSON.stringify(data.gender) : undefined,
+                                statuses: data.status.length > 0 ? JSON.stringify(data.status) : undefined
+                            }
+                        })}
+                    />
                 </div>
             </div>
 

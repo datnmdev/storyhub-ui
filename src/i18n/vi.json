@@ -401,6 +401,20 @@
                 "uploadImageNote": "Ảnh không được quá 10 MB và ở định dạng PNG, JPG, JPEG hoặc GIF",
                 "changeAvatarBtn": "Thay đổi",
                 "submitBtn": "Tạo"
+            },
+            "filter": {
+                "title": "Lọc theo",
+                "gender": {
+                    "label": "Giới tính",
+                    "male": "Nam",
+                    "female": "Nữ",
+                    "orther": "Khác"
+                },
+                "status": {
+                    "label": "Tình trạng",
+                    "working": "Đang làm việc",
+                    "resigned": "Đã nghỉ việc"
+                }
             }
         }
     },
