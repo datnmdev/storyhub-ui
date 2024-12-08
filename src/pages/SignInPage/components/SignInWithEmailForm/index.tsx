@@ -1,5 +1,5 @@
 import InputWithIcon from "@components/InputWithIcon";
-import { memo, useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 import KeyIcon from "@assets/icons/static/key.png";
 import { useTranslation } from "react-i18next";
 import { Link, Location, useLocation, useNavigate } from "react-router-dom";
@@ -23,53 +23,57 @@ import { AccountStatus } from "@constants/oauth.constants";
 import paths from "@routers/router.path";
 import { OtpVerificationType } from "@constants/auth.constants";
 import RouteUtils from "@routers/route.util";
+import { RequestInit } from "@apis/api.type";
 
 function SignInWithEmailForm() {
     const dispatch = useAppDispatch();
     const location: Location<LocationState> = useLocation();
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { values, handleChange, errors, validateAll } = useFormValidation<InputData, InputError>({
+    const [defaultInputData] = useState({
         email: '',
         password: ''
-    }, generateValidateSchema())
-    const { data, isLoading, error, setRefetch } = useFetch<Token>(apis.authApi.signInWithEmailPassword, { body: values }, false)
+    });
+    const { values, handleChange, errors, validateAll } = useFormValidation<InputData, InputError>(defaultInputData, generateValidateSchema())
+    const [signInRequest, setSignInRequest] = useState<RequestInit>();
+    const { data, isLoading, error, setRefetch } = useFetch<Token>(apis.authApi.signInWithEmailPassword, signInRequest, false)
 
     useEffect(() => {
-        if (data) {
-            const payload: JwtPayload = jwtDecode(data.accessToken);
-            switch (payload.status) {
-                case AccountStatus.ACTIVATED:
-                    dispatch(authFeature.authAction.signIn(data))
-                    dispatch(toastFeature.toastAction.add({
-                        type: ToastType.SUCCESS,
-                        title: t("notification.loginSuccess")
-                    }))
-                    navigate(RouteUtils.getRedirectUriBelongTo(data.accessToken, location), {
-                        replace: true
-                    });
-                    break;
+        if (!isLoading) {
+            if (data) {
+                const payload: JwtPayload = jwtDecode(data.accessToken);
+                switch (payload.status) {
+                    case AccountStatus.ACTIVATED:
+                        dispatch(authFeature.authAction.signIn(data))
+                        dispatch(toastFeature.toastAction.add({
+                            type: ToastType.SUCCESS,
+                            title: t("notification.loginSuccess")
+                        }))
+                        navigate(RouteUtils.getRedirectUriBelongTo(data.accessToken, location), {
+                            replace: true
+                        });
+                        break;
 
-                case AccountStatus.UNACTIVATED:
-                    navigate(paths.otpVerificationPage(), {
-                        state: {
-                            type: OtpVerificationType.SIGN_IN,
-                            prevData: values,
-                            account: {
-                                ...payload,
-                                id: payload.accountId
+                    case AccountStatus.UNACTIVATED:
+                        navigate(paths.otpVerificationPage(), {
+                            state: {
+                                type: OtpVerificationType.SIGN_IN,
+                                prevData: values,
+                                account: {
+                                    ...payload,
+                                    id: payload.accountId
+                                }
                             }
-                        }
-                    })
-                    dispatch(toastFeature.toastAction.add({
-                        type: ToastType.INFO,
-                        title: t("notification.needToVerifyAccount")
-                    }))
-                    break;
+                        })
+                        dispatch(toastFeature.toastAction.add({
+                            type: ToastType.INFO,
+                            title: t("notification.needToVerifyAccount")
+                        }))
+                        break;
+                }
             }
-
         }
-    }, [data])
+    }, [isLoading])
 
     return (
         <div className="space-y-2">
@@ -129,6 +133,11 @@ function SignInWithEmailForm() {
                     borderRadius="50%"
                     onClick={async () => {
                         if (await validateAll()) {
+                            setSignInRequest(() => ({
+                                body: {
+                                    ...values
+                                }
+                            }))
                             setRefetch({
                                 value: true
                             })

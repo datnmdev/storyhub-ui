@@ -96,6 +96,7 @@ function ManagerEmployeeManagementPage() {
                         data={data}
                         requestInit={requestInit}
                         setRequestInit={setRequestInit}
+                        setReGetEmployeeList={setRefetch}
                     />
                 </LoadingWrapper>
             </div>

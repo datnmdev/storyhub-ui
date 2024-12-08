@@ -2,12 +2,13 @@ import { PopupProps } from "@components/Popup/Popup.type";
 import { InputData as InputDataType, InputError as InputErrorType } from "hooks/validate.hook";
 import { Dispatch, SetStateAction } from "react";
 
-export interface CreateEmployeePopupProps extends PopupProps {
+export interface UpdateEmployeePopupProps extends PopupProps {
     setReGetEmployeeList: Dispatch<SetStateAction<{ value: boolean }>>
+    employee: any
 }
 
 export interface InputData extends InputDataType {
-    email: string
+    id: string;
     cccd: string
     name: string
     dob: string | undefined
@@ -19,7 +20,6 @@ export interface InputData extends InputDataType {
 }
 
 export interface InputError extends InputErrorType {
-    email?: string
     cccd?: string
     name?: string
     dob?: string

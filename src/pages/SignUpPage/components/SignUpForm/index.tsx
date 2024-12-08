@@ -1,5 +1,5 @@
 import InputWithIcon from "@components/InputWithIcon";
-import { memo, useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 import KeyIcon from "@assets/icons/static/key.png";
 import { useTranslation } from "react-i18next";
 import IconButton from "@components/IconButton";
@@ -16,11 +16,12 @@ import MenuItem from "@components/MenuItem";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import paths from "@routers/router.path";
+import { RequestInit } from "@apis/api.type";
 
 function SignUpForm() {
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { values, handleChange, errors, validateAll } = useFormValidation<InputData, InputError>({
+    const [defaultInputData] = useState({
         type: "-1",
         email: "",
         name: "",
@@ -29,14 +30,18 @@ function SignUpForm() {
         phone: "",
         password: "",
         repeatPassword: ""
-    }, generateValidateSchema())
+    });
+    const { values, handleChange, errors, validateAll } = useFormValidation<InputData, InputError>(defaultInputData, generateValidateSchema())
     const { data: isEmailExisted, isLoading: isValidatingEmail, setRefetch: setReValidateEmail } = useFetch<boolean>(apis.authApi.validateEmail, { queries: { email: values.email } }, false);
-    const { data: signUpResponseData, isLoading: isSigningUp, error: signUpError, setRefetch: setReSignUp } = useFetch<boolean>(apis.authApi.signUp, { body: values }, false);
+    const [signUpRequest, setSignUpRequest] = useState<RequestInit>();
+    const { data: signUpResponseData, isLoading: isSigningUp, error: signUpError, setRefetch: setReSignUp } = useFetch<boolean>(apis.authApi.signUp, signUpRequest, false);
 
     useEffect(() => {
-        setReValidateEmail({
-            value: true
-        })
+        if (values.email) {
+            setReValidateEmail({
+                value: true
+            })
+        }
     }, [values.email])
 
     useEffect(() => {
@@ -189,6 +194,11 @@ function SignUpForm() {
                     borderRadius="50%"
                     onClick={async () => {
                         if (await validateAll() && !isEmailExisted) {
+                            setSignUpRequest(() => ({
+                                body: {
+                                    ...values
+                                }
+                            }))
                             setReSignUp({
                                 value: true
                             })

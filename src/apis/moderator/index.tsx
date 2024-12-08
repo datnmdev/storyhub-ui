@@ -14,7 +14,10 @@ const moderatorApi = {
         return axiosInstance().get("/moderator/check-cccd", {
             params: options.queries
         })
-    }
+    },
+    updateModerator: (options: RequestInit) => {
+        return axiosInstance().put('/moderator', options.body);
+    },
 }
 
 export default moderatorApi;

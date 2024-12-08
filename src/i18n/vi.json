@@ -387,6 +387,7 @@
             },
             "createEmployeePopup": {
                 "title": "Thêm nhân viên",
+                "email": "Email",
                 "cccd": "Số CCCD",
                 "name": "Họ và tên",
                 "dob":"Ngày sinh",
@@ -400,7 +401,34 @@
                 "doj": "Ngày vào làm",
                 "uploadImageNote": "Ảnh không được quá 10 MB và ở định dạng PNG, JPG, JPEG hoặc GIF",
                 "changeAvatarBtn": "Thay đổi",
-                "submitBtn": "Tạo"
+                "submitBtn": "Tạo",
+                "loading": {
+                    "message": "Đang tạo nhân viên..."
+                }
+            },
+            "updateEmployeePopup": {
+                "resetBtn":"Làm mới",
+                "id": "Mã nhân viên",
+                "email": "Email",
+                "title": "Cập nhật nhân viên",
+                "cccd": "Số CCCD",
+                "name": "Họ và tên",
+                "dob":"Ngày sinh",
+                "gender": "Giới tính",
+                "phone": "Số điện thoại",
+                "address": "Địa chỉ",
+                "status": {
+                    "label":  "Tình trạng",
+                    "working": "Đang làm việc",
+                    "resigned": "Đã nghỉ việc"
+                },
+                "doj": "Ngày vào làm",
+                "uploadImageNote": "Ảnh không được quá 10 MB và ở định dạng PNG, JPG, JPEG hoặc GIF",
+                "changeAvatarBtn": "Thay đổi",
+                "submitBtn": "Lưu thay đổi",
+                "loading": {
+                    "message": "Đang lưu thông tin nhân viên..."
+                }
             },
             "filter": {
                 "title": "Lọc theo",
@@ -435,13 +463,15 @@
         "bankCode": "Phương thức thanh toán không hợp lệ",
         "number": "Truờng này chỉ bao gồm các chữ số",
         "doj": "Ngày vào làm phải là một mốc thời gian trong quá khứ",
+        "moderatorStatus": "Trạng thái của nhân viên không hợp lệ",
         "CCCD_INPUT_ERROR": "Số CCCD không hợp lệ",
         "NAME_INPUT_ERROR": "Trường này là bắt buộc",
         "DOB_INPUT_ERROR": "Trường này phải là một mốc thời gian trong quá khứ",
         "PHONE_INPUT_ERROR": "Số điện thoại không hợp lệ",
         "DOJ_INPUT_ERROR": "Trường này phải là một mốc thời gian trong quá khứ",
         "ADDRESS_INPUT_ERROR": "Trường này là bắt buộc",
-        "CCCD_EXISTED_INPUT_ERROR": "Số CCCD này đã tồn tại"
+        "CCCD_EXISTED_INPUT_ERROR": "Số CCCD này đã tồn tại",
+        "EMAIL_EXISTED_INPUT_ERROR": "Email này đã tồn tại"
     },
     "errorPage": {
         "notFoundPage": {

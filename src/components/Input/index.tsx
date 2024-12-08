@@ -12,9 +12,10 @@ function Input({
     maxLength,
     minLength,
     contentEditable = true,
+    readOnly = false,
     onChange = () => {},
     onFocus,
-    onBlur,
+    onBlur
 }: InputProps) {
     const themeValue = useAppSelector(themeFeature.themeSelector.selectValue);
 
@@ -35,6 +36,7 @@ function Input({
             onChange={onChange}
             onFocus={onFocus}
             onBlur={onBlur}
+            readOnly={readOnly}
         />
     )
 }
