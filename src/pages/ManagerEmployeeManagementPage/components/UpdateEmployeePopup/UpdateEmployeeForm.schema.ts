@@ -1,12 +1,10 @@
 import { Gender } from "@constants/auth.constants";
+import { ModeratorStatus } from "@constants/moderator.constants";
 import i18n from "@i18n/index";
 import { date, number, object, string } from "yup";
 
 export function generateValidateSchema() {
     return object({
-        email: string()
-            .email(i18n.t("validation.email"))
-            .required(i18n.t("validation.required")),
         cccd: string()
             .matches(/^[0-9]{12}$/, i18n.t("validation.CCCD_INPUT_ERROR"))
             .required(i18n.t("validation.required")),
@@ -28,6 +26,9 @@ export function generateValidateSchema() {
             .required(i18n.t("validation.required")),
         address: string()
             .required(i18n.t("validation.ADDRESS_INPUT_ERROR")),
+        status: number()
+            .oneOf([ModeratorStatus.WORKING, ModeratorStatus.RESIGNED], i18n.t("validation.moderatorStatus"))
+            .required(i18n.t("validation.required")),
         doj: date()
             .test("doj", i18n.t("validation.DOJ_INPUT_ERROR"), value => {
                 if (value instanceof Date) {

@@ -8,6 +8,8 @@ import Button from "@components/Button";
 import { AvatarUploaderProps } from "./AvatarUploader.type";
 
 function AvatarUploader({
+    previewUrl,
+    value,
     onChange
 }: AvatarUploaderProps) {
     const { t } = useTranslation();
@@ -16,7 +18,8 @@ function AvatarUploader({
     const [isClicked, setClicked] = useState({
         value: false
     });
-    const [file, setFile] = useState<File | null>(null);
+    const [file, setFile] = useState<File | null>(value);
+    const [key, setKey] = useState(Date.now());
 
     useEffect(() => {
         if (isClicked.value) {
@@ -32,6 +35,11 @@ function AvatarUploader({
         }
     }, [file])
 
+    useEffect(() => {
+        setKey(Date.now());
+        setFile(value);
+    }, [value])
+
     return (
         <div className="space-y-4">
             <div className="flex justify-center items-center">
@@ -40,15 +48,16 @@ function AvatarUploader({
                         "w-[128px] h-[158px] object-cover object-center",
                         themeValue === "light" ? "light__boxShadow" : "dark__boxShadow"
                     )}
-                    src={file ? URL.createObjectURL(file) : AvatarDefault}
+                    src={file ? URL.createObjectURL(file) : (previewUrl ? previewUrl : AvatarDefault)}
                     alt="Avatar"
                 />
 
                 <input
+                    key={key}
                     ref={fileInputRef}
                     type="file"
                     accept="image/jpg,image/jpeg,image/png,image/gif"
-                    onChange={e => e.target.files && setFile(e.target.files[0])}
+                    onChange={e => e.target.files?.[0] && setFile(e.target.files[0])}
                     hidden
                 />
             </div>

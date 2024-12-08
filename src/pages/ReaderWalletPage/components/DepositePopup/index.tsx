@@ -25,10 +25,11 @@ function DepositePopup({
 }: DepositePopupProps) {
     const dispatch = useAppDispatch();
     const { t } = useTranslation();
-    const { values, handleChange, errors, validateAll } = useFormValidation<InputData, InputError>({
+    const [defaultInputData] = useState({
         amount: "",
         bankCode: "-1"
-    }, generateValidateSchema())
+    });
+    const { values, handleChange, errors, validateAll } = useFormValidation<InputData, InputError>(defaultInputData, generateValidateSchema())
     const { data, isLoading, error, setRefetch } = useFetch<string>(apis.depositeTransactionApi.createPaymentUrl, { body: values }, false)
     const [isWaitingPayment, setWaitingPayment] = useState<boolean>(false);
 

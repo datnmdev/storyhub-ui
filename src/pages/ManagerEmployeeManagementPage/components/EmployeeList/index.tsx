@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import { EmployeeListProps } from "./EmployeeList.type";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
@@ -11,14 +11,17 @@ import UrlUtils from "@utilities/url.util";
 import Pagination from "@components/Pagination";
 import IconButton from "@components/IconButton";
 import NoData from "../../../../components/NoData";
+import UpdateEmployeePopup from "../UpdateEmployeePopup";
 
 function EmployeeList({
     data,
     requestInit,
-    setRequestInit
+    setRequestInit,
+    setReGetEmployeeList
 }: EmployeeListProps) {
     const { t } = useTranslation();
     const themeValue = useAppSelector(themeFeature.themeSelector.selectValue);
+    const [selectedUpdatingEmployee, setSelectedUpdatingEmployee] = useState();
 
     if (!data || data[1] <= 0) {
         return (
@@ -103,6 +106,7 @@ function EmployeeList({
                                                     color=""
                                                     borderRadius="50%"
                                                     fontSize="1.4rem"
+                                                    onClick={() => setSelectedUpdatingEmployee(moderator)}
                                                 />
                                             </div>
                                         </td>
@@ -122,9 +126,20 @@ function EmployeeList({
                                 ...requestInit.queries,
                                 page
                             }
-                        })} 
+                        })}
                     />
                 </div>
+            </div>
+
+            <div>
+                {selectedUpdatingEmployee
+                    && (
+                        <UpdateEmployeePopup
+                            employee={selectedUpdatingEmployee}
+                            onClose={() => setSelectedUpdatingEmployee(undefined)}
+                            setReGetEmployeeList={setReGetEmployeeList}
+                        />
+                    )}
             </div>
         </div>
     )

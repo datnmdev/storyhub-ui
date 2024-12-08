@@ -101,5 +101,10 @@ export function useFormValidation<D extends InputData, E extends InputError>(ini
     })
   }, [i18n.language])
 
+  useEffect(() => {
+      setErrors(() => ({} as E));
+      setValues(initialValues);
+  }, [initialValues])
+
   return { values, errors, handleChange, validateAll };
 };
