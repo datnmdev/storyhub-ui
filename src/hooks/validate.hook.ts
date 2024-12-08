@@ -47,23 +47,27 @@ export function useFormValidation<D extends InputData, E extends InputError>(ini
     try {
       const cpError = Object.assign({}, values);
       Object.keys(cpError).forEach(key => {
-        validationSchema
-          .validateAt(key, {
-            ...values,
-            [key]: (values as InputData)[key]
-          })
-          .then(() => {
-            setErrors((prev) => ({
-              ...prev,
-              [key]: undefined,
-            }));
-          })
-          .catch((err) => {
-            setErrors((prev) => ({
-              ...prev,
-              [key]: err.message,
-            }));
-          });
+        try {
+          validationSchema
+            .validateAt(key, {
+              ...values,
+              [key]: (values as InputData)[key]
+            })
+            .then(() => {
+              setErrors((prev) => ({
+                ...prev,
+                [key]: undefined,
+              }));
+            })
+            .catch((err) => {
+              setErrors((prev) => ({
+                ...prev,
+                [key]: err.message,
+              }));
+            })
+        } catch (error) {
+          console.log(error);
+        }
       })
       await validationSchema.validate(values, {
         abortEarly: false

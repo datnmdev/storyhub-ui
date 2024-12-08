@@ -15,6 +15,7 @@ import ratingApi from "./rating"
 import viewApi from "./view"
 import authorApi from "./author";
 import invoiceApi from "./invoice";
+import moderatorApi from "./moderator";
 
 const apis = {
     authApi,
@@ -33,7 +34,8 @@ const apis = {
     ratingApi,
     viewApi,
     authorApi,
-    invoiceApi
+    invoiceApi,
+    moderatorApi
 };
 
 export default apis;

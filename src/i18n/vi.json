@@ -1,4 +1,5 @@
 {
+    "noData": "Không tìm thấy dữ liệu nào...",
     "reader": {
         "header": {
             "nav": {
@@ -29,14 +30,14 @@
                     "type": {
                         "label": "Loại:",
                         "comic": "Truyện tranh",
-                        "novel":"Tiểu thuyết"
+                        "novel": "Tiểu thuyết"
                     },
                     "author": "Tác giả:",
                     "country": "Quốc gia",
                     "status": {
                         "label": "Tình trạng:",
                         "publishing": "Đang phát hành",
-                        "finished":"Đã hoàn thành"
+                        "finished": "Đã hoàn thành"
                     }
                 },
                 "resultTitle": "Tổng số kết quả tìm thấy:"
@@ -279,7 +280,6 @@
                     },
                     "paymentSuccess": "Thanh toán chương thành công. Chúc bạn đọc truyện vui vẻ...",
                     "paymentFailed": "Bạn không đủ tiền để thanh toán chương này. Vui lòng nạp thêm tiền..."
-
                 }
             }
         },
@@ -346,6 +346,64 @@
             }
         }
     },
+    "manager": {
+        "sidebar": {
+            "withdrawRequestPage": "Yêu cầu rút tiền",
+            "employeeManagementPage": "Quản lý nhân viên",
+            "genreManagement": "Quản lý thể loại truyện",
+            "revenueStatistics": "Thống kê doanh thu"
+        },
+        "employeeManagementPage": {
+            "btn": {
+                "addEmployeeBtn": "Thêm",
+                "filterBtn": "Bộ lọc"
+            },
+            "loading": {
+                "message": "Đang tải dữ liệu. Vui lòng đợi trong giây lát..."
+            },
+            "searchInput": {
+                "placeholder": "Nhập mã hoặc tên nhân viên..."
+            },
+            "table": {
+                "thead": {
+                    "employeeId": "Mã NV",
+                    "avatar": "Ảnh",
+                    "cccd": "CCCD",
+                    "name": "Họ và tên",
+                    "gender": {
+                        "title": "Giới tính",
+                        "male": "Nam",
+                        "female": "Nữ",
+                        "orther": "Khác",
+                        "notUpdated": "Chưa cập nhật"
+                    },
+                    "status": {
+                        "title": "Tình trạng",
+                        "working": "Đang làm việc",
+                        "resigned": "Đã nghỉ việc"
+                    },
+                    "action": "Thao tác"
+                }
+            },
+            "createEmployeePopup": {
+                "title": "Thêm nhân viên",
+                "cccd": "Số CCCD",
+                "name": "Họ và tên",
+                "dob":"Ngày sinh",
+                "gender": "Giới tính",
+                "phone": "Số điện thoại",
+                "address": "Địa chỉ",
+                "status": {
+                    "label":  "Tình trạng",
+                    "working": "Đang làm việc"
+                },
+                "doj": "Ngày vào làm",
+                "uploadImageNote": "Ảnh không được quá 10 MB và ở định dạng PNG, JPG, JPEG hoặc GIF",
+                "changeAvatarBtn": "Thay đổi",
+                "submitBtn": "Tạo"
+            }
+        }
+    },
     "validation": {
         "required": "Trường này là bắt buộc",
         "accountType": "Loại tài khoản không hợp lệ",
@@ -354,13 +412,22 @@
         "dob": "Ngày sinh phải là một mốc thời gian trong quá khứ",
         "gender": "Giới tính không hợp lệ",
         "phone": "Số điện thoại không hợp lệ",
+        "cccd": "Số CCCD không hợp lệ",
         "repeatPassword": "Trường này phải trùng khớp với trường mật khẩu",
         "emailExisted": "Email đã tồn tại",
         "length": "Trường này phải có độ dài {{length}}",
         "numberString": "Trường này chỉ bao gồm chữ số",
         "amount": "Số tiền nạp tối thiểu 10,000 VND",
         "bankCode": "Phương thức thanh toán không hợp lệ",
-        "number": "Truờng này chỉ bao gồm các chữ số"
+        "number": "Truờng này chỉ bao gồm các chữ số",
+        "doj": "Ngày vào làm phải là một mốc thời gian trong quá khứ",
+        "CCCD_INPUT_ERROR": "Số CCCD không hợp lệ",
+        "NAME_INPUT_ERROR": "Trường này là bắt buộc",
+        "DOB_INPUT_ERROR": "Trường này phải là một mốc thời gian trong quá khứ",
+        "PHONE_INPUT_ERROR": "Số điện thoại không hợp lệ",
+        "DOJ_INPUT_ERROR": "Trường này phải là một mốc thời gian trong quá khứ",
+        "ADDRESS_INPUT_ERROR": "Trường này là bắt buộc",
+        "CCCD_EXISTED_INPUT_ERROR": "Số CCCD này đã tồn tại"
     },
     "errorPage": {
         "notFoundPage": {
@@ -391,7 +458,11 @@
         "updateRatingSuccess": "Cập nhật đánh giá thành công",
         "updateRatingFailed": "Cập nhật đánh giá thất bại. Vui lòng thử lại",
         "followSuccess": "Theo dõi truyện thành công",
-        "unfollowSuccess": "Bỏ theo dõi truyện thành công"
+        "unfollowSuccess": "Bỏ theo dõi truyện thành công",
+        "createEmployeeSuccess": "Tạo nhân viên kiểm duyệt thành công",
+        "createEmployeeFailed": "Tạo nhân viên thất bại. Vui lòng thử lại",
+        "POST_SUCCESS": "Cập nhật thông tin nhân viên kiểm duyệt thành công",
+        "FAILED": "Đã có lỗi xảy ra. Vui lòng thử lại"
     },
     "pagination": {
         "next": "Sau",
