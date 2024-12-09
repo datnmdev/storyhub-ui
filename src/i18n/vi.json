@@ -438,6 +438,29 @@
                     }
                 }
             }
+        },
+        "followManagementPage": {
+            "breadcrumb": {
+                "items": {
+                    "homePage": "Trang chủ",
+                    "followManagementPage": "Theo dõi"
+                }
+            },
+            "followManagementSection": {
+                "title": "Danh sách theo dõi",
+                "btn": {
+                    "deleteAllBtn": "Bỏ tất cả",
+                    "readingBtn": "Đọc"
+                },
+                "loading": {
+                    "message": "Đang lấy danh sách theo dõi...",
+                    "handlingReqMessage": "Đang xử lý yêu cầu..."
+                },
+                "item": {
+                    "followedAt": "Theo dõi vào lúc {{value}}",
+                    "newestChapter": "Chương mới nhất:"
+                }
+            }
         }
     },
     "manager": {
@@ -581,7 +604,7 @@
     "notification": {
         "signInWithEmailPasswordFailure": "Địa chỉ email hoặc mật khẩu không đúng",
         "loginSuccess": "Đăng nhập thành công",
-        "undefinedError": "Đã có lỗi không xác định xảy ra, hãy vui lòng thử lại",
+        "undefinedError": "Đã có lỗi xảy ra, hãy vui lòng thử lại",
         "signUpSuccess": "Đăng ký tài khoản thành công",
         "verifyAccountSuccess": "Xác nhận tài khoản thành công",
         "verifyOtpError": "Mã OTP không chính xác. Vui lòng thử lại",
@@ -600,7 +623,8 @@
         "createEmployeeSuccess": "Tạo nhân viên kiểm duyệt thành công",
         "createEmployeeFailed": "Tạo nhân viên thất bại. Vui lòng thử lại",
         "POST_SUCCESS": "Cập nhật thông tin nhân viên kiểm duyệt thành công",
-        "FAILED": "Đã có lỗi xảy ra. Vui lòng thử lại"
+        "FAILED": "Đã có lỗi xảy ra. Vui lòng thử lại",
+        "deleteAllFollowSuccess": "Bỏ theo dõi tất cả các bộ truyện thành công"
     },
     "pagination": {
         "next": "Sau",
