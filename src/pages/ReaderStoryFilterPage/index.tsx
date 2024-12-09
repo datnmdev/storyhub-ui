@@ -84,7 +84,7 @@ function ReaderStoryFilterPage() {
                                                     />
                                                 )
                                             })}
-                                        </div>x
+                                        </div>
 
                                         {data[1] > 0
                                             && (
