@@ -28,6 +28,7 @@ import ReaderInvoiceHistoryPage from "@pages/ReaderInvoiceHistoryPage";
 import ReaderStoryFilterPage from "@pages/ReaderStoryFilterPage";
 import ManagerLayout from "@layouts/ManagerLayout";
 import ManagerEmployeeManagementPage from "@pages/ManagerEmployeeManagementPage";
+import ReaderRankPage from "@pages/ReaderRankPage";
 
 const router = createBrowserRouter([
     {
@@ -53,6 +54,14 @@ const router = createBrowserRouter([
                 element: (
                     <ReaderLayout>
                         <ReaderStoryInfoPage />
+                    </ReaderLayout>
+                ),
+            },
+            {
+                path: paths.readerRankPage(),
+                element: (
+                    <ReaderLayout>
+                        <ReaderRankPage />
                     </ReaderLayout>
                 ),
             },
