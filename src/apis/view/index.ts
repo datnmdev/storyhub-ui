@@ -12,6 +12,11 @@ const viewApi = {
         return axiosInstance().get(`/view/get-top`, {
             params: options.queries
         });
+    },
+    getTopViewChartData: (options: RequestInit) => {
+        return axiosInstance().get('/view/get-top-view-chart-data', {
+            params: options.queries
+        })
     }
 }
 
