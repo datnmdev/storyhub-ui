@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import styles from "./AuthorStatistic.module.scss";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useAppSelector } from "@hooks/redux.hook";
 import authFeature from "features/auth";
 import useFetch from "@hooks/fetch.hook";
@@ -11,12 +10,10 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import { toast } from "react-toastify";
-import "bootstrap/dist/css/bootstrap.min.css";
 const AuthorStatistic: React.FC = () => {
     const [startDate, setStartDate] = useState<string>("");
     const [endDate, setEndDate] = useState<string>("");
     const [type, setType] = useState<number>(0);
-
     const profile = useAppSelector(authFeature.authSelector.selectUser);
 
     const { data: totalRevenueByTime, setRefetch: setRefetchTotalRevenueByTime } = useFetch<any[]>(
@@ -114,7 +111,7 @@ const AuthorStatistic: React.FC = () => {
                     <DatePicker
                         selected={startDate ? new Date(startDate) : undefined}
                         onChange={(date) => date && handleDate(date, 1)}
-                        className="form-control ml-8"
+                        className={styles.customDatePicker}
                         minDate={new Date("2020-01-01 00:00:00")}
                         maxDate={new Date(Date.now())}
                     />
@@ -122,13 +119,13 @@ const AuthorStatistic: React.FC = () => {
                     <DatePicker
                         selected={endDate ? new Date(endDate) : undefined}
                         onChange={(date) => date && handleDate(date, 2)}
-                        className="form-control ml-8"
+                        className={styles.customDatePicker}
                         minDate={new Date("2020-01-01 00:00:00")}
                         maxDate={new Date(Date.now())}
                     />
                 </div>
-                <div>
-                    <button className="btn btn-success" onClick={handleStatistic}>
+                <div className={styles.btnStatistic}>
+                    <button className={styles.btnSuccess} onClick={handleStatistic}>
                         Thống kê ngay
                     </button>
                 </div>

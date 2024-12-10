@@ -9,7 +9,6 @@ import { useAppSelector } from "@hooks/redux.hook";
 import authFeature from "@features/auth";
 import { Country, Genre, Story } from "../AllInterface/interface";
 import { useNavigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
 import TextEditor from "@components/TextEditorforAuthor";
 import { useSelector } from "react-redux";
 import { AppRootState } from "@store/store.type";
@@ -54,8 +53,8 @@ const AuthorCreateStory = () => {
         {
             body: {
                 title,
-                description: description ? description.replace(/<p>/g, "").replace(/<\/p>/g, "") : "",
-                note: notes ? notes.replace(/<p>/g, "").replace(/<\/p>/g, "") : "",
+                description: description ? description : "",
+                note: notes ? notes : "",
                 coverImage: "tem",
                 type,
                 status: status === 1 ? 1 : 0,
@@ -290,10 +289,10 @@ const AuthorCreateStory = () => {
                             ))}
                     </div>
                     <div className={styles.buttonGroup}>
-                        <button className="btn btn-primary mx-2" disabled={isCreatingStory} onClick={handleSubmit}>
+                        <button className={styles.btnPrimary} disabled={isCreatingStory} onClick={handleSubmit}>
                             Lưu
                         </button>
-                        <button className="btn btn-secondary" onClick={handleRefresh}>
+                        <button className={styles.btnSecondary} onClick={handleRefresh}>
                             Làm mới
                         </button>
                     </div>
@@ -309,7 +308,7 @@ const AuthorCreateStory = () => {
                     />
 
                     <span>giá: {amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} đ</span>
-                    <button className="btn btn-success" onClick={() => setShowPrice(true)}>
+                    <button className={styles.btnSuccess} onClick={() => setShowPrice(true)}>
                         Tạo giá
                     </button>
                 </div>

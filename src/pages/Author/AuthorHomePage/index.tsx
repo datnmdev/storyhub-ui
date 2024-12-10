@@ -9,7 +9,6 @@ import apis from "@apis/index";
 import { useAppSelector } from "@hooks/redux.hook";
 import authFeature from "@features/auth";
 import { StoryStatus, StoryStatusLabels } from "../AllEnum/enum";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useDispatch } from "react-redux";
 import { setWebSocketService } from "@store/webSocketSlice";
 import WebSocketService from "@components/AuthorHeader/Socket/socket";
@@ -25,13 +24,13 @@ const AuthorHomePage = () => {
     const [totalPage, setTotalPage] = useState<number>(1);
     const [mangaItems, setMangaItems] = useState<any[]>([]);
     const profile = useAppSelector(authFeature.authSelector.selectUser);
+    const [checkConnent, setCheckConnet] = useState<number>(1);
 
     useEffect(() => {
-        if (profile) {
+        if (profile && checkConnent == 1) {
+            setCheckConnet(2);
             const webSocketService = new WebSocketService(profile.id.toString());
             dispatch(setWebSocketService(webSocketService));
-        } else {
-            dispatch(setWebSocketService(null)); // Nếu không có profile, đặt service là null
         }
     }, [profile, dispatch]);
 
@@ -69,10 +68,10 @@ const AuthorHomePage = () => {
 
     const handleFilter = (event: any, type: "status" | "type") => {
         if (type === "status") {
-            setStatusFilter(+event.target.value);
+            setStatusFilter(+event.target.value === 5 ? undefined : +event.target.value);
             setRefetch({ value: true });
         } else {
-            setTypeFilter(+event.target.value);
+            setTypeFilter(+event.target.value === 5 ? undefined : +event.target.value);
             setRefetch({ value: true });
         }
     };
@@ -93,10 +92,10 @@ const AuthorHomePage = () => {
             <div className={styles.mangaListContainer}>
                 <div className={styles.header}>
                     <div className={styles.headerLeft}>
-                        <button className="btn btn-primary" onClick={() => navigate(paths.authorCreateStory())}>
+                        <button className={styles.btnPrimary} onClick={() => navigate(paths.authorCreateStory())}>
                             Thêm mới
                         </button>
-                        <button className="btn btn-secondary" onClick={handleRefetch}>
+                        <button className={styles.btnSecondary} onClick={handleRefetch}>
                             Làm mới
                         </button>
                     </div>
@@ -114,20 +113,20 @@ const AuthorHomePage = () => {
                     </Form>
                     <div className={styles.statusFilterContainer}>
                         <select className={styles.statusFilter} onChange={(event) => handleFilter(event, "status")}>
-                            <option disabled>Trạng thái truyện</option>
+                            <option value="5">Trạng thái truyện</option>
                             <option value="0">Chưa phát hành</option>
                             <option value="1">Yêu cầu phát thành</option>
                             <option value="2">Đang phát hành</option>
                             <option value="4">Hoàn thành</option>
                         </select>
-                        <select className={styles.statusFilter}>
+                        {/* <select className={styles.statusFilter}>
                             <option disabled>Thể loại</option>
                             <option value="1">Hành động</option>
                             <option value="2">Chiến tranh</option>
                             <option value="3">Kinh dị</option>
-                        </select>
+                        </select> */}
                         <select className={styles.statusFilter} onChange={(event) => handleFilter(event, "type")}>
-                            <option disabled>Loại truyện</option>
+                            <option value="5">Loại truyện</option>
                             <option value="1">Truyện tranh</option>
                             <option value="0">Truyện chữ</option>
                         </select>
@@ -159,9 +158,11 @@ const AuthorHomePage = () => {
                                     </h5>
                                     <span className={styles.mangaPrice}>
                                         {manga?.node?.prices && manga?.node?.prices.length > 0
-                                            ? manga?.node?.prices[manga?.node?.prices.length - 1]?.amount
-                                            : 0}
-                                        ₫
+                                            ? new Intl.NumberFormat(undefined, {
+                                                  style: "currency",
+                                                  currency: "VND",
+                                              }).format(manga?.node?.prices[manga?.node?.prices.length - 1]?.amount)
+                                            : "0 ₫"}
                                     </span>
                                     <span className={styles.mangaStatus}>
                                         {StoryStatusLabels[manga?.node?.status as StoryStatus]}
@@ -173,23 +174,23 @@ const AuthorHomePage = () => {
             </div>
             <div className={styles.storyPagination}>
                 <ReactPaginate
-                    nextLabel=" ->"
+                    nextLabel="Sau ->"
                     onPageChange={handlePageClick}
                     pageRangeDisplayed={3}
                     marginPagesDisplayed={2}
                     pageCount={totalPage}
-                    previousLabel="<- "
-                    pageClassName="page-item"
-                    pageLinkClassName="page-link"
-                    previousClassName="page-item"
-                    previousLinkClassName="page-link"
-                    nextClassName="page-item"
-                    nextLinkClassName="page-link"
+                    previousLabel="<- Trước"
+                    pageClassName={styles.pageItem}
+                    pageLinkClassName={styles.pageLink}
+                    previousClassName={styles.pageItem}
+                    previousLinkClassName={styles.pageLink}
+                    nextClassName={styles.pageItem}
+                    nextLinkClassName={styles.pageLink}
                     breakLabel="..."
-                    breakClassName="page-item"
-                    breakLinkClassName="page-link"
-                    containerClassName="pagination"
-                    activeClassName="active"
+                    breakClassName={styles.pageItem}
+                    breakLinkClassName={styles.pageLink}
+                    containerClassName={styles.pagination}
+                    activeClassName={styles.active}
                     renderOnZeroPageCount={null}
                     forcePage={currentPage - 1}
                 />

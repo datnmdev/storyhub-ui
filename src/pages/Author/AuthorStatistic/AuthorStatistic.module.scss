@@ -14,7 +14,7 @@
         .filtersType {
             display: flex;
             align-items: center;
-            gap: 48px;
+            gap: 53px;
             .customSelect {
                 border-radius: 5px;
                 border: 1px solid #d4d4d4;
@@ -25,6 +25,30 @@
         .customDate {
             display: flex;
             align-items: center;
+
+            .customDatePicker {
+                width: 157px;
+                margin-left: 30px;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 1rem;
+            }
+        }
+
+        .btnStatistic {
+            .btnSuccess {
+                background-color: rgb(27, 213, 77);
+                border-radius: 5px;
+                color: white;
+                border: none;
+                padding: 7px 14px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(4, 197, 55);
+                }
+            }
         }
     }
 

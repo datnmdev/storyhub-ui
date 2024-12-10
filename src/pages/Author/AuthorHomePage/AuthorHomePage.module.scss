@@ -21,15 +21,31 @@ $font-color-light: #888;
         display: flex;
         gap: 10px;
         align-items: center;
-    }
 
-    .btnAdd {
-        background-color: $primary-color;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
+        .btnPrimary {
+            background-color: rgb(89, 89, 215);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 7px 14px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgb(42, 42, 210);
+            }
+        }
+        .btnSecondary {
+            border-radius: 5px;
+            background-color: rgb(164, 164, 164);
+            color: white;
+            border: none;
+            padding: 7px 14px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: gray;
+            }
+        }
     }
 
     .customSearch {
@@ -54,9 +70,11 @@ $font-color-light: #888;
     .statusFilterContainer {
         display: flex;
         align-items: center;
+
         .statusFilter {
             outline: none;
             padding: 8px;
+            cursor: pointer;
         }
     }
 
@@ -112,8 +130,24 @@ $font-color-light: #888;
 }
 
 .storyPagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 10px;
+    padding: 10px 0px;
+    .pagination {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        list-style: none;
+        padding: 0;
+    }
+    .pageItem {
+        margin: 0 5px;
+    }
+    .pageLink {
+        text-decoration: none;
+        color: #000; // Màu sắc mặc định cho các trang
+    }
+    // Định dạng cho trang đang được chọn
+    .active .pageLink {
+        font-weight: bold; // Làm đậm số trang
+        color: #007bff; // Thay đổi màu sắc nếu cần
+    }
 }

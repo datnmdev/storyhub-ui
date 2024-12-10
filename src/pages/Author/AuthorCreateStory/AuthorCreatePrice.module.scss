@@ -1,0 +1,66 @@
+.modalUpdatePrice {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    z-index: 1000; // Đảm bảo modal nằm trên các phần tử khác
+    .modalHeaderUpdatePrice {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+
+        .closeButton {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .customHeader {
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+        }
+    }
+
+    .formGroup {
+        margin-bottom: 15px;
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+
+            &:focus {
+                border-color: #007bff; // Màu viền khi focus
+                outline: none;
+            }
+        }
+    }
+    .btnSuccess {
+        background-color: rgb(27, 213, 77);
+        border-radius: 5px;
+        color: white;
+        border: none;
+        padding: 7px 14px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: rgb(4, 197, 55);
+        }
+    }
+}

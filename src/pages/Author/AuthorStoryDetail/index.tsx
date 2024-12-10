@@ -17,8 +17,8 @@ import { StoryStatus, StoryStatusLabels, StoryType, StoryTypeLabels } from "../A
 import ModalDeleteChapter from "./ModalDeleteChapter";
 import paths from "@routers/router.path";
 import { useNavigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
 import moment from "moment";
+import AuthorCreateAndUpdateNovelChapter from "../CreateAndUpdateNovelChapter";
 const AuthorStoryDetail = () => {
     const location = useLocation();
     const take = 12;
@@ -28,6 +28,7 @@ const AuthorStoryDetail = () => {
     const [search, setSearch] = useState("");
     const [showEditChapterImage, setShowEditChapterImage] = useState(false);
     const [showModalCreateAndUpdateChapter, setShowModalCreateAndUpdateChapter] = useState(false);
+    const [showModalCreateAndUpdateNovelChapter, setShowModalCreateAndUpdateNovelChapter] = useState(false);
     const [showDeleteChapter, setShowDeleteChapter] = useState(false);
     const [totalPage, setTotalPage] = useState<number>(1);
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -109,19 +110,28 @@ const AuthorStoryDetail = () => {
     };
 
     const handleFilter = (event: any) => {
-        setStatusFilter(+event.target.value);
+        setStatusFilter(+event.target.value === 5 ? undefined : +event.target.value);
         setRefetchChapterList({ value: true });
     };
 
     const handleCreateChapter = () => {
         setIndex(null);
-        setShowModalCreateAndUpdateChapter(true);
+        if (storyDetail?.type == 0) {
+            setShowModalCreateAndUpdateNovelChapter(true);
+        } else {
+            setShowModalCreateAndUpdateChapter(true);
+        }
+
         setIsUpdate(false); // Đặt chế độ là create
     };
 
     const handleUpdateChapter = (index: number) => {
         setIndex(index);
-        setShowModalCreateAndUpdateChapter(true);
+        if (storyDetail?.type == 0) {
+            setShowModalCreateAndUpdateNovelChapter(true);
+        } else {
+            setShowModalCreateAndUpdateChapter(true);
+        }
         setIsUpdate(true); // Đặt chế độ là update
     };
 
@@ -140,7 +150,7 @@ const AuthorStoryDetail = () => {
                 <div className={styles.headerStoryDetail}>
                     <span className={styles.titleStoryDetail}>Chi tiết truyện</span>
                     <button
-                        className="btn btn-success"
+                        className={styles.btnSuccess}
                         onClick={() =>
                             navigate(paths.authorUpdateStory(storyId.toString()), { state: { story: storyDetail } })
                         }
@@ -206,10 +216,10 @@ const AuthorStoryDetail = () => {
                 <div className={styles.chapterList}>
                     <div className={styles.listHeader}>
                         <div className={styles.leftActions}>
-                            <button className="btn btn-primary" onClick={handleCreateChapter}>
+                            <button className={styles.btnPrimary} onClick={handleCreateChapter}>
                                 Thêm chương mới
                             </button>
-                            <button className="btn btn-secondary" onClick={refetchData}>
+                            <button className={styles.btnSecondary} onClick={refetchData}>
                                 Làm mới
                             </button>
                         </div>
@@ -226,9 +236,9 @@ const AuthorStoryDetail = () => {
                                 />
                             </Form>
                             <select className={styles.filterDropdown} onChange={(event) => handleFilter(event)}>
-                                <option disabled>Bộ lọc</option>
+                                <option value="5">Bộ lọc</option>
                                 <option value="0">Chưa phát hành</option>
-                                <option value="1">Yêu cầu phát hành</option>
+                                {/* <option value="1">Yêu cầu phát hành</option> */}
                                 <option value="2">Đang phát hành</option>
                             </select>
                         </div>
@@ -261,10 +271,12 @@ const AuthorStoryDetail = () => {
                                             className={styles.deleteIcon}
                                             onClick={() => handleDeleteChapter(index)}
                                         />
-                                        <PiListBulletsFill
-                                            className={styles.listIcon}
-                                            onClick={() => handleChapterImageDetail(index)}
-                                        />
+                                        {storyDetail && storyDetail.type === 1 && (
+                                            <PiListBulletsFill
+                                                className={styles.listIcon}
+                                                onClick={() => handleChapterImageDetail(index)}
+                                            />
+                                        )}
                                     </td>
                                 </tr>
                             ))}
@@ -295,6 +307,23 @@ const AuthorStoryDetail = () => {
                                 : Math.max(...chapterList.map((chapter) => chapter.node.order)) + 1
                         }
                     />
+
+                    <AuthorCreateAndUpdateNovelChapter
+                        isOpen={showModalCreateAndUpdateNovelChapter}
+                        onClose={() => setShowModalCreateAndUpdateNovelChapter(false)}
+                        storyId={+storyId}
+                        isUpdate={isUpdate}
+                        storyTitle={storyDetail?.title ?? ""}
+                        title={isUpdate ? "Cập nhật chương" : "Thêm chương mới"}
+                        chapterList={chapterList}
+                        index={index ?? null}
+                        setRefetchChapterList={setRefetchChapterList}
+                        orderNew={
+                            chapterList.length === 0
+                                ? 1
+                                : Math.max(...chapterList.map((chapter) => chapter.node.order)) + 1
+                        }
+                    />
                     <ModalDeleteChapter
                         isOpen={showDeleteChapter}
                         onClose={() => setShowDeleteChapter(false)}
@@ -306,23 +335,23 @@ const AuthorStoryDetail = () => {
             </div>
             <div className={styles.storyDetailPagination}>
                 <ReactPaginate
-                    nextLabel=" ->"
+                    nextLabel="Sau ->"
                     onPageChange={handlePageClick}
                     pageRangeDisplayed={3}
                     marginPagesDisplayed={2}
                     pageCount={totalPage}
-                    previousLabel="<- "
-                    pageClassName="page-item"
-                    pageLinkClassName="page-link"
-                    previousClassName="page-item"
-                    previousLinkClassName="page-link"
-                    nextClassName="page-item"
-                    nextLinkClassName="page-link"
+                    previousLabel="<- Trước"
+                    pageClassName={styles.pageItem}
+                    pageLinkClassName={styles.pageLink}
+                    previousClassName={styles.pageItem}
+                    previousLinkClassName={styles.pageLink}
+                    nextClassName={styles.pageItem}
+                    nextLinkClassName={styles.pageLink}
                     breakLabel="..."
-                    breakClassName="page-item"
-                    breakLinkClassName="page-link"
-                    containerClassName="pagination"
-                    activeClassName="active"
+                    breakClassName={styles.pageItem}
+                    breakLinkClassName={styles.pageLink}
+                    containerClassName={styles.pagination}
+                    activeClassName={styles.active}
                     renderOnZeroPageCount={null}
                     forcePage={currentPage - 1}
                 />

@@ -1,0 +1,94 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+
+    .modalContent {
+        background: #fff;
+        border-radius: 8px;
+        width: 900px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+
+        .modalHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            h2 {
+                margin: 0;
+                font-size: 18px;
+            }
+
+            .closeButton {
+                background: none;
+                border: none;
+                font-size: 24px;
+                cursor: pointer;
+            }
+        }
+
+        .modalBody {
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+            height: 550px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+
+            .customdiv {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 10px;
+                flex-direction: row;
+                align-items: center;
+
+                .customlabel {
+                    width: 20%; // Thay đổi chiều rộng của label
+                }
+                input,
+                select {
+                    width: 30%; // Giữ nguyên chiều rộng của input
+                    padding: 8px;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    margin-top: 5px;
+                    padding-right: 10px;
+
+                    &:focus {
+                        border-color: #007bff;
+                        outline: none;
+                    }
+                }
+            }
+        }
+
+        .modalFooter {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+
+            .btnSuccess {
+                background-color: rgb(27, 213, 77);
+                border-radius: 5px;
+                color: white;
+                border: none;
+                padding: 7px 14px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(4, 197, 55);
+                }
+            }
+        }
+    }
+}

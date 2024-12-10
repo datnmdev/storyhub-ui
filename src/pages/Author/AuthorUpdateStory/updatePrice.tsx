@@ -6,8 +6,7 @@ import useFetch from "@hooks/fetch.hook";
 import apis from "@apis/index";
 import { toast } from "react-toastify";
 import { Price } from "../AllInterface/interface";
-import { Modal, Button, Form, Table } from "react-bootstrap";
-
+import styles from "./AuthorUpdatePrice.module.scss";
 interface AuthorModalUpdatePriceProps {
     isOpen: boolean;
     onClose: () => void;
@@ -63,6 +62,7 @@ const AuthorUpdatePrice = ({
             toast.error("Vui lòng chọn ngày áp dụng.");
             return false;
         }
+        onClose();
         return true;
     };
 
@@ -71,65 +71,62 @@ const AuthorUpdatePrice = ({
     };
     const handleSubmit = () => {
         if (!checkValid()) return;
-        onClose();
-        toast.success("Tạo giá thành công.");
+
+        toast.success("Tạo giá mới thành công.");
     };
 
     return (
-        <Modal show={isOpen} onHide={onClose} animation={false} backdrop="static" centered>
-            <Modal.Header closeButton>
-                <Modal.Title>Cập nhật giá</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Form>
-                    <Form.Group style={{ marginBottom: "10px" }}>
-                        <Form.Label>Giá truyện/chương</Form.Label>
-                        <Form.Control
-                            type="text"
-                            value={amount}
-                            onChange={(e) => handleUpdatePrice(e.target.value)}
-                            placeholder="Giá truyện/chương"
-                        />
-                    </Form.Group>
-                    <Form.Group style={{ marginBottom: "10px" }}>
-                        <Form.Label>Ngày áp dụng</Form.Label>
-                        <br />
-                        <DatePicker
-                            className="form-control"
-                            selected={startTime ? new Date(startTime) : undefined}
-                            onChange={(date) => date && handleOnClickDate(date)}
-                            minDate={new Date(Date.now())}
-                        />
-                    </Form.Group>
-                </Form>
-                <div style={{ textAlign: "right" }}>
-                    <Button variant="primary" onClick={handleSubmit}>
-                        Lưu
-                    </Button>
-                </div>
-                <h3>Danh sách giá</h3>
-                <div style={{ maxHeight: "200px", overflowY: "auto" }}>
-                    <Table bordered>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Giá</th>
-                                <th>Ngày áp dụng</th>
+        <div className={styles.modalUpdatePrice}>
+            <header className={styles.modalHeaderUpdatePrice}>
+                <span className={styles.customHeader}>Cập nhật giá</span>
+                <button className={styles.closeButton} onClick={() => checkValid()}>
+                    &times;
+                </button>
+            </header>
+            <div className={styles.formGroup}>
+                <label>Giá truyện/chương</label>
+                <input
+                    type="text"
+                    value={amount}
+                    onChange={(e) => handleUpdatePrice(e.target.value)}
+                    placeholder="Giá truyện/chương"
+                />
+            </div>
+            <div className={styles.formGroup}>
+                <label>Ngày áp dụng</label>
+                <DatePicker
+                    className="form-control"
+                    selected={startTime ? new Date(startTime) : null}
+                    onChange={(date) => date && handleOnClickDate(date)}
+                    minDate={new Date(Date.now())}
+                />
+            </div>
+            <button className={styles.btnSuccess} onClick={handleSubmit}>
+                Lưu
+            </button>
+
+            <h3>Danh sách giá</h3>
+            <div className={styles.customTable}>
+                <table className={styles.priceTable}>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Giá</th>
+                            <th>Ngày áp dụng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {priceList.map((entry) => (
+                            <tr key={entry.id}>
+                                <td>{entry.id}</td>
+                                <td>{entry.amount}</td>
+                                <td>{moment(entry.startTime).format("DD/MM/YYYY HH:mm:ss")}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {priceList.map((entry) => (
-                                <tr key={entry.id}>
-                                    <td>{entry.id}</td>
-                                    <td>{entry.amount}</td>
-                                    <td>{moment(entry.startTime).format("DD/MM/YYYY HH:mm:ss")}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
-                </div>
-            </Modal.Body>
-        </Modal>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     );
 };
 

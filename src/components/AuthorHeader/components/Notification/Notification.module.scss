@@ -1,42 +1,94 @@
 .notificationWrapper {
-    .dropdownMenu {
-        display: flex;
-        align-items: center;
-        margin-left: auto;
-        flex-direction: column;
-        border-radius: 4px;
-    }
-    .customDropdownItemTitle {
-        width: 200px;
-        padding: 0px 10px;
-        font-weight: 600;
-        font-size: 16px;
-        display: flex;  
-        justify-content: left;
-        border-bottom: 1px solid #ddd;
-    }
-    .customDropdownItem {
-        width: 200px;
-        height: 35px;
-        padding: 0px 10px;
-        display: flex;
-        font-size: 12px;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        border-bottom: 1px solid #ddd;
+    position: relative;
+    display: inline-block;
 
-        &:hover {
-            background-color: #f1f1f1;
+    .iconNotification {
+        background: none;
+        border: none;
+        cursor: pointer;
+        position: relative;
+        font-size: 16px;
+
+        .customImage {
+            padding-top: 2px;
+            width: 3.1rem;
+            height: 3.1rem;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .customCountNotification {
+            position: absolute;
+            font-size: 12px;
+            top: -8px; /* Changed from 0 to 20 */
+            right: -4px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     }
-    .customDropdownItemViewAll {
-        width: 200px;
-        height: 35px;
-        padding: 0px 10px;
-        display: flex;
-        align-items: center;
-        justify-content: right;
-        cursor: pointer;
+
+    .notificationDropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 220px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+
+        .title {
+            font-weight: bold;
+            padding: 2px 8px; /* Giảm padding của tiêu đề "Thông báo" */
+            font-size: 20px;
+            border-bottom: 1px solid #f1f1f1;
+            margin: 0; /* Giảm margin để giảm khoảng cách */
+            font-weight: bold;
+            padding: 6px 8px;
+            font-size: 20px;
+            line-height: 1.6;
+            border-bottom: 1px solid #f1f1f1;
+        }
+        .list {
+            max-height: 350px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column; /* Sắp xếp theo chiều dọc */
+
+            .item {
+                display: flex;
+                flex-direction: column; /* Điều chỉnh item theo chiều dọc */
+                padding: 4px 6px;
+                font-size: 12px;
+                border-bottom: 1px solid #f1f1f1;
+                height: auto; /* Không cố định chiều cao nữa */
+                line-height: 1.4; /* Điều chỉnh line-height để các mục không bị chồng lên nhau */
+                margin-bottom: -2px;
+                cursor: pointer;
+
+                .notificationTitle {
+                    font-size: 1.1em;
+                }
+
+                .notificationStatus {
+                    color: #ff9800; // Màu cho trạng thái
+                    margin-left: 5px;
+                }
+
+                .notificationDate {
+                    font-size: 0.9em;
+                    margin-left: 10px;
+                }
+            }
+        }
     }
 }

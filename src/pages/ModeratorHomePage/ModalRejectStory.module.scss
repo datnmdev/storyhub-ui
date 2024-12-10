@@ -1,0 +1,51 @@
+.ModalRejectStory {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    width: 600px;
+    line-height: 1.6;
+    z-index: 1000; // Đảm bảo modal nằm trên các phần tử khác
+    .modalHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+
+        .closeButton {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .customHeader {
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+        }
+    }
+
+    .modalFooter {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        padding-top: 10px;
+
+        .btnPrimary {
+            background-color: rgb(89, 89, 215);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 7px 14px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgb(42, 42, 210);
+            }
+        }
+    }
+}

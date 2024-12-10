@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { ModalDeleteChapterProps } from "../AllInterface/interface";
 import apis from "@apis/index";
 import useFetch from "@hooks/fetch.hook";
 import { toast } from "react-toastify";
-import { Modal, Button } from "react-bootstrap";
+import styles from "./ModalDeleteChapter.module.scss";
 
 const ModalDeleteChapter: React.FC<ModalDeleteChapterProps> = ({
     isOpen,
@@ -24,6 +24,7 @@ const ModalDeleteChapter: React.FC<ModalDeleteChapterProps> = ({
         },
         false
     );
+
     useEffect(() => {
         if (deleteChapter) {
             setRefetchChapterList({ value: true });
@@ -39,24 +40,24 @@ const ModalDeleteChapter: React.FC<ModalDeleteChapterProps> = ({
     if (!isOpen) return null;
 
     return (
-        <Modal show={isOpen} onHide={onClose} animation={false} backdrop="static">
-            <Modal.Header>
-                <Modal.Title>Xóa chương</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <label>
-                    Bạn có muốn xóa chương <span>{chapterName}</span> này không?
-                </label>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="success" onClick={handleDeleteChapter}>
-                    Lưu
-                </Button>
-                <Button variant="danger" onClick={onClose}>
-                    Hủy
-                </Button>
-            </Modal.Footer>
-        </Modal>
+        <div className={styles.modalOverlay} onClick={onClose}>
+            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+                <h2 className={styles.modalTitle}>Xóa chương</h2>
+                <div className={styles.modalBody}>
+                    <label>
+                        Bạn có muốn xóa chương <span>{chapterName}</span> này không?
+                    </label>
+                </div>
+                <div className={styles.modalFooter}>
+                    <button className={styles.btnSuccess} onClick={handleDeleteChapter}>
+                        Lưu
+                    </button>
+                    <button className={styles.btnDanger} onClick={onClose}>
+                        Hủy
+                    </button>
+                </div>
+            </div>
+        </div>
     );
 };
 

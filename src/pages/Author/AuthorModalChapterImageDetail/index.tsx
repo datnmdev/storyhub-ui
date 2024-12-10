@@ -9,7 +9,6 @@ import {
     useFetchListUrlUploadFileForChapter,
     useFetchUpdateOrderImage,
 } from "./useFetch";
-import "bootstrap/dist/css/bootstrap.min.css";
 export interface ModalChapterImageDetailProps {
     isOpen: boolean;
     onClose: () => void;
@@ -259,10 +258,13 @@ const ModalChapterImageDetail: React.FC<ModalChapterImageDetailProps> = ({
                 </header>
                 <footer className={styles.modalFooter}>
                     <input id="previewImg" type="file" hidden multiple onChange={(event) => handleOnchangeImg(event)} />
-                    <button className="btn btn-primary" onClick={() => document.getElementById("previewImg")?.click()}>
+                    <button
+                        className={styles.btnPrimary}
+                        onClick={() => document.getElementById("previewImg")?.click()}
+                    >
                         Thêm ảnh
                     </button>
-                    <button className="btn btn-success" onClick={handleSave} disabled={isCreatingImage}>
+                    <button className={styles.btnSuccess} onClick={handleSave} disabled={isCreatingImage}>
                         Lưu
                     </button>
                 </footer>
@@ -298,24 +300,25 @@ const ModalChapterImageDetail: React.FC<ModalChapterImageDetailProps> = ({
 
                     {/* Right: Selected Image */}
                     <div className={styles.imagePreview}>
-                        <label>Số trang</label>
+                        <label className={styles.customLabel}>Số trang</label>
                         <div className={styles.headerImagePreview}>
                             <div className={styles.titleImagePreview}>
                                 <input
+                                    className={styles.customInput}
                                     type="number"
                                     name="pageNumber"
-                                    value={selectedImage?.order}
+                                    value={selectedImage ? selectedImage.order : ""}
                                     onChange={(event) => handleUpdateOrder(event, selectedImage?.id ?? 0)}
                                 />
                             </div>
 
                             <div className={styles.buttonPreview}>
-                                <button className="btn btn-primary" onClick={handleUpdateOrderOfImage}>
+                                <button className={styles.btnPrimary} onClick={handleUpdateOrderOfImage}>
                                     Cập nhật
                                 </button>
 
                                 <button
-                                    className="btn btn-danger"
+                                    className={styles.btnDanger}
                                     onClick={() => handleDeleteImage(selectedImage?.order ?? -1)}
                                 >
                                     Xóa

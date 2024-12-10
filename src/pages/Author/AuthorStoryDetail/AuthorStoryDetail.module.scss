@@ -1,5 +1,6 @@
 .detailPage {
     font-family: Arial, sans-serif;
+    max-height: 1390px;
     background-color: #f5f4f4;
     border-radius: 7px;
     padding: 15px 20px;
@@ -13,16 +14,17 @@
             font-size: 24px;
             font-weight: 600;
         }
-        .updateBtn {
-            background-color: #4caf50;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
+
+        .btnSuccess {
+            background-color: rgb(27, 213, 77);
             border-radius: 5px;
+            color: white;
+            border: none;
+            padding: 7px 14px;
+            cursor: pointer;
 
             &:hover {
-                background-color: #45a049;
+                background-color: rgb(4, 197, 55);
             }
         }
     }
@@ -94,6 +96,31 @@
             .leftActions {
                 display: flex;
                 gap: 10px;
+
+                .btnPrimary {
+                    background-color: rgb(89, 89, 215);
+                    color: white;
+                    border: none;
+                    border-radius: 5px;
+                    padding: 7px 14px;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: rgb(42, 42, 210);
+                    }
+                }
+                .btnSecondary {
+                    border-radius: 5px;
+                    background-color: rgb(164, 164, 164);
+                    color: white;
+                    border: none;
+                    padding: 7px 14px;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: gray;
+                    }
+                }
             }
 
             .rightActions {
@@ -106,16 +133,17 @@
                     align-items: center;
                     border: 1px solid #ccc; // Đường viền
                     border-radius: 20px; // Bo tròn góc
+                    padding: 5px; // Khoảng cách bên trong
                     max-width: 400px; // Chiều rộng tối đa
                     margin: auto; // Căn giữa
-                    padding-right: -5px !important;
+
                     .searchInput {
                         width: 300px !important;
                         border: none; // Không có đường viền
                         outline: none; // Không có viền khi chọn
                         flex: 1; // Chiếm toàn bộ không gian
-                        //padding: 5px; // Khoảng cách bên trong
-                        border-radius: 15px; // Bo tròn góc
+                        padding: 0px 5px; // Khoảng cách bên trong
+                        border-radius: 10px; // Bo tròn góc
                     }
                 }
 
@@ -123,6 +151,7 @@
                     padding: 8px;
                     border: 1px solid #ddd;
                     border-radius: 15px;
+                    cursor: pointer;
 
                     &:focus {
                         outline: none;
@@ -171,8 +200,24 @@
     }
 }
 .storyDetailPagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 10px;
+    padding: 10px 0px;
+    .pagination {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        list-style: none;
+        padding: 0;
+    }
+    .pageItem {
+        margin: 0 5px;
+    }
+    .pageLink {
+        text-decoration: none;
+        color: #000; // Màu sắc mặc định cho các trang
+    }
+    // Định dạng cho trang đang được chọn
+    .active .pageLink {
+        font-weight: bold; // Làm đậm số trang
+        color: #007bff; // Thay đổi màu sắc nếu cần
+    }
 }

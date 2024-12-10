@@ -48,7 +48,7 @@ function Setting() {
                 className="inline-block w-[3rem] h-[3rem] object-cover object-center rounded-full"
                 src={
                     profile?.avatar
-                        ? `https://s3bucket2024aws.s3.ap-southeast-1.amazonaws.com/${profile.avatar}`
+                        ? `${import.meta.env.VITE_SERVER_HOST}${import.meta.env.VITE_BASE_URI}${profile.avatar}`
                         : DefaultAvatar
                 }
                 onClick={toggleDropdown} // Toggle trạng thái khi click

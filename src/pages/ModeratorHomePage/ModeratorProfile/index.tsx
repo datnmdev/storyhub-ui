@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./ModeratorProfile.module.scss";
 import DefaultAvatar from "@assets/avatars/user-default.png";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useAppDispatch, useAppSelector } from "@hooks/redux.hook";
 import authFeature from "@features/auth";
 import useFetch from "@hooks/fetch.hook";
@@ -12,11 +11,12 @@ import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Gender } from "@constants/auth.constants";
+import moment from "moment";
 const ModeratorProfile: React.FC = () => {
     const uuid = uuidv4();
     const dispatch = useAppDispatch();
     const [fullName, setFullName] = useState<string | null>(null);
-    const [birthDate, setBirthDate] = useState<Date | null>(null);
+    const [birthDate, setBirthDate] = useState<string | null>(null);
     const [gender, setGender] = useState<Gender | null>(null);
     const [phone, setPhone] = useState<string | null>(null);
     const [previewImgURL, setPreviewImgURL] = useState<string | null>(null);
@@ -38,7 +38,7 @@ const ModeratorProfile: React.FC = () => {
                 dob: birthDate,
                 gender: gender,
                 phone: phone,
-                avatar: file ? `user/${profile?.id}/${fileName}` : profile?.avatar,
+                ...(file ? { avatar: `@internal:aws-s3:user/${profile?.id}/${fileName}` } : {}),
             },
         },
         false
@@ -68,7 +68,7 @@ const ModeratorProfile: React.FC = () => {
             setPhone(profile.phone);
             setPreviewImgURL(
                 profile?.avatar
-                    ? `https://s3bucket2024aws.s3.ap-southeast-1.amazonaws.com/${profile.avatar}`
+                    ? `${import.meta.env.VITE_SERVER_HOST}${import.meta.env.VITE_BASE_URI}${profile.avatar}`
                     : DefaultAvatar
             );
         }
@@ -118,10 +118,17 @@ const ModeratorProfile: React.FC = () => {
             toast.error("Họ và tên không được để trống");
             return false;
         }
+        console.log("1");
+        console.log(new Date().getFullYear());
+        console.log(birthDate && new Date(birthDate).getFullYear());
+        if (birthDate && new Date().getFullYear() - new Date(birthDate).getFullYear() < 15) {
+            toast.error("Năm sinh phải lớn hơn hoặc bằng 15.");
+            return false;
+        }
         return true;
     };
     const handleOnClickDate = (date: Date) => {
-        setBirthDate(date);
+        setBirthDate(moment(date).format("YYYY-MM-DD"));
     };
     const handleUpdateProfile = () => {
         if (!handleValidate()) {
@@ -144,7 +151,10 @@ const ModeratorProfile: React.FC = () => {
                 <div className={styles.avatarSection}>
                     <input id="previewImg" type="file" hidden onChange={(event) => handleOnchangeImg(event)} />
                     <img src={previewImgURL || ""} alt="Avatar" className={styles.avatar} />
-                    <button className="btn btn-success" onClick={() => document.getElementById("previewImg")?.click()}>
+                    <button
+                        className={styles.btnSuccess}
+                        onClick={() => document.getElementById("previewImg")?.click()}
+                    >
                         Thay đổi
                     </button>
                     <p className={styles.avatarNote}>Ảnh định dạng PNG, JPG, JPEG hoặc GIF</p>
@@ -165,7 +175,8 @@ const ModeratorProfile: React.FC = () => {
                             selected={birthDate ? new Date(birthDate) : undefined}
                             onChange={(date) => date && handleOnClickDate(date)}
                             className={styles.customDatePickerUser}
-                            maxDate={new Date(Date.now())}
+                            maxDate={new Date(new Date().setFullYear(new Date().getFullYear() - 12))}
+                            minDate={new Date(new Date().setFullYear(new Date().getFullYear() - 60))}
                         />
                     </div>
                     <div className={styles.formRow}>
@@ -191,7 +202,7 @@ const ModeratorProfile: React.FC = () => {
                     </div>
                 </div>
                 <button
-                    className="btn btn-success"
+                    className={styles.btnSuccess}
                     style={{ float: "right" }}
                     onClick={handleUpdateProfile}
                     disabled={isUpdatingProfile}

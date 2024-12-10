@@ -39,6 +39,7 @@ export interface ModerationRequest {
     createdAt: string;
     processAt: string;
     storyId: number;
+    story: any;
     chapterId: number;
     requesterId: number;
     responserId: number;

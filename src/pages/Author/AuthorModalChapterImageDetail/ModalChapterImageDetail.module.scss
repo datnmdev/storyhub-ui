@@ -10,7 +10,6 @@
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
 
-
     .modalContent {
         position: relative;
         width: 80%;
@@ -94,23 +93,57 @@
                 padding-left: 16px;
                 flex-direction: column;
 
+                .customLabel {
+                    font-size: 15px;
+                }
                 .headerImagePreview {
                     display: flex;
                     justify-content: space-between;
                     padding-bottom: 16px;
                     .titleImagePreview {
-                        label {
-                            font-size: 16px;
-                            color: #666;
-                        }
-                        input {
-                            width: 100px;
-                            border-radius: 6px;
+                        .customInput {
+                            width: 100%;
+                            padding: 5px;
+                            border: 1px solid #ccc;
+                            border-radius: 5px;
+                            font-size: 1rem;
+
+                            &:focus {
+                                border-color: #007bff;
+                                outline: none;
+                                box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+                            }
                         }
                     }
                     .buttonPreview {
                         display: flex;
                         gap: 10px;
+
+                        .btnPrimary {
+                            background-color: rgb(89, 89, 215);
+                            color: white;
+                            border: none;
+                            border-radius: 5px;
+                            padding: 7px 14px;
+                            cursor: pointer;
+
+                            &:hover {
+                                background-color: rgb(42, 42, 210);
+                            }
+                        }
+
+                        .btnDanger {
+                            border-radius: 5px;
+                            background-color: rgb(246, 66, 66);
+                            color: white;
+                            border: none;
+                            padding: 7px 14px;
+                            cursor: pointer;
+
+                            &:hover {
+                                background-color: rgb(237, 22, 22);
+                            }
+                        }
                     }
                 }
 
@@ -139,7 +172,32 @@
             display: flex;
             gap: 10px;
             padding: 10px;
-            
+
+            .btnPrimary {
+                background-color: rgb(89, 89, 215);
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 7px 14px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(42, 42, 210);
+                }
+            }
+
+            .btnSuccess {
+                background-color: rgb(27, 213, 77);
+                border-radius: 5px;
+                color: white;
+                border: none;
+                padding: 7px 14px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(4, 197, 55);
+                }
+            }
         }
     }
 }

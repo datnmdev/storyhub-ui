@@ -10,15 +10,16 @@ import depositeTransactionApi from "./depositeTransaction";
 import storyApi from "./story";
 import chapterApi from "./chapter";
 import chapterImageApi from "./chapterImage";
-import followApi from "./follow"
-import ratingApi from "./rating"
-import viewApi from "./view"
+import followApi from "./follow";
+import ratingApi from "./rating";
+import viewApi from "./view";
 import authorApi from "./author";
 import invoiceApi from "./invoice";
 import moderatorApi from "./moderator";
 
 import notificationUserApi from "./notificationUser";
 import statisticApi from "./statistic";
+import moderatorReqApi from "./moderationReq";
 const apis = {
     authApi,
     userApi,
@@ -39,7 +40,8 @@ const apis = {
     invoiceApi,
     notificationUserApi,
     statisticApi,
-    moderatorApi
+    moderatorApi,
+    moderatorReqApi,
 };
 
 export default apis;

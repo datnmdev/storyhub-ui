@@ -91,7 +91,33 @@
         .buttonGroup {
             margin-top: 20px;
             display: flex;
+            gap: 10px;
             justify-content: flex-end;
+
+            .btnPrimary {
+                background-color: rgb(89, 89, 215);
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 7px 14px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(42, 42, 210);
+                }
+            }
+            .btnSecondary {
+                border-radius: 5px;
+                background-color: rgb(164, 164, 164);
+                color: white;
+                border: none;
+                padding: 7px 14px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: gray;
+                }
+            }
         }
     }
 
@@ -114,18 +140,16 @@
             cursor: pointer;
         }
 
-        .updateButton {
-            padding: 8px 15px;
-            background-color: #28a745;
-            color: #fff;
-            font-size: 0.9rem;
-            border: none;
+        .btnSuccess {
+            background-color: rgb(27, 213, 77);
             border-radius: 5px;
+            color: white;
+            border: none;
+            padding: 7px 14px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
 
             &:hover {
-                background-color: #218838;
+                background-color: rgb(4, 197, 55);
             }
         }
     }

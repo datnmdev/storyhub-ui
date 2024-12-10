@@ -37,7 +37,7 @@ class WebSocketService {
     // Kiểm duyệt viên lắng nghe yêu cầu kiểm duyệt
     public listenNewReviewRequestForModerator(callback: (reviewRequest: any) => void): void {
         this.socket.on("newReviewRequest", (reviewRequest: any) => {
-            console.log("New review request received:", reviewRequest);
+            //console.log("New review request received:", reviewRequest);
             callback(reviewRequest); // Gọi callback với dữ liệu nhận được
         });
     }
@@ -45,7 +45,7 @@ class WebSocketService {
     // Tác giả lắng nghe yêu cầu kiểm duyệt
     public listenNewReviewRequestForAuthor(callback: (reviewRequest: any) => void): void {
         this.socket.on("review_request_created", (reviewRequest: any) => {
-            console.log("review request created received:", reviewRequest);
+            //console.log("review request created received:", reviewRequest);
             callback(reviewRequest); // Gọi callback với dữ liệu nhận được
         });
     }
@@ -71,7 +71,7 @@ class WebSocketService {
     // Tác giả lắng nghe sự kiện thay đổi về truyện
     public listenStoryUpdateEventForAuthor(callback: (storyId: number, reason: string) => void): void {
         this.socket.on("story_handled", (data: { storyId: number; reason: string }) => {
-            console.log("story handled event received:", data);
+            //console.log("story handled event received:", data);
             callback(data.storyId, data.reason); // Gọi callback với dữ liệu nhận được
         });
     }
@@ -79,7 +79,7 @@ class WebSocketService {
     // Kiểm duyệt viên lắng nghe sự kiện thay đổi về truyện
     public listenStoryUpdateEventforModerator(callback: (mess: string) => void): void {
         this.socket.on("moderation_request_updated", (mess: string) => {
-            console.log("Story update event received:", mess);
+            //console.log("Story update event received:", mess);
             callback(mess); // Gọi callback với dữ liệu nhận được
         });
     }
@@ -87,7 +87,7 @@ class WebSocketService {
     // Độc giả lắng nghe sự kiện cập nhật truyện
     public listenStoryUpdateEventforReader(callback: (mess: string) => void): void {
         this.socket.on("moderation_request_updated", (mess: string) => {
-            console.log("Story update event received:", mess);
+           // console.log("Story update event received:", mess);
             callback(mess); // Gọi callback với dữ liệu nhận được
         });
     }

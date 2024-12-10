@@ -90,18 +90,15 @@
             }
         }
 
-        .updateButton {
-            background-color: #28a745;
-            color: #fff;
+        .btnSuccess {
+            background-color: rgb(9, 150, 46);
+            color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
+            padding: 10px 20px;
             cursor: pointer;
-            width: 100%;
-            font-size: 16px;
 
             &:hover {
-                background-color: #218838;
+                background-color: #45a049;
             }
         }
     }

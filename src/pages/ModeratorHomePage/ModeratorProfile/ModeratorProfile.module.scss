@@ -24,6 +24,19 @@
             align-items: center;
             margin-bottom: 30px;
 
+            .btnSuccess {
+                background-color: rgb(27, 213, 77);
+                border-radius: 5px;
+                color: white;
+                border: none;
+                padding: 7px 14px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(4, 197, 55);
+                }
+            }
+
             .avatar {
                 width: 100px;
                 height: 100px;
@@ -63,6 +76,19 @@
                     border: 1px solid #ccc;
                     border-radius: 4px;
                 }
+            }
+        }
+
+        .btnSuccess {
+            background-color: rgb(27, 213, 77);
+            border-radius: 5px;
+            color: white;
+            border: none;
+            padding: 7px 14px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgb(4, 197, 55);
             }
         }
     }

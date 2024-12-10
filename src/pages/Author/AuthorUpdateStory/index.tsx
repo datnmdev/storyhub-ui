@@ -9,10 +9,10 @@ import { useAppSelector } from "@hooks/redux.hook";
 import authFeature from "@features/auth";
 import { Country, Genre, Story } from "../AllInterface/interface";
 import { useLocation, useNavigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
 import TextEditor from "@components/TextEditorforAuthor";
-//import { connectToSocket } from "../Socket/socket";
 import paths from "@routers/router.path";
+import { useSelector } from "react-redux";
+import { AppRootState } from "@store/store.type";
 const AuthorUpdateStory = () => {
     const uuid = uuidv4();
     const navigate = useNavigate();
@@ -39,7 +39,7 @@ const AuthorUpdateStory = () => {
     const { data: genreList } = useFetch<Genre[]>(apis.genreApi.getGenreList);
     const { story } = location.state as { story: Story };
     const profile = useAppSelector(authFeature.authSelector.selectUser);
-    //const { sendModerationRequest } = connectToSocket(profile?.id);
+    const webSocketService = useSelector((state: AppRootState) => state.webSocket.service);
     useEffect(() => {
         if (story) {
             setTitle(story.title);
@@ -95,8 +95,8 @@ const AuthorUpdateStory = () => {
             body: {
                 id: story?.id,
                 title,
-                description: description ? description.replace(/<p>/g, "").replace(/<\/p>/g, "") : "",
-                note: notes ? notes.replace(/<p>/g, "").replace(/<\/p>/g, "") : "",
+                description: description ? description : "",
+                note: notes ? notes : "",
                 type,
                 status: status,
                 countryId,
@@ -112,7 +112,7 @@ const AuthorUpdateStory = () => {
                           alias: aliasTitle,
                       }
                     : {}),
-                ...(story?.prices[story?.prices.length - 1]?.amount.toString() !== amount && startTime
+                ...(story?.prices[story?.prices.length - 1]?.amount.toString() !== amount
                     ? {
                           price: {
                               amount: amount,
@@ -222,7 +222,9 @@ const AuthorUpdateStory = () => {
                 navigate(paths.authorStoryDetail(story?.id.toString() ?? ""), { state: story?.id });
                 toast.success("Cập nhật truyện thành công.");
             }
-            //status === 1 && sendModerationRequest(story?.id ?? 0, profile?.id);
+            if (status === 1 && webSocketService) {
+                webSocketService?.sendModerationRequest(story.id, profile?.id);
+            }
         }
     }, [updateStory, updateStoryError]);
     return (
@@ -286,11 +288,11 @@ const AuthorUpdateStory = () => {
                     <label>
                         <span>Trạng thái:</span>
                         <select value={status} onChange={(e) => setStatus(Number(e.target.value))}>
-                            {status === 0 && <option value="0">Chưa phát hành</option>}
-                            {status === 1 && <option value="1">Yêu cầu phát hành</option>}
-                            {status === 2 && <option value="2">Đang phát hành</option>}
-                            {status !== 1 && <option value="5">Hoàn thành</option>}
-                            {status === 0 && <option value="6">Xóa</option>}
+                            {story.status === 0 && <option value="0">Chưa phát hành</option>}
+                            {(story.status === 1 || story.status === 0) && <option value="1">Yêu cầu phát hành</option>}
+                            {story.status === 2 && <option value="2">Đang phát hành</option>}
+                            {(story.status !== 1 && story.status !== 0) && <option value="4">Hoàn thành</option>}
+                            {story.status === 0 && <option value="6">Xóa</option>}
                         </select>
                     </label>
                     <label>
@@ -316,7 +318,7 @@ const AuthorUpdateStory = () => {
                             ))}
                     </div>
                     <div className={styles.buttonGroup}>
-                        <button className="btn btn-primary mx-2" disabled={isUpdatingStory} onClick={handleSubmit}>
+                        <button className={styles.btnPrimary} disabled={isUpdatingStory} onClick={handleSubmit}>
                             Lưu
                         </button>
                     </div>
@@ -332,7 +334,7 @@ const AuthorUpdateStory = () => {
                     />
 
                     <span>giá: {amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")} đ</span>
-                    <button className="btn btn-success" onClick={() => setShowPrice(true)}>
+                    <button className={styles.btnSuccess} onClick={() => setShowPrice(true)}>
                         Cập nhật giá
                     </button>
                 </div>

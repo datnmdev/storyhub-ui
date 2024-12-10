@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./AuthorWallet.module.scss";
-import "bootstrap/dist/css/bootstrap.min.css";
 const AuthorWallet: React.FC = () => {
     return (
         <div className={styles.walletContainer}>
@@ -35,7 +34,7 @@ const AuthorWallet: React.FC = () => {
                         <input type="text" defaultValue="Trần Đức Bể" className={styles.inputField} />
                     </label>
                 </div>
-                <button className="btn btn-success">Cập nhật tài khoản</button>
+                <button className={styles.btnSuccess}>Cập nhật tài khoản</button>
             </div>
         </div>
     );

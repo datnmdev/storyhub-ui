@@ -26,6 +26,10 @@ export const useFetchDeleteImage = (chapterImages: { id: number; fileName: strin
     return useFetch<any>(apis.chapterImageApi.deleteChapterImages, { body: chapterImages }, false);
 };
 
-export const useFetchUpdateOrderImage = (chapterImages: ChapterImage) => {
-    return useFetch<any>(apis.chapterImageApi.updateOrderChapterImages, { body: chapterImages }, false);
+export const useFetchUpdateOrderImage = (chapterImage: ChapterImage) => {
+    return useFetch<any>(
+        apis.chapterImageApi.updateOrderChapterImages,
+        { body: { id: chapterImage?.id, order: chapterImage?.order } },
+        false
+    );
 };

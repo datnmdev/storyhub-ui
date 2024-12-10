@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import WebSocketService from '@components/AuthorHeader/Socket/socket';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import WebSocketService from "@components/AuthorHeader/Socket/socket";
 
 interface WebSocketState {
     service: WebSocketService | null;
@@ -10,7 +10,7 @@ const initialState: WebSocketState = {
 };
 
 const webSocketSlice = createSlice({
-    name: 'webSocket',
+    name: "webSocket",
     initialState,
     reducers: {
         setWebSocketService(state, action: PayloadAction<WebSocketService | null>) {

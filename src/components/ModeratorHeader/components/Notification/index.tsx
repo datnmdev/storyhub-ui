@@ -1,7 +1,7 @@
 import IconButton from "@components/IconButton";
 import notification from "@assets/icons/static/notifiction.png";
 import styles from "./Notification.module.scss";
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useAppSelector } from "@hooks/redux.hook";
 import authFeature from "@features/auth";
 import useFetch from "@hooks/fetch.hook";
@@ -11,16 +11,14 @@ import moment from "moment";
 import ModalApproveStory from "@pages/ModeratorHomePage/ModalApproveStory";
 import { useSelector } from "react-redux";
 import { AppRootState } from "@store/store.type";
-interface NotificationProps {
-    setRefetch: (value: { value: boolean }) => void; // Định nghĩa kiểu cho prop
-}
 
-function Notification({ setRefetch }: NotificationProps) {
+function Notification() {
     const [showDropdown, setShowDropdown] = useState(false);
     const [countNotificationUnseen, setCountNotificationUnseen] = useState<number | null>(null);
     const [notificationId, setNotificationId] = useState<number | null>(null);
     const [storyId, setStoryId] = useState<number | null>(null);
     const [showModalApprove, setShowModalApprove] = useState(false);
+    const [moderationReqDetail, setModerationReqDetail] = useState<any | null>(null);
     const webSocketService = useSelector((state: AppRootState) => state.webSocket.service);
     const profile = useAppSelector(authFeature.authSelector.selectUser);
 
@@ -81,13 +79,27 @@ function Notification({ setRefetch }: NotificationProps) {
         if (profile) {
             setRefetchNotification({ value: true });
         }
-        if (notificationId !== undefined && notificationId !== null) {
+    }, [profile]);
+
+    useEffect(() => {
+        if (notificationId !== null) {
             setRefetchUpdateNotification({ value: true });
         }
+    }, [notificationId]);
+
+    useEffect(() => {
         if (updatedNotification) {
             setRefetchNotification({ value: true });
         }
-    }, [profile, notificationId, updatedNotification, storyId]);
+    }, [updatedNotification]);
+
+    const handleNotificationClick = (notificationId: number, storyId: number, moderationReq: any) => {
+        setNotificationId(notificationId);
+        setStoryId(storyId);
+        setModerationReqDetail(moderationReq);
+        setShowModalApprove(true);
+        setShowDropdown(false); // Đóng dropdown
+    };
 
     useEffect(() => {
         if (notificationData) {
@@ -102,95 +114,56 @@ function Notification({ setRefetch }: NotificationProps) {
         setShowDropdown((prevState) => !prevState); // Toggle trạng thái
     };
 
-    const handleNotificationClick = (notificationId: number, storyId: number) => {
-        setNotificationId(notificationId);
-        setStoryId(storyId);
-        setShowModalApprove(true);
-        setShowDropdown(false); // Đóng dropdown
-    };
     return (
-        <div className={styles.notificationWrapper} style={{ position: "relative" }}>
-            <div className={styles.dropdownMenu}>
-                <div style={{ position: "relative" }}>
-                    <IconButton
-                        icon={<img className="w-[3rem] h-[3rem] object-cover object-center" src={notification} />}
-                        width={48}
-                        height={40}
-                        borderRadius="50%"
-                        onClick={toggleDropdown}
-                    />
-                    {countNotificationUnseen != 0 && (
-                        <div
-                            style={{
-                                position: "absolute",
-                                top: 0,
-                                right: 0,
-                                backgroundColor: "red",
-                                color: "white",
-                                borderRadius: "50%",
-                                width: "20px",
-                                height: "20px",
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}
-                        >
-                            {countNotificationUnseen}
-                        </div>
-                    )}
-                </div>
-                {showDropdown && (
-                    <div
-                        style={{
-                            position: "absolute",
-                            top: "60px", // Đặt vị trí dropdown
-                            right: "0",
-                            backgroundColor: "white",
-                            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                            borderRadius: "4px",
-                            zIndex: 1000,
-                            overflowY: "auto",
-                            height: "400px",
-                        }}
-                    >
-                        <div className={styles.customDropdownItemTitle}>
-                            {" "}
-                            <span style={{ fontWeight: 600, fontSize: "20px", height: "20px" }}> Thông báo</span>
-                            <span style={{ fontWeight: 600, fontSize: "12px", height: "40px" }}>Xem tất cả</span>
-                        </div>
+        <div className={styles.notificationWrapper}>
+            <div className={styles.iconNotification}>
+                <IconButton
+                    icon={<img className={styles.customImage} src={notification} />}
+                    width={48}
+                    height={40}
+                    borderRadius="50%"
+                    onClick={toggleDropdown}
+                />
+                {countNotificationUnseen != 0 && (
+                    <div className={styles.customCountNotification}>
+                        {countNotificationUnseen && countNotificationUnseen > 999 ? "999+" : countNotificationUnseen}
+                    </div>
+                )}
+            </div>
+            {showDropdown && (
+                <div className={styles.notificationDropdown}>
+                    <h3 className={styles.title}>Thông báo</h3>
+                    <div className={styles.list}>
                         {Array.isArray(notificationData) &&
                             notificationData.map((item, index) => (
                                 <div
                                     key={`notification-${index}`}
-                                    className={`${styles.customDropdownItem} ${
-                                        item.status === 0 ? "font-bold" : "font-normal"
-                                    }`}
+                                    className={`${styles.item} ${item.status === 0 ? "font-bold" : "font-normal"}`}
                                     onClick={() =>
                                         handleNotificationClick(
                                             item.notificationId,
-                                            item.notification.moderationRequest.storyId
+                                            item.notification.moderationRequest.storyId,
+                                            item.notification.moderationRequest
                                         )
                                     }
                                 >
-                                    <span className={styles.notificationConnect}>
-                                        {item.notification.moderationRequest.reason &&
-                                        item.notification.moderationRequest.reason.length > 25
-                                            ? `${item.notification.moderationRequest.reason.substring(0, 25)}...`
-                                            : item.notification.moderationRequest.reason || ""}
+                                    <span className={styles.mess}>
+                                        {item.notification.moderationRequest.storyId ? `Yêu cầu kiểm duyệt truyện` : ""}
                                     </span>
-                                    <span className={styles.notificationDate}>
+                                    <span className={item.status === 0 ? "font-bold" : "font-normal"}>
                                         {moment(item.createdAt).format("DD/MM/YYYY")}
                                     </span>
                                 </div>
                             ))}
                     </div>
-                )}
-            </div>
+                </div>
+            )}
             <ModalApproveStory
-                show={showModalApprove}
-                handleClose={() => setShowModalApprove(false)}
+                isOpen={showModalApprove}
+                onClose={() => setShowModalApprove(false)}
                 story={storyDetail ?? ({} as Story)}
-                setRefetch={() => setRefetch({ value: true })}
+                webSocketService={webSocketService}
+                moderationReq={moderationReqDetail ?? null}
             />
         </div>
     );

@@ -3,8 +3,9 @@ import { AuthorModalCreateAndUpdateChapterProps, Chapter } from "../AllInterface
 import apis from "@apis/index";
 import useFetch from "@hooks/fetch.hook";
 import { toast } from "react-toastify";
-import styles from "./ModalCreateAndUpdateChapter.module.scss";
-const AuthorModalCreateAndUpdateChapter: React.FC<AuthorModalCreateAndUpdateChapterProps> = ({
+import styles from "./ModalNovelChapter.module.scss";
+import TextEditor from "@components/TextEditorforAuthor";
+const AuthorCreateAndUpdateNovelChapter: React.FC<AuthorModalCreateAndUpdateChapterProps> = ({
     isOpen,
     onClose,
     storyId,
@@ -19,6 +20,7 @@ const AuthorModalCreateAndUpdateChapter: React.FC<AuthorModalCreateAndUpdateChap
     const [order, setOrder] = useState<number>(0);
     const [titleChapter, setTitleChapter] = useState<string>("");
     const [status, setStatus] = useState<number>(0);
+    const [content, setContent] = useState<string>("");
 
     const {
         data: createChapter,
@@ -31,6 +33,7 @@ const AuthorModalCreateAndUpdateChapter: React.FC<AuthorModalCreateAndUpdateChap
             body: {
                 order: order,
                 name: titleChapter,
+                content: content,
                 status: status,
                 storyId: storyId,
             },
@@ -51,6 +54,7 @@ const AuthorModalCreateAndUpdateChapter: React.FC<AuthorModalCreateAndUpdateChap
                 order: order,
                 name: titleChapter,
                 status: status,
+                content: content,
                 storyId: storyId,
             },
         },
@@ -61,12 +65,14 @@ const AuthorModalCreateAndUpdateChapter: React.FC<AuthorModalCreateAndUpdateChap
             setOrder(chapterList?.[index ?? 0]?.node?.order ?? 0);
             setTitleChapter(chapterList?.[index ?? 0]?.node?.name ?? "");
             setStatus(chapterList?.[index ?? 0]?.node?.status ?? 0);
+            setContent(chapterList?.[index ?? 0]?.node?.content ?? 0);
         }
     }, [isUpdate, index]);
 
     useEffect(() => {
         if (orderNew && isUpdate == false) {
             setTitleChapter("");
+            setContent("");
             setStatus(0);
             setOrder(orderNew);
         }
@@ -139,26 +145,33 @@ const AuthorModalCreateAndUpdateChapter: React.FC<AuthorModalCreateAndUpdateChap
                     </button>
                 </header>
                 <div className={styles.modalBody}>
-                    <label>
-                        Số thứ tự
+                    <div className={styles.customdiv}>
+                        <label className={styles.customlabel}>Tên truyện</label>
+                        <input type="text" value={storyTitle} disabled />
+                        <label className={styles.customlabel}>Số thứ tự</label>
                         <input type="text" value={order} disabled />
-                    </label>
-                    <label>
-                        Tên chương
+                    </div>
+                    <div className={styles.customdiv}>
+                        <label className={styles.customlabel}>Tên chương</label>
                         <input type="text" value={titleChapter} onChange={(e) => setTitleChapter(e.target.value)} />
-                    </label>
-                    <label>
-                        Trạng thái
+                        <label className={styles.customlabel}>Trạng thái</label>
                         <select value={status} onChange={(e) => setStatus(Number(e.target.value))}>
                             {status === 0 && <option value="0">Chưa phát hành</option>}
                             <option value="2">Phát hành</option>
-                            {status === 0 && <option value="3">Xóa</option>}
+                            {status === 0 && <option value="6">Xóa</option>}
                         </select>
-                    </label>
-                    <label>
-                        Tên truyện
-                        <input type="text" value={storyTitle} disabled />
-                    </label>
+                    </div>
+
+                    <div className={styles.customTextEditor}>
+                        <label className={styles.customlabel}>Nội dung</label>
+                        <TextEditor
+                            value={content}
+                            height={420}
+                            placeholder="Nhập nội dung chương"
+                            disabled={false}
+                            onChange={(value) => setContent(value)}
+                        />
+                    </div>
                 </div>
                 <footer className={styles.modalFooter}>
                     <button className={styles.btnSuccess} onClick={handleSubmit} disabled={isCreatingChapter}>
@@ -170,4 +183,4 @@ const AuthorModalCreateAndUpdateChapter: React.FC<AuthorModalCreateAndUpdateChap
     );
 };
 
-export default AuthorModalCreateAndUpdateChapter;
+export default AuthorCreateAndUpdateNovelChapter;
