@@ -9,7 +9,15 @@ const moderatorApi = {
     },
     createModerator: (options: RequestInit) => {
         return axiosInstance().post('/moderator', options.body);
-    }
+    },
+    checkCccd: (options: RequestInit) => {
+        return axiosInstance().get("/moderator/check-cccd", {
+            params: options.queries
+        })
+    },
+    updateModerator: (options: RequestInit) => {
+        return axiosInstance().put('/moderator', options.body);
+    },
 }
 
 export default moderatorApi;

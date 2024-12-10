@@ -20,6 +20,19 @@ const followApi = {
             params: options.queries
         })
     },
+    getTopFollowStory: (options: RequestInit) => {
+        return axiosInstance().get(`/follow/get-top`, {
+            params: options.queries
+        });
+    },
+    getFollowWithFilter: (options: RequestInit) => {
+        return axiosInstance().get('/follow/filter', {
+            params: options.queries
+        })
+    },
+    deleteAllFollow: () => {
+        return axiosInstance().delete('/follow/all');
+    }
 }
 
 export default followApi;

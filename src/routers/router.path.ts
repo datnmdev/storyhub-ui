@@ -2,6 +2,7 @@
 const paths = {
     readerHomePage: () => "/",
     readerStoryInfoPage: (storyId: string = ":storyId") => `/story/${storyId}`,
+    readerRankPage: () => `/rank`,
     signInPage: () => "/sign-in",
     signUpPage: () => "/sign-up",
     otpVerificationPage: () => "/otp-verification",
@@ -12,6 +13,7 @@ const paths = {
     readerInvoiceHistoryPage: () => "/reader/wallet/invoice-history",
     readerChapterContentPage: (storyId: string | number = ":storyId", chapterId: string | number = ":chapterId") => `/story/${storyId}/chapter/${chapterId}`,
     storyFilterPage: () => "/story-filter",
+    readerFollowManagementPage: () => "/reader/follow-management",
     managerDashboardPage: () => "/manager",
     managerEmployeeManagementPage: () => "/manager/employee-management",
     authorHomePage: () => "/author",

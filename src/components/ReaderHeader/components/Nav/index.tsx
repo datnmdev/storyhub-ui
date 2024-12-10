@@ -40,7 +40,7 @@ function Nav() {
 
             <Link
                 className={classNames("px-2 cursor-pointer", styles.item)}
-                to="#"
+                to={paths.readerRankPage()}
             >
                 {t("reader.header.nav.rank")}
             </Link>

@@ -10,6 +10,7 @@ export interface InputProps {
     maxLength?: number
     length?: number
     contentEditable?: boolean
+    readOnly?: boolean
     onChange?: ChangeEventHandler<HTMLInputElement>
     onFocus?: FocusEventHandler<HTMLInputElement>
     onBlur?: FocusEventHandler<HTMLInputElement>
