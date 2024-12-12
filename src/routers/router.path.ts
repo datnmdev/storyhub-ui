@@ -16,6 +16,7 @@ const paths = {
     readerFollowManagementPage: () => "/reader/follow-management",
     readerPersonalProfilePage: () => "/reader/setting/personal-profile",
     readerChangePasswordPage: () => "/reader/setting/change-password",
+    readerReadingHistoryPage: () => "/reader/reading-history",
     managerDashboardPage: () => "/manager",
     managerEmployeeManagementPage: () => "/manager/employee-management",
     authorHomePage: () => "/author",

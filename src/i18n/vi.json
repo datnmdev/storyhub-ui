@@ -4,7 +4,7 @@
         "header": {
             "nav": {
                 "home": "TRANG CHỦ",
-                "novel": "TRUYỆN CHỮ",
+                "novel": "TIỂU THUYẾT",
                 "comic": "TRUYỆN TRANH",
                 "search": "TÌM TRUYỆN",
                 "rank": "XẾP HẠNG"
@@ -133,7 +133,7 @@
                 "depositePopup": {
                     "amount": "Số tiền muốn nạp",
                     "bankCode": {
-                        "label": "Phương thức thanh toán",
+                        "label": "Loại tài khoản/thẻ thanh toán",
                         "vnpayQl": "Thanh toán qua ứng dụng hỗ trợ VNPAYQR",
                         "vnBank": "Thanh toán qua ATM-Tài khoản ngân hàng nội địa",
                         "intCard": "Thanh toán qua thẻ quốc tế"
@@ -269,7 +269,7 @@
                     }
                 },
                 "paymentRemindPopup": {
-                    "title": "Xác nhận thanh toán chương",
+                    "title": "Xác nhận mua chương",
                     "content": "Bạn sẽ mất <span style='color:red;font-weight:500;'>{{value}}đ</span> để đọc chương này. Bạn có muốn tiếp tục không?",
                     "btn": {
                         "ok": "Tiếp tục",
@@ -666,7 +666,7 @@
         "length": "Trường này phải có độ dài {{length}}",
         "numberString": "Trường này chỉ bao gồm chữ số",
         "amount": "Số tiền nạp tối thiểu 10,000 VND",
-        "bankCode": "Phương thức thanh toán không hợp lệ",
+        "bankCode": "Loại tài khoản/thẻ thanh toán không hợp lệ",
         "number": "Truờng này chỉ bao gồm các chữ số",
         "doj": "Ngày vào làm phải là một mốc thời gian trong quá khứ",
         "moderatorStatus": "Trạng thái của nhân viên không hợp lệ",
