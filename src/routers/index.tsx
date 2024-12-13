@@ -31,12 +31,13 @@ import ManagerLayout from "@layouts/ManagerLayout";
 import ManagerEmployeeManagementPage from "@pages/ManagerEmployeeManagementPage";
 import ReaderRankPage from "@pages/ReaderRankPage";
 import ReaderFollowManagementPage from "@pages/ReaderFollowManagementPage";
-
 import AuthorStatistic from "@pages/Author/AuthorStatistic";
 import ModeratorLayout from "@layouts/ModeratorLayout";
 import ModeratorProfile from "@pages/ModeratorHomePage/ModeratorProfile";
 import ModeratorRegulations from "@pages/Author/regulations/moderatorRegulations";
 import AuthorRegulations from "@pages/Author/regulations/authorRegulations";
+import ReaderPersonalProfilePage from "@pages/ReaderPersonalProfilePage";
+
 const router = createBrowserRouter([
     {
         path: "/",
@@ -176,6 +177,16 @@ const router = createBrowserRouter([
                     <ReaderLayout>
                         <ReaderStoryFilterPage />
                     </ReaderLayout>
+                ),
+            },
+            {
+                path: paths.readerPersonalProfilePage(),
+                element: (
+                    <Protected role={Role.READER}>
+                        <ReaderLayout>
+                            <ReaderPersonalProfilePage />
+                        </ReaderLayout>
+                    </Protected>
                 ),
             },
             {

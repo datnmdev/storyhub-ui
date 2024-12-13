@@ -30,7 +30,6 @@ function User() {
         setRefetch: setSignOut,
     } = useFetch(apis.authApi.signOut, { body: JSON.parse(localStorage.getItem(TOKEN_KEY) as string) }, false);
 
-
     const handleClickOutside = (e: MouseEvent) => {
         if (boxRef.current && !boxRef.current.contains(e.target as Node)) {
             setHiddenBox(true);
@@ -56,6 +55,9 @@ function User() {
             navigate(paths.readerHomePage());
         }
     }, [isSignedOut]);
+
+    console.log(profile);
+    
 
     if (isGettingProfile || !profile) {
         return <UserSkeleton />;
@@ -130,7 +132,7 @@ function User() {
                         <li className="cursor-pointer" onClick={() => setHiddenBox(true)}>
                             <Link
                                 className="py-4 space-x-2 hover:bg-[var(--primary)] hover:text-[var(--white)] px-4 flex items-center"
-                                to="#"
+                                to={paths.readerPersonalProfilePage()}
                             >
                                 <span className="text-[1.6rem]">
                                     <i className="fa-solid fa-gear"></i>

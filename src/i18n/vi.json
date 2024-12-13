@@ -461,6 +461,55 @@
                     "newestChapter": "Chương mới nhất:"
                 }
             }
+        },
+        "personalProfilePage": {
+            "breadcrumb": {
+                "items": {
+                    "homePage":"Trang chủ",
+                    "readerPersonalProfilePage": "Cài đặt"
+                }
+            },
+            "sidebar": {
+                "heading": "Cài đặt",
+                "personalProfileManagement": "Hồ sơ cá nhân",
+                "changePassword": "Đổi mật khẩu"
+            },
+            "personalProfileForm": {
+                "accountInfoSection": {
+                    "heading": "Thông tin tài khoản",
+                    "id": "ID",
+                    "createdAt": "Ngày tạo",
+                    "status": {
+                        "label": "Tình trạng",
+                        "unactivated": "Chưa kích hoạt",
+                        "activated": "Đã kích hoạt",
+                        "locked": "Đã bị khoá",
+                        "deleted": "Không khả dụng"
+                    }
+                },
+                "userInfoSection": {
+                    "heading": "Thông tin cá nhân",
+                    "name": "Họ và tên",
+                    "dob": "Ngày sinh",
+                    "gender": {
+                        "label": "Giới tính",
+                        "male": "Nam",
+                        "female": "Nữ",
+                        "orther": "Khác"
+                    },
+                    "phone": "Số điện thoại"
+                },
+                "submitBtn": "Lưu thay đổi",
+                "resetBtn": "Làm mới",
+                "loading": {
+                    "loadingProfileInfo": {
+                        "message": "Đang lấy thông tin hồ sơ cá nhân..."
+                    },
+                    "updatingProfile": {
+                        "message": "Đang lưu lại hồ sơ cá nhân..."
+                    }
+                }
+            }
         }
     },
     "manager": {
@@ -624,7 +673,9 @@
         "createEmployeeFailed": "Tạo nhân viên thất bại. Vui lòng thử lại",
         "POST_SUCCESS": "Cập nhật thông tin nhân viên kiểm duyệt thành công",
         "FAILED": "Đã có lỗi xảy ra. Vui lòng thử lại",
-        "deleteAllFollowSuccess": "Bỏ theo dõi tất cả các bộ truyện thành công"
+        "deleteAllFollowSuccess": "Bỏ theo dõi tất cả các bộ truyện thành công",
+        "updateProfileSuccess": "Cập nhật hồ sơ cá nhân thành công",
+        "updateProfileFailed": "Đã có lỗi xảy ra trong quá trình lưu thông tin hồ sơ cá nhân. Vui lòng thử lại"
     },
     "pagination": {
         "next": "Sau",

@@ -8,6 +8,7 @@ import Button from "@components/Button";
 import { AvatarUploaderProps } from "./AvatarUploader.type";
 
 function AvatarUploader({
+    theme = "default",
     previewUrl,
     value,
     onChange
@@ -45,8 +46,9 @@ function AvatarUploader({
             <div className="flex justify-center items-center">
                 <img
                     className={classNames(
-                        "w-[128px] h-[158px] object-cover object-center",
-                        themeValue === "light" ? "light__boxShadow" : "dark__boxShadow"
+                        "object-cover object-center",
+                        themeValue === "light" ? "light__boxShadow" : "dark__boxShadow",
+                        theme === "rounded" ? "rounded-full w-[120px] h-[120px]" : "w-[128px] h-[158px]"
                     )}
                     src={file ? URL.createObjectURL(file) : (previewUrl ? previewUrl : AvatarDefault)}
                     alt="Avatar"
