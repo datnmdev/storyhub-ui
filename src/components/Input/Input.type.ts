@@ -1,4 +1,4 @@
-import { ChangeEventHandler, FocusEventHandler } from "react";
+import { ChangeEventHandler, CSSProperties, FocusEventHandler } from "react";
 
 export interface InputProps {
     type?: "text" | "password" | "email" | "date"
@@ -11,6 +11,7 @@ export interface InputProps {
     length?: number
     contentEditable?: boolean
     readOnly?: boolean
+    sx?: CSSProperties
     onChange?: ChangeEventHandler<HTMLInputElement>
     onFocus?: FocusEventHandler<HTMLInputElement>
     onBlur?: FocusEventHandler<HTMLInputElement>

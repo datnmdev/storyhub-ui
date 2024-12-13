@@ -13,6 +13,7 @@ function Input({
     minLength,
     contentEditable = true,
     readOnly = false,
+    sx = {},
     onChange = () => {},
     onFocus,
     onBlur
@@ -23,7 +24,8 @@ function Input({
         <input
             className="block w-full px-4 py-3 focus:outline-[var(--primary)] bg-inherit text-[#9CA3AF] border-[1px] border-solid border-[var(--gray)]"
             style={{
-                colorScheme: themeValue === "light" ? "light" : "dark"
+                colorScheme: themeValue === "light" ? "light" : "dark",
+                ...sx
             }}
             name={name}
             type={type}

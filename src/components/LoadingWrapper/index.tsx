@@ -10,9 +10,6 @@ function LoadingWrapper({
     children
 }: LoadingWrapperProps) {
 
-    console.log(isLoading);
-    
-
     if (isLoading && level === "component") {
         return (
             <Loading
