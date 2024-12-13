@@ -56,9 +56,6 @@ function User() {
         }
     }, [isSignedOut]);
 
-    console.log(profile);
-    
-
     if (isGettingProfile || !profile) {
         return <UserSkeleton />;
     }

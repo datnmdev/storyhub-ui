@@ -37,6 +37,7 @@ import ModeratorProfile from "@pages/ModeratorHomePage/ModeratorProfile";
 import ModeratorRegulations from "@pages/Author/regulations/moderatorRegulations";
 import AuthorRegulations from "@pages/Author/regulations/authorRegulations";
 import ReaderPersonalProfilePage from "@pages/ReaderPersonalProfilePage";
+import ReaderChangePasswordPage from "@pages/ReaderChangePasswordPage";
 
 const router = createBrowserRouter([
     {
@@ -185,6 +186,16 @@ const router = createBrowserRouter([
                     <Protected role={Role.READER}>
                         <ReaderLayout>
                             <ReaderPersonalProfilePage />
+                        </ReaderLayout>
+                    </Protected>
+                ),
+            },
+            {
+                path: paths.readerChangePasswordPage(),
+                element: (
+                    <Protected role={Role.READER}>
+                        <ReaderLayout>
+                            <ReaderChangePasswordPage />
                         </ReaderLayout>
                     </Protected>
                 ),
