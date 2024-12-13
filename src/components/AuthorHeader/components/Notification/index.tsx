@@ -80,7 +80,8 @@ function Notification() {
             const unreadNotificationsCount = notificationData.filter(
                 (notification) => notification.status === 0
             ).length;
-            setCountNotificationUnseen(unreadNotificationsCount);
+
+            setCountNotificationUnseen(unreadNotificationsCount != 0 ? unreadNotificationsCount : null);
         }
     }, [notificationData]);
 
@@ -107,9 +108,9 @@ function Notification() {
                     borderRadius="50%"
                     onClick={toggleDropdown}
                 />
-                {countNotificationUnseen != 0 && (
+                {countNotificationUnseen && countNotificationUnseen != 0 && (
                     <div className={styles.customCountNotification}>
-                        {countNotificationUnseen && countNotificationUnseen > 999 ? "999+" : countNotificationUnseen}
+                        {countNotificationUnseen > 999 ? "999+" : countNotificationUnseen}
                     </div>
                 )}
             </div>
@@ -117,7 +118,7 @@ function Notification() {
                 <div className={styles.notificationDropdown}>
                     <h3 className={styles.title}>Thông báo</h3>
                     <div className={styles.list}>
-                        {Array.isArray(notificationData) &&
+                        {Array.isArray(notificationData) && notificationData.length > 0 ? (
                             notificationData.slice(0, 20).map((item, index) => (
                                 <div
                                     key={`notification-${index}`}
@@ -125,15 +126,21 @@ function Notification() {
                                     onClick={() =>
                                         handleNotificationClick(
                                             item.notificationId,
-                                            item.notification.moderationRequest.storyId,
+                                            item.notification.moderationRequest.chapter.story.id,
                                             item.notification.moderationRequest.reason,
                                             item.notification.moderationRequest.status
                                         )
                                     }
                                 >
-                                    <span className={styles.notificationTitle}>
-                                        Truyện {item.notification.moderationRequest.story.title}
-                                    </span>
+                                    <div>
+                                        <span className={styles.notificationTitle}>
+                                            {item.notification.moderationRequest.chapter.name}
+                                        </span>
+                                        <span className={styles.notificationTitle}>
+                                            Truyện {item.notification.moderationRequest.chapter.story.title}
+                                        </span>
+                                    </div>
+
                                     <span className={styles.notificationStatus}>
                                         {
                                             ModerationStatusLabels[
@@ -145,7 +152,10 @@ function Notification() {
                                         {moment(item.createdAt).format("DD/MM/YYYY")}
                                     </span>
                                 </div>
-                            ))}
+                            ))
+                        ) : (
+                            <div className={styles.noNotification}>Không có thông báo nào.</div>
+                        )}
                     </div>
                 </div>
             )}

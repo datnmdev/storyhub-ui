@@ -25,12 +25,19 @@ const AuthorCreatePrice = ({
 
     if (!isOpen) return null;
     const checkValid = () => {
-        if (!amount) {
-            toast.error("Vui lòng điền giá.");
+        if (!amount || +amount == 0) {
+            toast.error("Vui lòng nhập giá.");
             return false;
         }
         if (!startTime) {
             toast.error("Vui lòng chọn ngày áp dụng.");
+            return false;
+        }
+        const currentYear = new Date().getFullYear();
+        const selectedYear = new Date(startTime).getFullYear();
+        if (selectedYear > currentYear + 2) {
+            setStartTime("");
+            toast.error("Năm không được vượt quá 2 năm so với năm hiện tại.");
             return false;
         }
         return true;
@@ -49,9 +56,6 @@ const AuthorCreatePrice = ({
         <div className={styles.modalUpdatePrice}>
             <header className={styles.modalHeaderUpdatePrice}>
                 <span className={styles.customHeader}>Tạo giá</span>
-                <button className={styles.closeButton} onClick={onClose}>
-                    &times;
-                </button>
             </header>
             <div className={styles.formGroup}>
                 <label>Giá truyện/chương</label>

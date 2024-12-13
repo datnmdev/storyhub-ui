@@ -1,4 +1,3 @@
-
 const paths = {
     readerHomePage: () => "/",
     readerStoryInfoPage: (storyId: string = ":storyId") => `/story/${storyId}`,
@@ -11,7 +10,8 @@ const paths = {
     readerWalletPage: () => "/reader/wallet",
     readerDepositeTransHistoryPage: () => "/reader/wallet/deposite-transaction-history",
     readerInvoiceHistoryPage: () => "/reader/wallet/invoice-history",
-    readerChapterContentPage: (storyId: string | number = ":storyId", chapterId: string | number = ":chapterId") => `/story/${storyId}/chapter/${chapterId}`,
+    readerChapterContentPage: (storyId: string | number = ":storyId", chapterId: string | number = ":chapterId") =>
+        `/story/${storyId}/chapter/${chapterId}`,
     storyFilterPage: () => "/story-filter",
     readerFollowManagementPage: () => "/reader/follow-management",
     managerDashboardPage: () => "/manager",
@@ -25,6 +25,8 @@ const paths = {
     authorProfile: () => "/author/profile",
     moderatorHomePage: () => "/moderator",
     moderatorProfile: () => "/moderator/profile",
+    moderatorRegulations: () => "/moderator/regulations",
+    authorRegulations: () => "/author/regulations",
 };
 
 export default paths;

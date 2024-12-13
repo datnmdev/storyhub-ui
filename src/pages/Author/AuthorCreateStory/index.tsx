@@ -10,8 +10,7 @@ import authFeature from "@features/auth";
 import { Country, Genre, Story } from "../AllInterface/interface";
 import { useNavigate } from "react-router-dom";
 import TextEditor from "@components/TextEditorforAuthor";
-import { useSelector } from "react-redux";
-import { AppRootState } from "@store/store.type";
+import paths from "@routers/router.path";
 const AuthorCreateStory = () => {
     const uuid = uuidv4();
     const navigate = useNavigate();
@@ -24,8 +23,7 @@ const AuthorCreateStory = () => {
     const [genreResult, setGenreResult] = useState<number[]>([1]);
     const [countryId, setCountryId] = useState<number>(1);
     const [genreId, setGenreId] = useState<number>(1);
-    const [type, setType] = useState<number>(1);
-    const [status, setStatus] = useState<number>(0);
+    const [type, setType] = useState<number | null>(null);
     const [showPrice, setShowPrice] = useState(false);
     const [amount, setAmount] = useState<string>("0");
     const [startTime, setStartTime] = useState<string>("");
@@ -42,7 +40,6 @@ const AuthorCreateStory = () => {
         }
     }, [countryList, genreList]);
     const profile = useAppSelector(authFeature.authSelector.selectUser);
-    const webSocketService = useSelector((state: AppRootState) => state.webSocket.service);
     const {
         data: storyNew,
         setRefetch: setStoryNewRefetch,
@@ -57,7 +54,7 @@ const AuthorCreateStory = () => {
                 note: notes ? notes : "",
                 coverImage: "tem",
                 type,
-                status: status === 1 ? 1 : 0,
+                status: 0,
                 countryId,
                 authorId: profile?.id,
                 genres: genreResult,
@@ -106,7 +103,6 @@ const AuthorCreateStory = () => {
         setCountries(countryList ?? []);
         setGenres(genreList ?? []);
         setGenreResult([1]);
-        setStatus(0);
         setGenreId(1);
         setCountryId(1);
         setAmount("0");
@@ -119,8 +115,12 @@ const AuthorCreateStory = () => {
             toast.error("Vui lòng nhập tên truyện.");
             return false;
         }
+        if (type == null) {
+            toast.error("Vui lòng chọn loại truyện.");
+            return false;
+        }
         if (!description) {
-            toast.error("Vui lòng nhập mô tả.");
+            toast.error("Vui lòng nhập tóm tắt nội dung.");
             return false;
         }
         if (!countryId) {
@@ -135,12 +135,18 @@ const AuthorCreateStory = () => {
             toast.error("Vui lòng chọn ảnh truyện.");
             return false;
         }
-        if (!amount) {
-            toast.error("Vui lòng điền giá truyện.");
+        if (+amount == 0) {
+            toast.error("Vui lòng nhập giá.");
             return false;
         }
         if (!startTime) {
-            toast.error("Vui lòng chọn ngày áp dụng giá.");
+            toast.error("Vui lòng chọn ngày áp dụng.");
+            return false;
+        }
+        const currentYear = new Date().getFullYear();
+        const selectedYear = new Date(startTime).getFullYear();
+        if (selectedYear > currentYear + 2) {
+            toast.error("Năm không được vượt quá 2 năm so với năm hiện tại.");
             return false;
         }
         return true;
@@ -167,7 +173,7 @@ const AuthorCreateStory = () => {
         if (uploadResult.ok) {
             console.log("Uploaded File:", uploadResult);
 
-            navigate("/author");
+            navigate(paths.authorHomePage());
             toast.success("Đăng tải truyện thành công.");
         } else {
             throw new Error("Upload ảnh truyện thất bại.");
@@ -196,11 +202,9 @@ const AuthorCreateStory = () => {
     useEffect(() => {
         if (storyNew) {
             setUploadUrlRefetch({ value: true });
-            if (status === 1 && webSocketService) {
-                webSocketService?.sendModerationRequest(storyNew.id, profile?.id);
-            }
         }
     }, [storyNew, createStoryError]);
+    console.log(type);
     return (
         <div className={styles.containerCreateStory}>
             <span className={styles.titleCreateStory}>Đăng tải truyện</span>
@@ -260,13 +264,6 @@ const AuthorCreateStory = () => {
                         </select>
                     </label>
                     <label>
-                        <span>Trạng thái:</span>
-                        <select value={status} onChange={(e) => setStatus(Number(e.target.value))}>
-                            <option value="0">Chưa phát hành</option>
-                            <option value="1">Yêu cầu phát hành</option>
-                        </select>
-                    </label>
-                    <label>
                         <span>Thể loại:</span>
                         <select value={genreId} onChange={(e) => handleGetGenre(Number(e.target.value))}>
                             {genres?.map((genre) => (
@@ -290,7 +287,7 @@ const AuthorCreateStory = () => {
                     </div>
                     <div className={styles.buttonGroup}>
                         <button className={styles.btnPrimary} disabled={isCreatingStory} onClick={handleSubmit}>
-                            Lưu
+                            Tạo
                         </button>
                         <button className={styles.btnSecondary} onClick={handleRefresh}>
                             Làm mới

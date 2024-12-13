@@ -35,6 +35,8 @@ import ReaderFollowManagementPage from "@pages/ReaderFollowManagementPage";
 import AuthorStatistic from "@pages/Author/AuthorStatistic";
 import ModeratorLayout from "@layouts/ModeratorLayout";
 import ModeratorProfile from "@pages/ModeratorHomePage/ModeratorProfile";
+import ModeratorRegulations from "@pages/Author/regulations/moderatorRegulations";
+import AuthorRegulations from "@pages/Author/regulations/authorRegulations";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -234,6 +236,10 @@ const router = createBrowserRouter([
                         path: paths.authorStatistic(),
                         element: <AuthorStatistic />,
                     },
+                    {
+                        path: paths.authorRegulations(),
+                        element: <AuthorRegulations />,
+                    },
                 ],
             },
             {
@@ -253,6 +259,10 @@ const router = createBrowserRouter([
                     {
                         path: paths.moderatorProfile(),
                         element: <ModeratorProfile />,
+                    },
+                    {
+                        path: paths.moderatorRegulations(),
+                        element: <ModeratorRegulations />,
                     },
                 ],
             },

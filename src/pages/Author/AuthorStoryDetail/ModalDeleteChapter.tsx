@@ -50,7 +50,7 @@ const ModalDeleteChapter: React.FC<ModalDeleteChapterProps> = ({
                 </div>
                 <div className={styles.modalFooter}>
                     <button className={styles.btnSuccess} onClick={handleDeleteChapter}>
-                        Lưu
+                        Xóa
                     </button>
                     <button className={styles.btnDanger} onClick={onClose}>
                         Hủy

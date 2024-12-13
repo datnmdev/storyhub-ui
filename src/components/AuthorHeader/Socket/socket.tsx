@@ -23,13 +23,13 @@ class WebSocketService {
     }
 
     // Phương thức để gửi yêu cầu kiểm duyệt
-    public sendModerationRequest(storyId: number, authorId: number): void {
+    public sendModerationRequest(chapterId: number, authorId: number): void {
         this.socket.emit("create_moderation_request", {
-            reason: "Yêu cầu phát hành truyện",
+            reason: "",
             status: 0,
             type: 0,
-            storyId: storyId,
-            chapterId: null,
+            storyId: null,
+            chapterId: chapterId,
             requesterId: authorId,
         });
     }
@@ -56,14 +56,18 @@ class WebSocketService {
         reqStatus: number,
         storyId: number,
         storyStatus: number,
+        chapterId: number,
+        chapterStatus: number,
         reason: string
     ): void {
-        console.log(reqId, reqStatus, storyId, storyStatus, reason);
+        console.log(reqId, reqStatus, storyId, storyStatus, chapterId, chapterStatus, reason);
         this.socket.emit("handle_moderation_request", {
             reqId: reqId,
             reqStatus: reqStatus,
             storyId: storyId,
             storyStatus: storyStatus,
+            chapterId: chapterId,
+            chapterStatus: chapterStatus,
             reason: reason ? reason : "",
         });
     }
@@ -86,10 +90,15 @@ class WebSocketService {
 
     // Độc giả lắng nghe sự kiện cập nhật truyện
     public listenStoryUpdateEventforReader(callback: (mess: string) => void): void {
-        this.socket.on("moderation_request_updated", (mess: string) => {
-           // console.log("Story update event received:", mess);
+        this.socket.on("story_updated", (mess: string) => {
+            // console.log("Story update event received:", mess);
             callback(mess); // Gọi callback với dữ liệu nhận được
         });
+    }
+
+    // Phương thức để ngắt kết nối
+    public disconnect(): void {
+        this.socket.disconnect();
     }
 }
 

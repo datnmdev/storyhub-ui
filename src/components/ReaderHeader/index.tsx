@@ -19,7 +19,11 @@ function Header() {
 
     return (
         <div className="border-solid border-b-[1px] border-[var(--gray)]">
-            <div className={classNames("desktop:w-[var(--desktop-container-w)] mx-auto flex justify-between leading-[64px]")} >
+            <div
+                className={classNames(
+                    "desktop:w-[var(--desktop-container-w)] mx-auto flex justify-between leading-[64px]"
+                )}
+            >
                 <div className="flex">
                     <Logo />
                     <Nav />
@@ -30,13 +34,13 @@ function Header() {
                     <ToggleThemeButton />
                     <ChangeLangButton />
                     <div className="ml-2">
-                        {!isAuthenticated
-                            ? (<Button
-                                onClick={() => navigate(paths.signInPage())}
-                            >
+                        {!isAuthenticated ? (
+                            <Button onClick={() => navigate(paths.signInPage())}>
                                 {t("reader.header.btn.signIn")}
-                            </Button>)
-                            : (<User />)}
+                            </Button>
+                        ) : (
+                            <User />
+                        )}
                     </div>
                 </div>
             </div>

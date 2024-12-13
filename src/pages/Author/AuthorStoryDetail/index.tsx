@@ -8,7 +8,6 @@ import Form from "react-bootstrap/Form";
 import { MdEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { PiListBulletsFill } from "react-icons/pi";
-import AuthorModalCreateAndUpdateChapter from "../AuthorModalCreateAndUpdateChapter";
 import { useLocation } from "react-router-dom";
 import { Chapter, ChapterImage, Story, Alias } from "../AllInterface/interface";
 import useFetch from "@hooks/fetch.hook";
@@ -18,7 +17,11 @@ import ModalDeleteChapter from "./ModalDeleteChapter";
 import paths from "@routers/router.path";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import AuthorCreateAndUpdateNovelChapter from "../CreateAndUpdateNovelChapter";
+import AuthorCreateAndUpdateChapter from "../CreateAndUpdateChapter";
+import ModalDeleteStory from "./ModalDeleteStory";
+import { useSelector } from "react-redux";
+import { AppRootState } from "@store/store.type";
+import { toast } from "react-toastify";
 const AuthorStoryDetail = () => {
     const location = useLocation();
     const take = 12;
@@ -28,14 +31,15 @@ const AuthorStoryDetail = () => {
     const [search, setSearch] = useState("");
     const [showEditChapterImage, setShowEditChapterImage] = useState(false);
     const [showModalCreateAndUpdateChapter, setShowModalCreateAndUpdateChapter] = useState(false);
-    const [showModalCreateAndUpdateNovelChapter, setShowModalCreateAndUpdateNovelChapter] = useState(false);
     const [showDeleteChapter, setShowDeleteChapter] = useState(false);
+    const [showDeleteStory, setShowDeleteStory] = useState(false);
     const [totalPage, setTotalPage] = useState<number>(1);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [chapterList, setChapterList] = useState<any[]>([]);
     const [index, setIndex] = useState<number | null>(null);
     const storyId = location.state as { storyId: number };
     const [isUpdate, setIsUpdate] = useState(false);
+    const webSocketService = useSelector((state: AppRootState) => state.webSocket.service);
     const { data: imageList, setRefetch: setRefetchImageList } = useFetch<ChapterImage[]>(
         apis.chapterImageApi.getChapterImages,
         {
@@ -77,6 +81,26 @@ const AuthorStoryDetail = () => {
             queries: getValues(currentPage),
         }
     );
+
+    useEffect(() => {
+        // Lắng nghe
+        const listenEvent = (mess: any) => {
+            console.log("Trạng thái truyện mới nhận được:", mess);
+            setRefetchChapterList({ value: true });
+        };
+
+        // Gọi hàm để lắng nghe
+        if (webSocketService) {
+            webSocketService.listenStoryUpdateEventForAuthor(listenEvent);
+        }
+
+        // Cleanup listener nếu cần
+        return () => {
+            // Nếu bạn muốn dọn dẹp, bạn có thể thêm logic để tắt lắng nghe
+            // Tuy nhiên, trong trường hợp này, socket.on không cần phải tắt
+        };
+    }, [webSocketService]);
+
     useEffect(() => {
         setRefetchStoryDetail({ value: true });
         setRefetchChapterList({ value: true });
@@ -116,22 +140,17 @@ const AuthorStoryDetail = () => {
 
     const handleCreateChapter = () => {
         setIndex(null);
-        if (storyDetail?.type == 0) {
-            setShowModalCreateAndUpdateNovelChapter(true);
-        } else {
-            setShowModalCreateAndUpdateChapter(true);
+        if (storyDetail?.status == 3) {
+            toast.error("Truyện đã hoàn thành không thể tạo chương mới");
+            return;
         }
-
+        setShowModalCreateAndUpdateChapter(true);
         setIsUpdate(false); // Đặt chế độ là create
     };
 
     const handleUpdateChapter = (index: number) => {
         setIndex(index);
-        if (storyDetail?.type == 0) {
-            setShowModalCreateAndUpdateNovelChapter(true);
-        } else {
-            setShowModalCreateAndUpdateChapter(true);
-        }
+        setShowModalCreateAndUpdateChapter(true);
         setIsUpdate(true); // Đặt chế độ là update
     };
 
@@ -140,23 +159,43 @@ const AuthorStoryDetail = () => {
         setShowEditChapterImage(true);
     };
 
-    const handleDeleteChapter = (index: number) => {
-        setShowDeleteChapter(true);
-        setIndex(index);
+    const handleDeleteChapter = (index: number, status: number) => {
+        console.log(status);
+        if (status == 1) {
+            toast.error("Chương đang yêu cầu phát hành không thế xóa.");
+            return;
+        } else if (status == 2) {
+            toast.error("Chương đang phát hành không thể xóa");
+            return;
+        } else if (status == 3) {
+            toast.error("Chương đã hoàn thành không thể xóa");
+            return;
+        } else {
+            setShowDeleteChapter(true);
+            setIndex(index);
+        }
+    };
+    const handleDeleteStory = () => {
+        setShowDeleteStory(true);
     };
     return (
         <>
             <div className={styles.detailPage}>
                 <div className={styles.headerStoryDetail}>
                     <span className={styles.titleStoryDetail}>Chi tiết truyện</span>
-                    <button
-                        className={styles.btnSuccess}
-                        onClick={() =>
-                            navigate(paths.authorUpdateStory(storyId.toString()), { state: { story: storyDetail } })
-                        }
-                    >
-                        Cập nhật
-                    </button>
+                    <div className={styles.custombtn}>
+                        <button
+                            className={styles.btnSuccess}
+                            onClick={() =>
+                                navigate(paths.authorUpdateStory(storyId.toString()), { state: { story: storyDetail } })
+                            }
+                        >
+                            Cập nhật
+                        </button>
+                        <button className={styles.btnDanger} onClick={() => handleDeleteStory()}>
+                            Xóa
+                        </button>
+                    </div>
                 </div>
                 <div className={styles.mainContent}>
                     <div className={styles.leftPanel}>
@@ -208,7 +247,11 @@ const AuthorStoryDetail = () => {
                         <FaInfoCircle style={{ fontSize: "20px", color: "var(--primary)" }} />
                         <span style={{ marginLeft: "8px" }}>Tóm tắt nội dung</span>
                     </div>
-                    <p>{storyDetail?.description}</p>
+                    <div
+                        dangerouslySetInnerHTML={{
+                            __html: storyDetail?.description ? storyDetail.description : "",
+                        }}
+                    ></div>
                 </div>
                 <div className={styles.chapterListHeader}>
                     <span>Danh sách chương</span>
@@ -238,8 +281,8 @@ const AuthorStoryDetail = () => {
                             <select className={styles.filterDropdown} onChange={(event) => handleFilter(event)}>
                                 <option value="5">Bộ lọc</option>
                                 <option value="0">Chưa phát hành</option>
-                                {/* <option value="1">Yêu cầu phát hành</option> */}
-                                <option value="2">Đang phát hành</option>
+                                <option value="1">Yêu cầu phát hành</option>
+                                <option value="2">Phát hành</option>
                             </select>
                         </div>
                     </div>
@@ -269,9 +312,9 @@ const AuthorStoryDetail = () => {
                                         />
                                         <RiDeleteBin6Line
                                             className={styles.deleteIcon}
-                                            onClick={() => handleDeleteChapter(index)}
+                                            onClick={() => handleDeleteChapter(index, chapter.node.status)}
                                         />
-                                        {storyDetail && storyDetail.type === 1 && (
+                                        {storyDetail?.type === 1 && (
                                             <PiListBulletsFill
                                                 className={styles.listIcon}
                                                 onClick={() => handleChapterImageDetail(index)}
@@ -291,29 +334,12 @@ const AuthorStoryDetail = () => {
                         setIndex={setIndex}
                         setRefetchImageList={() => setRefetchImageList({ value: true })}
                     />
-                    <AuthorModalCreateAndUpdateChapter
+
+                    <AuthorCreateAndUpdateChapter
                         isOpen={showModalCreateAndUpdateChapter}
                         onClose={() => setShowModalCreateAndUpdateChapter(false)}
-                        storyId={+storyId}
+                        story={storyDetail || null}
                         isUpdate={isUpdate}
-                        storyTitle={storyDetail?.title ?? ""}
-                        title={isUpdate ? "Cập nhật chương" : "Thêm chương mới"}
-                        chapterList={chapterList}
-                        index={index ?? null}
-                        setRefetchChapterList={setRefetchChapterList}
-                        orderNew={
-                            chapterList.length === 0
-                                ? 1
-                                : Math.max(...chapterList.map((chapter) => chapter.node.order)) + 1
-                        }
-                    />
-
-                    <AuthorCreateAndUpdateNovelChapter
-                        isOpen={showModalCreateAndUpdateNovelChapter}
-                        onClose={() => setShowModalCreateAndUpdateNovelChapter(false)}
-                        storyId={+storyId}
-                        isUpdate={isUpdate}
-                        storyTitle={storyDetail?.title ?? ""}
                         title={isUpdate ? "Cập nhật chương" : "Thêm chương mới"}
                         chapterList={chapterList}
                         index={index ?? null}
@@ -330,6 +356,11 @@ const AuthorStoryDetail = () => {
                         chapterId={chapterList?.[index ?? 0]?.node?.id ?? 0}
                         chapterName={chapterList?.[index ?? 0]?.node?.name ?? ""}
                         setRefetchChapterList={setRefetchChapterList}
+                    />
+                    <ModalDeleteStory
+                        isOpen={showDeleteStory}
+                        onClose={() => setShowDeleteStory(false)}
+                        story={storyDetail || null}
                     />
                 </div>
             </div>

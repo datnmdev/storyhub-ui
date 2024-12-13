@@ -3,25 +3,29 @@ import { AuthorModalCreateAndUpdateChapterProps, Chapter } from "../AllInterface
 import apis from "@apis/index";
 import useFetch from "@hooks/fetch.hook";
 import { toast } from "react-toastify";
-import styles from "./ModalNovelChapter.module.scss";
+import styles from "./ModalChapter.module.scss";
 import TextEditor from "@components/TextEditorforAuthor";
+import { useSelector } from "react-redux";
+import { AppRootState } from "@store/store.type";
+import authFeature from "@features/auth";
+import { useAppSelector } from "@hooks/redux.hook";
 const AuthorCreateAndUpdateNovelChapter: React.FC<AuthorModalCreateAndUpdateChapterProps> = ({
     isOpen,
     onClose,
-    storyId,
     chapterList,
-    storyTitle,
     title,
     isUpdate,
     index,
     orderNew,
+    story,
     setRefetchChapterList,
 }) => {
     const [order, setOrder] = useState<number>(0);
     const [titleChapter, setTitleChapter] = useState<string>("");
     const [status, setStatus] = useState<number>(0);
     const [content, setContent] = useState<string>("");
-
+    const profile = useAppSelector(authFeature.authSelector.selectUser);
+    const webSocketService = useSelector((state: AppRootState) => state.webSocket.service);
     const {
         data: createChapter,
         setRefetch: setRefetchCreateChapter,
@@ -35,7 +39,7 @@ const AuthorCreateAndUpdateNovelChapter: React.FC<AuthorModalCreateAndUpdateChap
                 name: titleChapter,
                 content: content,
                 status: status,
-                storyId: storyId,
+                storyId: story?.id,
             },
         },
         false
@@ -54,8 +58,8 @@ const AuthorCreateAndUpdateNovelChapter: React.FC<AuthorModalCreateAndUpdateChap
                 order: order,
                 name: titleChapter,
                 status: status,
-                content: content,
-                storyId: storyId,
+                ...(content ? { content } : {}),
+                storyId: story?.id,
             },
         },
         false
@@ -90,7 +94,11 @@ const AuthorCreateAndUpdateNovelChapter: React.FC<AuthorModalCreateAndUpdateChap
             return;
         }
         if (!titleChapter) {
-            toast.error("Vui lòng điền tên chương.");
+            toast.error("Vui lòng nhập tên chương.");
+            return false;
+        }
+        if (!content && story.type == 0) {
+            toast.error("Vui lòng nhập nội dung chương");
             return false;
         }
         return true;
@@ -103,6 +111,9 @@ const AuthorCreateAndUpdateNovelChapter: React.FC<AuthorModalCreateAndUpdateChap
             setOrder(0);
             setTitleChapter("");
             setStatus(0);
+            if (status === 1 && webSocketService) {
+                webSocketService?.sendModerationRequest(createChapter.id, profile?.id);
+            }
         }
     }, [createChapter, createChapterError, setRefetchChapterList]);
 
@@ -111,6 +122,9 @@ const AuthorCreateAndUpdateNovelChapter: React.FC<AuthorModalCreateAndUpdateChap
             setRefetchChapterList({ value: true });
             toast.success("Cập nhật chương thành công.");
             onClose();
+            if (status === 1 && webSocketService) {
+                webSocketService?.sendModerationRequest(updateChapter.id, profile?.id);
+            }
         }
     }, [updateChapter, updateChapterError, setRefetchChapterList]);
 
@@ -121,10 +135,12 @@ const AuthorCreateAndUpdateNovelChapter: React.FC<AuthorModalCreateAndUpdateChap
         if (!checkValid()) {
             return;
         }
-        if (isUpdate && index != null) {
+        if (isUpdate && index != null && chapterList?.[index ?? 0]?.node?.status !== 1) {
             setRefetchUpdateChapter({ value: true });
-        } else {
+        } else if (!isUpdate) {
             setRefetchCreateChapter({ value: true });
+        } else {
+            toast.error("Truyện đã yêu cầu kiểm duyệt, vui lòng chờ phải hồi.");
         }
     };
 
@@ -144,10 +160,11 @@ const AuthorCreateAndUpdateNovelChapter: React.FC<AuthorModalCreateAndUpdateChap
                         &times;
                     </button>
                 </header>
+                <hr className={styles.modalHeaderUnderline} />
                 <div className={styles.modalBody}>
                     <div className={styles.customdiv}>
                         <label className={styles.customlabel}>Tên truyện</label>
-                        <input type="text" value={storyTitle} disabled />
+                        <input type="text" value={story.title} disabled />
                         <label className={styles.customlabel}>Số thứ tự</label>
                         <input type="text" value={order} disabled />
                     </div>
@@ -156,9 +173,10 @@ const AuthorCreateAndUpdateNovelChapter: React.FC<AuthorModalCreateAndUpdateChap
                         <input type="text" value={titleChapter} onChange={(e) => setTitleChapter(e.target.value)} />
                         <label className={styles.customlabel}>Trạng thái</label>
                         <select value={status} onChange={(e) => setStatus(Number(e.target.value))}>
-                            {status === 0 && <option value="0">Chưa phát hành</option>}
-                            <option value="2">Phát hành</option>
-                            {status === 0 && <option value="6">Xóa</option>}
+                            {status != 1 && <option value="0">Chưa phát hành</option>}
+                            <option value="1">Yêu cầu phát hành</option>
+                            {isUpdate && status !== 1 && status !== 0 && <option value="2">Phát hành</option>}
+                            {status !== 1 && <option value="6">Xóa</option>}
                         </select>
                     </div>
 
@@ -174,7 +192,11 @@ const AuthorCreateAndUpdateNovelChapter: React.FC<AuthorModalCreateAndUpdateChap
                     </div>
                 </div>
                 <footer className={styles.modalFooter}>
-                    <button className={styles.btnSuccess} onClick={handleSubmit} disabled={isCreatingChapter}>
+                    <button
+                        className={styles.btnSuccess}
+                        onClick={handleSubmit}
+                        disabled={isUpdate ? isUpdatingChapter : isCreatingChapter}
+                    >
                         Lưu
                     </button>
                 </footer>

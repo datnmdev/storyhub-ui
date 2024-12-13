@@ -2,6 +2,7 @@ import Logo from "./components/Logo";
 import classNames from "classnames";
 import Notification from "./components/Notification";
 import Setting from "./components/Setting";
+import Nav from "./components/Nav";
 
 const Header = () => {
     return (
@@ -13,6 +14,7 @@ const Header = () => {
             >
                 <div className="flex">
                     <Logo />
+                    <Nav />
                 </div>
                 <div className="flex items-center justify-center">
                     <Notification />

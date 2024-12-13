@@ -222,9 +222,6 @@ const AuthorUpdateStory = () => {
                 navigate(paths.authorStoryDetail(story?.id.toString() ?? ""), { state: story?.id });
                 toast.success("Cập nhật truyện thành công.");
             }
-            if (status === 1 && webSocketService) {
-                webSocketService?.sendModerationRequest(story.id, profile?.id);
-            }
         }
     }, [updateStory, updateStoryError]);
     return (
@@ -289,9 +286,8 @@ const AuthorUpdateStory = () => {
                         <span>Trạng thái:</span>
                         <select value={status} onChange={(e) => setStatus(Number(e.target.value))}>
                             {story.status === 0 && <option value="0">Chưa phát hành</option>}
-                            {(story.status === 1 || story.status === 0) && <option value="1">Yêu cầu phát hành</option>}
-                            {story.status === 2 && <option value="2">Đang phát hành</option>}
-                            {(story.status !== 1 && story.status !== 0) && <option value="4">Hoàn thành</option>}
+                            {story.status === 2 && <option value="2">Phát hành</option>}
+                            {story.status !== 0 && <option value="4">Hoàn thành</option>}
                             {story.status === 0 && <option value="6">Xóa</option>}
                         </select>
                     </label>
