@@ -42,6 +42,12 @@ const authApi = {
     resetPassword: (options: RequestInit) => {
         return axiosInstance().post("/auth/reset-password", options.body);
     },
+    verifyChangePasswordInfo: (options: RequestInit) => {
+        return axiosInstance().post("/auth/verify-change-password-info", options.body);
+    },
+    changePassword: (options: RequestInit) => {
+        return axiosInstance().post("/auth/change-password", options.body)
+    }
 }
 
 export default authApi

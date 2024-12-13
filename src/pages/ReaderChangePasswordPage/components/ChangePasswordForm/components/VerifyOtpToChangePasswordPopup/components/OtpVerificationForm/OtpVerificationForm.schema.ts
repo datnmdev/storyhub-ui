@@ -3,9 +3,9 @@ import { object, string } from "yup";
 
 export function generateValidateSchema() {
     return object({
-        email: string()
-            .required(i18n.t("validation.required")),
-        password: string()
+        otp: string()
+            .matches(/^\d+$/, i18n.t("validation.numberString"))
+            .length(6, i18n.t("validation.length", { length: 6 }))
             .required(i18n.t("validation.required")),
     })
 }
