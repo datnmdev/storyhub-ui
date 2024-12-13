@@ -8,29 +8,19 @@ import useFetch from "@hooks/fetch.hook";
 import apis from "@apis/index";
 import { NotificationUser, Story } from "@pages/Author/AllInterface/interface";
 import moment from "moment";
-import ModalApproveStory from "@pages/ModeratorHomePage/ModalApproveStory";
 import { useSelector } from "react-redux";
 import { AppRootState } from "@store/store.type";
+import ModalApproveStory from "@pages/ModeratorHomePage/ModalApprpveStory";
 
 function Notification() {
     const [showDropdown, setShowDropdown] = useState(false);
     const [countNotificationUnseen, setCountNotificationUnseen] = useState<number | null>(null);
     const [notificationId, setNotificationId] = useState<number | null>(null);
-    const [storyId, setStoryId] = useState<number | null>(null);
     const [showModalApprove, setShowModalApprove] = useState(false);
     const [moderationReqDetail, setModerationReqDetail] = useState<any | null>(null);
     const webSocketService = useSelector((state: AppRootState) => state.webSocket.service);
     const profile = useAppSelector(authFeature.authSelector.selectUser);
-
-    const { data: storyDetail, setRefetch: setRefetchStoryDetail } = useFetch<Story>(
-        apis.storyApi.getStoryDetail,
-        {
-            queries: {
-                id: storyId,
-            },
-        },
-        false
-    );
+    const [chapterDetail, setChapterDeatil] = useState<any | null>(null);
 
     const { data: notificationData, setRefetch: setRefetchNotification } = useFetch<NotificationUser[]>(
         apis.notificationUserApi.getAllNotificationUser,
@@ -70,12 +60,6 @@ function Notification() {
     }, [webSocketService]);
 
     useEffect(() => {
-        if (profile && storyId != null) {
-            setRefetchStoryDetail({ value: true });
-        }
-    }, [storyId]);
-
-    useEffect(() => {
         if (profile) {
             setRefetchNotification({ value: true });
         }
@@ -93,10 +77,10 @@ function Notification() {
         }
     }, [updatedNotification]);
 
-    const handleNotificationClick = (notificationId: number, storyId: number, moderationReq: any) => {
+    const handleNotificationClick = (notificationId: number, chapter: any, moderationReq: any) => {
         setNotificationId(notificationId);
-        setStoryId(storyId);
         setModerationReqDetail(moderationReq);
+        setChapterDeatil(chapter);
         setShowModalApprove(true);
         setShowDropdown(false); // Đóng dropdown
     };
@@ -106,7 +90,7 @@ function Notification() {
             const unreadNotificationsCount = notificationData.filter(
                 (notification) => notification.status === 0
             ).length;
-            setCountNotificationUnseen(unreadNotificationsCount);
+            setCountNotificationUnseen(unreadNotificationsCount != 0 ? unreadNotificationsCount : null);
         }
     }, [notificationData]);
 
@@ -124,7 +108,7 @@ function Notification() {
                     borderRadius="50%"
                     onClick={toggleDropdown}
                 />
-                {countNotificationUnseen != 0 && (
+                {countNotificationUnseen && countNotificationUnseen != 0 && (
                     <div className={styles.customCountNotification}>
                         {countNotificationUnseen && countNotificationUnseen > 999 ? "999+" : countNotificationUnseen}
                     </div>
@@ -134,7 +118,7 @@ function Notification() {
                 <div className={styles.notificationDropdown}>
                     <h3 className={styles.title}>Thông báo</h3>
                     <div className={styles.list}>
-                        {Array.isArray(notificationData) &&
+                        {Array.isArray(notificationData) && notificationData.length > 0 ? (
                             notificationData.map((item, index) => (
                                 <div
                                     key={`notification-${index}`}
@@ -142,26 +126,44 @@ function Notification() {
                                     onClick={() =>
                                         handleNotificationClick(
                                             item.notificationId,
-                                            item.notification.moderationRequest.storyId,
+                                            item.notification.moderationRequest.chapter,
                                             item.notification.moderationRequest
                                         )
                                     }
                                 >
                                     <span className={styles.mess}>
-                                        {item.notification.moderationRequest.storyId ? `Yêu cầu kiểm duyệt truyện` : ""}
+                                        {item.notification.moderationRequest.chapterId
+                                            ? `Yêu cầu kiểm duyệt `
+                                            : "Yêu cầu kiểm duyệt "}
                                     </span>
+                                    <div>
+                                        <span className={styles.mess} style={{ color: "blueviolet" }}>
+                                            {item.notification.moderationRequest.chapterId
+                                                ? `${item.notification.moderationRequest.chapter.name} truyện `
+                                                : "chương mới"}
+                                        </span>
+                                        <span className={styles.mess} style={{ color: "blueviolet" }}>
+                                            {item.notification.moderationRequest.chapterId
+                                                ? `${item.notification.moderationRequest.chapter.story.title}`
+                                                : ""}
+                                        </span>
+                                    </div>
+
                                     <span className={item.status === 0 ? "font-bold" : "font-normal"}>
                                         {moment(item.createdAt).format("DD/MM/YYYY")}
                                     </span>
                                 </div>
-                            ))}
+                            ))
+                        ) : (
+                            <div className={styles.noNotification}>Không có thông báo nào.</div>
+                        )}
                     </div>
                 </div>
             )}
             <ModalApproveStory
                 isOpen={showModalApprove}
                 onClose={() => setShowModalApprove(false)}
-                story={storyDetail ?? ({} as Story)}
+                chapter={chapterDetail ?? {}}
                 webSocketService={webSocketService}
                 moderationReq={moderationReqDetail ?? null}
             />

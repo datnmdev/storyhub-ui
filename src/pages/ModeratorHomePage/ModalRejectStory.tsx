@@ -38,21 +38,28 @@ const ModalRejectStory: React.FC<ModalRejectStoryProps> = ({
                 </button>
             </header>
 
-            <TextEditor
-                value={reason}
-                height={240}
-                placeholder="Nhập lý do từ chối duyệt truyện"
-                disabled={check !== 1}
-                onChange={(value) => setReason(value)}
-            />
-
-            <footer className={styles.modalFooter}>
-                {check && check == 1 && (
-                    <button className={styles.btnPrimary} onClick={handleSubmit}>
-                        Lưu
-                    </button>
-                )}
-            </footer>
+            {check === 1 ? (
+                <>
+                    <TextEditor
+                        value={reason}
+                        height={240}
+                        placeholder="Nhập lý do từ chối duyệt truyện"
+                        disabled={false}
+                        onChange={(value) => setReason(value)}
+                    />
+                    <footer className={styles.modalFooter}>
+                        <button className={styles.btnPrimary} onClick={handleSubmit}>
+                            Lưu
+                        </button>
+                    </footer>
+                </>
+            ) : (
+                <div
+                    dangerouslySetInnerHTML={{
+                        __html: reason ? reason : "",
+                    }}
+                ></div>
+            )}
         </div>
     );
 };

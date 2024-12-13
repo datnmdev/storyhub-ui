@@ -15,16 +15,32 @@
             font-weight: 600;
         }
 
-        .btnSuccess {
-            background-color: rgb(27, 213, 77);
-            border-radius: 5px;
-            color: white;
-            border: none;
-            padding: 7px 14px;
-            cursor: pointer;
+        .custombtn {
+            display: flex;
+            gap: 10px;
+            .btnSuccess {
+                background-color: rgb(27, 213, 77);
+                border-radius: 5px;
+                color: white;
+                border: none;
+                padding: 7px 14px;
+                cursor: pointer;
 
-            &:hover {
-                background-color: rgb(4, 197, 55);
+                &:hover {
+                    background-color: rgb(4, 197, 55);
+                }
+            }
+            .btnDanger {
+                border-radius: 5px;
+                background-color: rgb(246, 66, 66);
+                color: white;
+                border: none;
+                padding: 7px 14px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(237, 22, 22);
+                }
             }
         }
     }

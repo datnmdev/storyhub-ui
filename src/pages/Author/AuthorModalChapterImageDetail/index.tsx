@@ -300,7 +300,7 @@ const ModalChapterImageDetail: React.FC<ModalChapterImageDetailProps> = ({
 
                     {/* Right: Selected Image */}
                     <div className={styles.imagePreview}>
-                        <label className={styles.customLabel}>Số trang</label>
+                        <label className={styles.customLabel}>Số thứ tự</label>
                         <div className={styles.headerImagePreview}>
                             <div className={styles.titleImagePreview}>
                                 <input

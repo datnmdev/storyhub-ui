@@ -41,6 +41,7 @@ export interface ModerationRequest {
     storyId: number;
     story: any;
     chapterId: number;
+    chapter: any;
     requesterId: number;
     responserId: number;
 }
@@ -109,13 +110,12 @@ export interface AuthorModalCreateAndUpdateChapterProps {
     isOpen: boolean;
     onClose: () => void;
     isUpdate: boolean;
-    storyTitle: string;
     title: string;
-    storyId: number;
     index: number | null;
     chapterList: any[];
     setRefetchChapterList: (value: any) => void;
     orderNew: number;
+    story: any;
 }
 
 export interface ModalDeleteChapterProps {

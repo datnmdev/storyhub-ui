@@ -8,13 +8,23 @@ import apis from "@apis/index";
 import useFetch from "@hooks/fetch.hook";
 import { useAppDispatch, useAppSelector } from "@hooks/redux.hook";
 import authFeature from "@features/auth";
-
+import { setWebSocketService } from "@store/webSocketSlice";
+import WebSocketService from "@components/AuthorHeader/Socket/socket";
 function Setting() {
     const [showDropdown, setShowDropdown] = useState(false);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { data: profileData, isLoading: isGettingProfile } = useFetch(apis.userApi.getProfile);
     const profile = useAppSelector(authFeature.authSelector.selectUser);
+    const [checkConnent, setCheckConnet] = useState<number>(1);
+
+    useEffect(() => {
+        if (profile && checkConnent == 1) {
+            setCheckConnet(2);
+            const webSocketService = new WebSocketService(profile.id.toString());
+            dispatch(setWebSocketService(webSocketService));
+        }
+    }, [profile, dispatch]);
     const {
         data: isSignedOut,
         isLoading: isSigningOut,

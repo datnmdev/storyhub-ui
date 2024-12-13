@@ -10,8 +10,6 @@ import { useAppSelector } from "@hooks/redux.hook";
 import authFeature from "@features/auth";
 import { StoryStatus, StoryStatusLabels } from "../AllEnum/enum";
 import { useDispatch } from "react-redux";
-import { setWebSocketService } from "@store/webSocketSlice";
-import WebSocketService from "@components/AuthorHeader/Socket/socket";
 
 const AuthorHomePage = () => {
     const navigate = useNavigate();
@@ -24,15 +22,6 @@ const AuthorHomePage = () => {
     const [totalPage, setTotalPage] = useState<number>(1);
     const [mangaItems, setMangaItems] = useState<any[]>([]);
     const profile = useAppSelector(authFeature.authSelector.selectUser);
-    const [checkConnent, setCheckConnet] = useState<number>(1);
-
-    useEffect(() => {
-        if (profile && checkConnent == 1) {
-            setCheckConnet(2);
-            const webSocketService = new WebSocketService(profile.id.toString());
-            dispatch(setWebSocketService(webSocketService));
-        }
-    }, [profile, dispatch]);
 
     const handleRefetch = () => {
         setSearch("");
@@ -115,9 +104,8 @@ const AuthorHomePage = () => {
                         <select className={styles.statusFilter} onChange={(event) => handleFilter(event, "status")}>
                             <option value="5">Trạng thái truyện</option>
                             <option value="0">Chưa phát hành</option>
-                            <option value="1">Yêu cầu phát thành</option>
-                            <option value="2">Đang phát hành</option>
-                            <option value="4">Hoàn thành</option>
+                            <option value="2">Phát hành</option>
+                            <option value="3">Hoàn thành</option>
                         </select>
                         {/* <select className={styles.statusFilter}>
                             <option disabled>Thể loại</option>

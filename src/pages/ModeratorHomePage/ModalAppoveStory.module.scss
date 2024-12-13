@@ -1,0 +1,205 @@
+.container {
+    display: flex;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1200px;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    line-height: 1.6;
+    color: var(--text-color) !important;
+    // Left Side - Story Details
+    .modalApproveStory {
+        flex: 1;
+        border-right: 1px solid #e0e0e0;
+        display: flex;
+        flex-direction: column;
+        .modalHeaderStoryDetail {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+
+            .customHeader {
+                font-size: 18px;
+                font-weight: bold;
+            }
+        }
+        .storyDetails {
+            padding: 15px;
+            overflow-y: auto;
+            height: 550px !important;
+            .infoTop {
+                display: flex;
+                gap: 20px;
+
+                .storyImage {
+                    width: 150px;
+                    height: 200px;
+                    object-fit: cover;
+                    border-radius: 8px;
+                    margin-bottom: 15px;
+                }
+                .approveStoryInfo {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    .customstotyTitle {
+                        font-size: 20px;
+                        font-weight: bold;
+                        color: var(--primary);
+                    }
+                    // .customspan{
+                    //   color: #000 !important;
+                    // }
+                }
+            }
+            .actionSpanApproveStory {
+                display: flex;
+                gap: 10px;
+                margin: 15px 0;
+                .customSpanApproveStory {
+                    background-color: #ae3727;
+                    color: #f9f9f9;
+                    padding: 5px 10px;
+                    border-radius: 4px;
+                    font-size: 12px;
+                }
+                .storyNote {
+                    background-color: #f9f9f9;
+                    border-left: 4px solid var(--primary);
+                    padding: 10px;
+                    margin: 15px 0;
+                    font-style: italic;
+                }
+            }
+            .storyDescription {
+                margin-top: 15px;
+
+                .customDesc {
+                }
+            }
+        }
+    }
+    // Right Side - Chapter Form
+    .modalChapter {
+        flex: 1;
+        border-right: 1px solid #e0e0e0;
+        display: flex;
+        flex-direction: column;
+
+        .modalHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+
+            .customHeader {
+                font-size: 18px;
+                font-weight: bold;
+            }
+
+            .closeButton {
+                background: none;
+                border: none;
+                font-size: 24px;
+                cursor: pointer;
+                color: #666;
+            }
+        }
+        .modalBody {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+            .customdiv {
+                margin-bottom: 15px;
+
+                label {
+                    display: block;
+                    margin-bottom: 5px;
+                    font-weight: 600;
+                }
+
+                input,
+                select {
+                    width: 100%;
+                    padding: 8px;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                }
+            }
+            .customTextEditor {
+                margin-top: 15px;
+                .customlabel {
+                    padding-bottom: 10px;
+                }
+                .customListImage {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    align-items: center;
+                    .customImage {
+                        width: 220px;
+                        height: 350px;
+                    }
+                }
+            }
+        }
+        .modalFooter {
+            padding: 10px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+
+            .btnDanger {
+                border-radius: 5px;
+                background-color: rgb(246, 66, 66);
+                color: white;
+                border: none;
+                padding: 7px 14px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(237, 22, 22);
+                }
+            }
+            .btnPrimary {
+                background-color: rgb(89, 89, 215);
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 7px 14px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(42, 42, 210);
+                }
+            }
+        }
+    }
+}
+
+// Responsive adjustments
+@media (max-width: 1400px) {
+    .container {
+        width: 95%;
+        max-width: 1200px;
+    }
+
+    .infoTop {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .storyImage {
+        width: 150px;
+        height: 225px;
+    }
+}

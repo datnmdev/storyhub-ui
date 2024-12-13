@@ -10,20 +10,7 @@ const Nav = () => {
         <nav className="flex font-[350]">
             <div
                 className={classNames(styles.navItem, "px-2 cursor-pointer")}
-                onClick={() => navigate(paths.authorHomePage())}
-            >
-                Truyện
-            </div>
-
-            <div
-                className={classNames(styles.navItem, "px-2 cursor-pointer")}
-                onClick={() => navigate(paths.authorStatistic())}
-            >
-                Thống kê
-            </div>
-            <div
-                className={classNames(styles.navItem, "px-2 cursor-pointer")}
-                onClick={() => navigate(paths.authorRegulations())}
+                onClick={() => navigate(paths.moderatorRegulations())}
             >
                 Quy chế hoạt động
             </div>
