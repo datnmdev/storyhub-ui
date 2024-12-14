@@ -20,6 +20,7 @@ import moderatorApi from "./moderator";
 import notificationUserApi from "./notificationUser";
 import statisticApi from "./statistic";
 import moderatorReqApi from "./moderationReq";
+import readingHistoryApi from "./readingHistory";
 const apis = {
     authApi,
     userApi,
@@ -42,6 +43,7 @@ const apis = {
     statisticApi,
     moderatorApi,
     moderatorReqApi,
+    readingHistoryApi
 };
 
 export default apis;

@@ -8,6 +8,7 @@ function Popup({
     title = "Cửa sổ popup",
     width = 420,
     minHeight = 48,
+    maxHeight = 420,
     children,
     onClose
 }: PopupProps) {
@@ -18,12 +19,13 @@ function Popup({
             <div className={classNames("absolute top-0 left-0 w-full h-full opacity-60", themeValue === "light" ? "light" : "dark")}></div>
             <div
                 className={classNames(
-                    "rounded-[8px] z-[1] p-4 animate-fadeIn",
+                    "rounded-[8px] z-[1] p-4 animate-fadeIn overflow-hidden flex flex-col",
                     themeValue === "light" ? "light light__boxShadow" : "dark dark__boxShadow"
                 )}
                 style={{
                     width,
-                    minHeight 
+                    minHeight,
+                    maxHeight
                 }}
             >
                 <div className="flex justify-between items-center">
@@ -39,7 +41,7 @@ function Popup({
                     </div>
                 </div>
 
-                <div className="grow mt-4">
+                <div className="grow mt-4 overflow-auto">
                     {children}
                 </div>
             </div>

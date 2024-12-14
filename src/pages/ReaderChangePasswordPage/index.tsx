@@ -52,7 +52,7 @@ function ReaderChangePasswordPage() {
                         <li>
                             <Link
                                 className="pl-2 pr-4 rounded-[4px] leading-[38px] space-x-2 flex items-center bg-[var(--primary)] text-[var(--white)]"
-                                to={paths.readerDepositeTransHistoryPage()}
+                                to={paths.readerChangePasswordPage()}
                             >
                                 <span>
                                     <img 

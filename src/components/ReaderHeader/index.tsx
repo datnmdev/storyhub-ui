@@ -18,7 +18,7 @@ function Header() {
     const isAuthenticated = useAppSelector(authFeature.authSelector.selectAuthenticated);
 
     return (
-        <div className="border-solid border-b-[1px] border-[var(--gray)]">
+        <div className="sticky top-0 left-0 z-[2] border-solid border-b-[1px] border-[var(--gray)] bg-inherit">
             <div
                 className={classNames(
                     "desktop:w-[var(--desktop-container-w)] mx-auto flex justify-between leading-[64px]"

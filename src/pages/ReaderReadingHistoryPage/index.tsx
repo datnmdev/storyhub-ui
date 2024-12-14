@@ -3,7 +3,7 @@ import { BreadcrumbProps } from "@components/Breadcrumb/Breadcrumb.type";
 import paths from "@routers/router.path";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
-// import ReadingHistorySection from "./components/ReadingHistorySection";
+import ReadingHistorySection from "./components/ReadingHistorySection";
 
 function ReaderReadingHistoryPage() {
     const { t } = useTranslation();
@@ -28,7 +28,7 @@ function ReaderReadingHistoryPage() {
             </div>
 
             <div>
-                {/* <ReadingHistorySection /> */}
+                <ReadingHistorySection />
             </div>
         </div>
     )
