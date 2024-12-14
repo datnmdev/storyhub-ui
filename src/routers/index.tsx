@@ -31,6 +31,8 @@ import ManagerLayout from "@layouts/ManagerLayout";
 import ManagerEmployeeManagementPage from "@pages/ManagerEmployeeManagementPage";
 import ReaderRankPage from "@pages/ReaderRankPage";
 import ReaderFollowManagementPage from "@pages/ReaderFollowManagementPage";
+import ReaderReadingHistoryPage from "@pages/ReaderReadingHistoryPage";
+
 import AuthorStatistic from "@pages/Author/AuthorStatistic";
 import ModeratorLayout from "@layouts/ModeratorLayout";
 import ModeratorProfile from "@pages/ModeratorHomePage/ModeratorProfile";
@@ -160,6 +162,16 @@ const router = createBrowserRouter([
                     <Protected role={Role.READER}>
                         <ReaderLayout>
                             <ReaderFollowManagementPage />
+                        </ReaderLayout>
+                    </Protected>
+                ),
+            },
+            {
+                path: paths.readerReadingHistoryPage(),
+                element: (
+                    <Protected role={Role.READER}>
+                        <ReaderLayout>
+                            <ReaderReadingHistoryPage />
                         </ReaderLayout>
                     </Protected>
                 ),

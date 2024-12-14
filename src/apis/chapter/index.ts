@@ -6,6 +6,7 @@ export interface Chapter {
     order: number
     name: string
     content?: string
+    history: any
     createdAt: string
     updatedAt: string
     storyId: number
@@ -26,6 +27,7 @@ export interface ImageContent {
     id: number
     order: number
     name: string
+    history: any
     images: ChapterImage[]
     createdAt: string
     updatedAt: string

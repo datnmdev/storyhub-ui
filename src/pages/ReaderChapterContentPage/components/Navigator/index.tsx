@@ -137,7 +137,7 @@ function Navigator() {
 
                 <div>
                     <Button
-                        width={120}
+                        width={140}
                         disabled={navigator.nextIndex < 0}
                         onClick={() => setSeletedChapter(chaptersData?.[0][navigator.nextIndex] as ChapterWithInvoiceRelation)}
                     >

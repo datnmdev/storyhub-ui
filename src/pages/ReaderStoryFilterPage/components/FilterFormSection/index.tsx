@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { FilterFormSectionProps, FilterInputData } from "./FilterFormSection.type";
 import { StoryStatus, StoryType } from "@constants/story.constants";
 
-const defaultInputData: FilterInputData = {
+export const defaultInputData: FilterInputData = {
     authorId: undefined,
     status: JSON.stringify([
         StoryStatus.PUBLISHING,
@@ -30,6 +30,7 @@ const defaultInputData: FilterInputData = {
 }
 
 function FilterFormSection({
+    value,
     onChange,
     onSubmit
 }: FilterFormSectionProps) {
@@ -38,7 +39,7 @@ function FilterFormSection({
     const { data: countries } = useFetch(apis.countryApi.getCountryList);
     const { data: genresData } = useFetch(apis.genreApi.getGenreList);
     const [isHidden, setHidden] = useState(false);
-    const [inputData, setInputData] = useState<FilterInputData>(defaultInputData);
+    const [inputData, setInputData] = useState<FilterInputData>(value);
     const [selectedValues, setSelectedValues] = useState<number[]>([]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,7 +68,11 @@ function FilterFormSection({
         if (onChange) {
             onChange(inputData);
         }
-    }, [inputData])
+    }, [inputData.type, inputData.status, inputData.orderBy, inputData.page, inputData.limit, inputData.genres, inputData.countryId, inputData.authorId])
+
+    useEffect(() => {
+        setInputData(value);
+    }, [value])
 
     return (
         <div>

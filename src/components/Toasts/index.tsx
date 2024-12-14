@@ -30,7 +30,7 @@ function Toasts() {
     }, [toasts])
 
     return (
-        <div className='fixed top-8 right-8 z-[1]'>
+        <div className='fixed top-8 right-8 z-[999]'>
             {toasts
                 && (
                     toasts.map((toast: ToastProps) => {

@@ -95,7 +95,7 @@ function BeautySlide({
                     <div className="relative shrink-0">
                         <img
                             className={classNames(
-                                "w-40 h-full rounded-[4px]",
+                                "w-40 h-[190px] rounded-[4px]",
                                 themeValue === "light" ? "light__boxShadow" : "dark__boxShadow"
                             )}
                             src={UrlUtils.generateUrl(data.coverImage)}
