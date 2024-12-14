@@ -73,7 +73,7 @@ function StoryItem({
                     limit: 3,
                     orderBy: JSON.stringify([
                         ["order", "DESC"],
-                        ["updated_at", "DESC"],
+                        ["updatedAt", "DESC"],
                         ["id", "DESC"]
                     ])
                 }

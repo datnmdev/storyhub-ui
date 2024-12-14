@@ -1,4 +1,4 @@
-import { Chapter } from "@apis/chapter";
+import { ChapterWithInvoiceRelation } from "@apis/chapter";
 import apis from "@apis/index";
 import Pagination from "@components/Pagination";
 import authFeature from "@features/auth";
@@ -15,6 +15,7 @@ import PaymentRemindPopup from "./components/PaymentRemindPopup";
 import paths from "@routers/router.path";
 import Protected from "@components/Protected";
 import { Role } from "@constants/auth.constants";
+import { RequestInit } from "@apis/api.type";
 
 function ChaperSection() {
     const { t } = useTranslation();
@@ -22,31 +23,44 @@ function ChaperSection() {
     const isAuthentication = useAppSelector(authFeature.authSelector.selectAuthenticated);
     const { storyId } = useParams();
     const [isRender, setRender] = useState<boolean>(false);
-    const { data: currentPrice, isLoading: isGettingCurrentPrice, setRefetch: setReGetCurrentPrice } = useFetch(apis.priceApi.getCurrentPrice, {
+    const [getCurrentPriceReq] = useState<RequestInit>({
         queries: {
             storyId
         }
-    })
-    const [queries, setQueries] = useState({
-        page: 1,
-        limit: 20,
-        storyId,
-        orderBy: JSON.stringify([
-            ["order", "DESC"],
-            ["updated_at", "DESC"],
-            ["id", "DESC"]
-        ])
     });
-    const { data: chaptersData, isLoading: isGettingChapters, setRefetch: setReGetChapters } = useFetch<[Chapter[], number]>(apis.chapterApi.getChapterWithFilter, {
-        queries
-    }, false)
-    const [paymentStatusList, setPaymentStatusList] = useState<boolean[] | null>(null);
-    const [checkPaymentStatusOfChaptersApis, setCheckPaymentStatusOfChaptersApis] = useState<ApiFuncArray | null>(null);
-    const { data: paymentStatusOfChaptersData, isLoading: isCheckingPaymentStatusOfChapters, setRefetch: setReCheckPaymentStatusOfChapters } = useFetchAll(checkPaymentStatusOfChaptersApis as ApiFuncArray, false);
+    const { data: currentPrice, isLoading: isGettingCurrentPrice, setRefetch: setReGetCurrentPrice } = useFetch(apis.priceApi.getCurrentPrice, getCurrentPriceReq)
+    const [getChaptersReq, setGetChapterReq] = useState<RequestInit>({
+        queries: {
+            page: 1,
+            limit: 20,
+            storyId,
+            orderBy: JSON.stringify([
+                ["order", "DESC"],
+                ["updatedAt", "DESC"],
+                ["id", "DESC"]
+            ])
+        }
+    });
+    const { data: chaptersData, isLoading: isGettingChapters, setRefetch: setReGetChapters } = useFetch<[ChapterWithInvoiceRelation[], number]>(apis.chapterApi.getChapterWithInvoiceRelation, getChaptersReq, false)
     const [viewCountApis, setViewCountApi] = useState<ApiFuncArray | null>(null);
     const { data: viewCountsData, isLoading: isGettingViewCounts, setRefetch: setReGetViewCounts } = useFetchAll(viewCountApis as ApiFuncArray, false);
-    const [selectedChapter, setSelectChapter] = useState<{ isPaid: boolean, chapter: Chapter } | null>(null);
-    const [isProtected, setProtected] = useState<boolean>(false);
+    const [selectedChapter, setSelectChapter] = useState<ChapterWithInvoiceRelation | null>(null);
+
+    useEffect(() => {
+        if (getCurrentPriceReq) {
+            setReGetCurrentPrice({
+                value: true
+            })
+        }
+    }, [getCurrentPriceReq])
+
+    useEffect(() => {
+        if (getChaptersReq) {
+            setReGetChapters({
+                value: true
+            })
+        }
+    }, [getChaptersReq])
 
     useEffect(() => {
         if (!isGettingCurrentPrice) {
@@ -61,28 +75,7 @@ function ChaperSection() {
     useEffect(() => {
         if (!isGettingChapters) {
             if (chaptersData) {
-                if (currentPrice > 0) {
-                    if (isAuthentication) {
-                        setCheckPaymentStatusOfChaptersApis(chaptersData[0].map(chapter => {
-                            return [
-                                apis.invoiceApi.getInvoice,
-                                {
-                                    queries: {
-                                        chapterId: chapter.id,
-                                        page: 1,
-                                        limit: 1
-                                    }
-                                }
-                            ]
-                        }))
-
-                    } else {
-                        setPaymentStatusList(chaptersData[0].map(() => false));
-                    }
-                } else {
-                    setPaymentStatusList(chaptersData[0].map(() => true));
-                }
-                setViewCountApi(chaptersData[0].map(chapter => {
+                setViewCountApi(() => chaptersData[0].map(chapter => {
                     return [
                         apis.viewApi.getViewCountOfChapter,
                         {
@@ -92,34 +85,12 @@ function ChaperSection() {
                         }
                     ]
                 }))
+                setReGetViewCounts({
+                    value: true
+                })
             }
         }
     }, [isGettingChapters])
-
-    useEffect(() => {
-        if (checkPaymentStatusOfChaptersApis) {
-            setReCheckPaymentStatusOfChapters({
-                value: true
-            })
-        }
-    }, [checkPaymentStatusOfChaptersApis])
-
-    useEffect(() => {
-        if (!isCheckingPaymentStatusOfChapters) {
-            if (paymentStatusOfChaptersData) {
-                setPaymentStatusList(paymentStatusOfChaptersData.map(data => data[1] === 0 ? false : true))
-            }
-        }
-    }, [isCheckingPaymentStatusOfChapters])
-
-    useEffect(() => {
-        if (paymentStatusList) {
-            setReGetViewCounts({
-                value: true
-            })
-        }
-    }, [paymentStatusList])
-
 
     useEffect(() => {
         if (!isGettingViewCounts) {
@@ -130,15 +101,9 @@ function ChaperSection() {
     }, [isGettingViewCounts])
 
     useEffect(() => {
-        setReGetCurrentPrice({
-            value: true
-        })
-    }, [queries])
-
-    useEffect(() => {
         if (selectedChapter) {
-            if (selectedChapter.isPaid) {
-                navigate(paths.readerChapterContentPage(selectedChapter.chapter.storyId, selectedChapter.chapter.id));
+            if (selectedChapter.invoices.length > 0 || currentPrice <= 0) {
+                navigate(paths.readerChapterContentPage(selectedChapter.storyId, selectedChapter.id));
             }
         }
     }, [selectedChapter])
@@ -176,20 +141,17 @@ function ChaperSection() {
                                 <div
                                     key={chapter.id}
                                     className="flex justify-between items-center border-b-[1px] border-solid border-[var(--gray)] py-2 hover:text-[var(--primary)] hover:cursor-pointer gap-x-2"
-                                    onClick={() => setSelectChapter({
-                                        isPaid: Boolean(paymentStatusList?.[index]),
-                                        chapter
-                                    })}
+                                    onClick={() => setSelectChapter(chapter)}
                                 >
                                     <div className="w-1/4 line-clamp-1">{chapter.name}</div>
                                     <div className="w-1/4 text-center line-clamp-1">
                                         <span
                                             className={classNames(
                                                 "min-w-[98px] inline-block text-[var(--white)] px-2 py-1 rounded-[4px] text-[0.8rem]",
-                                                paymentStatusList?.[index] ? "bg-green-500" : "bg-red-500"
+                                                chapter.invoices.length > 0 || currentPrice <= 0 ? "bg-green-500" : "bg-red-500"
                                             )}
                                         >
-                                            {paymentStatusList?.[index] ? t("reader.storyInfoPage.chapterListSection.header.status.paid") : t("reader.storyInfoPage.chapterListSection.header.status.unpaid")}
+                                            {chapter.invoices.length > 0 || currentPrice <= 0 ? t("reader.storyInfoPage.chapterListSection.header.status.paid") : t("reader.storyInfoPage.chapterListSection.header.status.unpaid")}
                                         </span>
                                     </div>
                                     <div className="w-1/4 text-center line-clamp-1">{moment(chapter.updatedAt).format("DD/MM/YYYY HH:MM:SS")}</div>
@@ -201,25 +163,27 @@ function ChaperSection() {
 
                     <div className="flex justify-center mt-4">
                         <Pagination
-                            page={queries.page}
-                            count={chaptersData?.[1] ? Math.ceil(chaptersData[1] / queries.limit) : 1}
-                            onChange={(e, page) => setQueries({
-                                ...queries,
-                                page
+                            page={getChaptersReq.queries.page}
+                            count={chaptersData?.[1] ? Math.ceil(chaptersData[1] / getChaptersReq.queries.limit) : 1}
+                            onChange={(e, page) => setGetChapterReq({
+                                queries: {
+                                    ...getChaptersReq.queries,
+                                    page
+                                }
                             })}
                         />
                     </div>
                 </div>
             </div>
 
-            {selectedChapter && !selectedChapter.isPaid
+            {selectedChapter && selectedChapter.invoices.length <= 0 && currentPrice > 0
                 && (
-                    <Protected 
+                    <Protected
                         role={Role.READER}
                         enable={!isAuthentication}
                     >
                         <PaymentRemindPopup
-                            chapter={selectedChapter.chapter}
+                            chapter={selectedChapter}
                             price={currentPrice}
                             onClose={() => setSelectChapter(null)}
                         />
