@@ -16,6 +16,7 @@ import paths from "@routers/router.path";
 import Protected from "@components/Protected";
 import { Role } from "@constants/auth.constants";
 import { RequestInit } from "@apis/api.type";
+import NoData from "@components/NoData";
 
 function ChaperSection() {
     const { t } = useTranslation();
@@ -125,55 +126,63 @@ function ChaperSection() {
             </div>
 
             <div className="mt-2">
-                <div className="w-full p-2 border-[2px] border-solid border-[var(--gray)]">
-                    <div>
-                        <div className="flex justify-between items-center border-b-[1px] border-solid border-[var(--gray)] pb-2 font-[450]">
-                            <div className="w-1/4 line-clamp-1">{t("reader.storyInfoPage.chapterListSection.header.chapterName")}</div>
-                            <div className="w-1/4 text-center line-clamp-1">{t("reader.storyInfoPage.chapterListSection.header.status.label")}</div>
-                            <div className="w-1/4 text-center line-clamp-1">{t("reader.storyInfoPage.chapterListSection.header.updatedTime")}</div>
-                            <div className="w-1/4 text-center line-clamp-1">{t("reader.storyInfoPage.chapterListSection.header.viewCount")}</div>
-                        </div>
-                    </div>
-
-                    <div>
-                        {chaptersData?.[0].map((chapter, index) => {
-                            return (
-                                <div
-                                    key={chapter.id}
-                                    className="flex justify-between items-center border-b-[1px] border-solid border-[var(--gray)] py-2 hover:text-[var(--primary)] hover:cursor-pointer gap-x-2"
-                                    onClick={() => setSelectChapter(chapter)}
-                                >
-                                    <div className="w-1/4 line-clamp-1">{chapter.name}</div>
-                                    <div className="w-1/4 text-center line-clamp-1">
-                                        <span
-                                            className={classNames(
-                                                "min-w-[98px] inline-block text-[var(--white)] px-2 py-1 rounded-[4px] text-[0.8rem]",
-                                                chapter.invoices.length > 0 || currentPrice <= 0 ? "bg-green-500" : "bg-red-500"
-                                            )}
-                                        >
-                                            {chapter.invoices.length > 0 || currentPrice <= 0 ? t("reader.storyInfoPage.chapterListSection.header.status.paid") : t("reader.storyInfoPage.chapterListSection.header.status.unpaid")}
-                                        </span>
-                                    </div>
-                                    <div className="w-1/4 text-center line-clamp-1">{moment(chapter.updatedAt).format("DD/MM/YYYY HH:MM:SS")}</div>
-                                    <div className="w-1/4 text-center line-clamp-1">{NumberUtils.formatNumberWithSeparator(String(viewCountsData?.[index]))}</div>
+                {chaptersData && chaptersData?.[1] > 0
+                    ? (
+                        <div className="w-full p-2 border-[2px] border-solid border-[var(--gray)]">
+                            <div>
+                                <div className="flex justify-between items-center border-b-[1px] border-solid border-[var(--gray)] pb-2 font-[450]">
+                                    <div className="w-1/4 line-clamp-1">{t("reader.storyInfoPage.chapterListSection.header.chapterName")}</div>
+                                    <div className="w-1/4 text-center line-clamp-1">{t("reader.storyInfoPage.chapterListSection.header.status.label")}</div>
+                                    <div className="w-1/4 text-center line-clamp-1">{t("reader.storyInfoPage.chapterListSection.header.updatedTime")}</div>
+                                    <div className="w-1/4 text-center line-clamp-1">{t("reader.storyInfoPage.chapterListSection.header.viewCount")}</div>
                                 </div>
-                            )
-                        })}
-                    </div>
+                            </div>
 
-                    <div className="flex justify-center mt-4">
-                        <Pagination
-                            page={getChaptersReq.queries.page}
-                            count={chaptersData?.[1] ? Math.ceil(chaptersData[1] / getChaptersReq.queries.limit) : 1}
-                            onChange={(e, page) => setGetChapterReq({
-                                queries: {
-                                    ...getChaptersReq.queries,
-                                    page
-                                }
-                            })}
-                        />
-                    </div>
-                </div>
+                            <div>
+                                {chaptersData?.[0].map((chapter, index) => {
+                                    return (
+                                        <div
+                                            key={chapter.id}
+                                            className="flex justify-between items-center border-b-[1px] border-solid border-[var(--gray)] py-2 hover:text-[var(--primary)] hover:cursor-pointer gap-x-2"
+                                            onClick={() => setSelectChapter(chapter)}
+                                        >
+                                            <div className="w-1/4 line-clamp-1">{chapter.name}</div>
+                                            <div className="w-1/4 text-center line-clamp-1">
+                                                <span
+                                                    className={classNames(
+                                                        "min-w-[98px] inline-block text-[var(--white)] px-2 py-1 rounded-[4px] text-[0.8rem]",
+                                                        chapter.invoices.length > 0 || currentPrice <= 0 ? "bg-green-500" : "bg-red-500"
+                                                    )}
+                                                >
+                                                    {chapter.invoices.length > 0 || currentPrice <= 0 ? t("reader.storyInfoPage.chapterListSection.header.status.paid") : t("reader.storyInfoPage.chapterListSection.header.status.unpaid")}
+                                                </span>
+                                            </div>
+                                            <div className="w-1/4 text-center line-clamp-1">{moment(chapter.updatedAt).format("DD/MM/YYYY HH:MM:SS")}</div>
+                                            <div className="w-1/4 text-center line-clamp-1">{NumberUtils.formatNumberWithSeparator(String(viewCountsData?.[index]))}</div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+
+                            <div className="flex justify-center mt-4">
+                                <Pagination
+                                    page={getChaptersReq.queries.page}
+                                    count={chaptersData?.[1] ? Math.ceil(chaptersData[1] / getChaptersReq.queries.limit) : 1}
+                                    onChange={(e, page) => setGetChapterReq({
+                                        queries: {
+                                            ...getChaptersReq.queries,
+                                            page
+                                        }
+                                    })}
+                                />
+                            </div>
+                        </div>
+                    )
+                    : (
+                        <div className="h-[120px]">
+                            <NoData />
+                        </div>
+                    )}
             </div>
 
             {selectedChapter && selectedChapter.invoices.length <= 0 && currentPrice > 0
