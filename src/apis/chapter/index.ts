@@ -1,5 +1,4 @@
 import { RequestInit } from "@apis/api.type";
-import { AxiosResponse } from "axios";
 import axiosInstance from "libs/axios";
 
 export interface Chapter {
@@ -10,6 +9,10 @@ export interface Chapter {
     createdAt: string
     updatedAt: string
     storyId: number
+}
+
+export interface ChapterWithInvoiceRelation extends Chapter {
+    invoices: any[]
 }
 
 export interface ChapterImage {
@@ -44,7 +47,7 @@ const chapterApi = {
     deleteChapter: (options: RequestInit) => {
         return axiosInstance().delete(`/chapter/${options.queries.id}`);
     },
-    getChapterWithFilter: (options: RequestInit): Promise<AxiosResponse<GetChapterWithFilterResponseData>> => {
+    getChapterWithFilter: (options: RequestInit) => {
         return axiosInstance().get("/chapter/all/filter", {
             params: options.queries
         })
@@ -58,7 +61,12 @@ const chapterApi = {
         return axiosInstance().get(options?.uri as string, {
             responseType: "blob"
         });
-    }
+    },
+    getChapterWithInvoiceRelation: (options: RequestInit) => {
+        return axiosInstance().get("/chapter/all/with-invoice-relation", {
+            params: options.queries
+        })
+    },
 }
 
 export default chapterApi;
