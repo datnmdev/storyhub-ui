@@ -22,8 +22,8 @@ export const useFetchListUrlUploadFileForChapter = (dataForFileUploads: any[]) =
     );
 };
 
-export const useFetchDeleteImage = (chapterImages: { id: number; fileName: string }) => {
-    return useFetch<any>(apis.chapterImageApi.deleteChapterImages, { body: chapterImages }, false);
+export const useFetchDeleteImage = (chapterImageId: number) => {
+    return useFetch<any>(apis.chapterImageApi.deleteChapterImages, { queries: { id: chapterImageId } }, false);
 };
 
 export const useFetchUpdateOrderImage = (chapterImage: ChapterImage) => {

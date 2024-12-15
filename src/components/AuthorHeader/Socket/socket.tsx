@@ -73,10 +73,10 @@ class WebSocketService {
     }
 
     // Tác giả lắng nghe sự kiện thay đổi về truyện
-    public listenStoryUpdateEventForAuthor(callback: (storyId: number, reason: string) => void): void {
-        this.socket.on("story_handled", (data: { storyId: number; reason: string }) => {
+    public listenStoryUpdateEventForAuthor(callback: (reason: string) => void): void {
+        this.socket.on("story_handled", (reason: string) => {
             //console.log("story handled event received:", data);
-            callback(data.storyId, data.reason); // Gọi callback với dữ liệu nhận được
+            callback(reason); // Gọi callback với dữ liệu nhận được
         });
     }
 

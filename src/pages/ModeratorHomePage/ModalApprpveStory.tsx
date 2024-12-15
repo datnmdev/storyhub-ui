@@ -52,7 +52,13 @@ const ModalApproveStory: React.FC<ModalApproveStoryProps> = ({
         const reqId = moderationReq ? moderationReq.id : 0;
         const reqStatus = 2;
         const storyId = chapter?.story?.id ?? 0;
-        const storyStatus = 0;
+
+        let storyStatus = null;
+        if (chapter.story.status == 2) {
+            storyStatus = 2;
+        } else {
+            storyStatus = 0;
+        }
         const chapterId = chapter?.id;
         const chapterStatus = 0;
 
@@ -175,24 +181,22 @@ const ModalApproveStory: React.FC<ModalApproveStoryProps> = ({
                         )}
                     </div>
                 </div>
-                <footer className={styles.modalFooter}>
-                    {moderationReq && moderationReq.status == 0 ? (
-                        <>
-                            <button className={styles.btnPrimary} onClick={handleApprove} disabled={showModalReject}>
-                                Phê duyệt
-                            </button>
-                            <button
-                                className={styles.btnDanger}
-                                onClick={() => setShowModalReject(true)}
-                                disabled={showModalReject}
-                            >
-                                Từ chối
-                            </button>
-                        </>
-                    ) : (
-                        <></>
-                    )}
-                </footer>
+                {moderationReq && moderationReq.status == 0 ? (
+                    <footer className={styles.modalFooter}>
+                        <button className={styles.btnPrimary} onClick={handleApprove} disabled={showModalReject}>
+                            Phê duyệt
+                        </button>
+                        <button
+                            className={styles.btnDanger}
+                            onClick={() => setShowModalReject(true)}
+                            disabled={showModalReject}
+                        >
+                            Từ chối
+                        </button>
+                    </footer>
+                ) : (
+                    <></>
+                )}
                 <ModalRejectStory
                     isOpenShow={showModalReject}
                     onCloseShow={() => setShowModalReject(false)}

@@ -41,21 +41,19 @@ function Notification() {
     );
 
     useEffect(() => {
-        // Lắng nghe yêu cầu kiểm duyệt
         const listenEvent = (mess: any) => {
             console.log("Yêu cầu kiểm duyệt mới nhận được:", mess);
             setRefetchNotification({ value: true });
         };
 
-        // Gọi hàm để lắng nghe yêu cầu kiểm duyệt
         if (webSocketService) {
             webSocketService.listenNewReviewRequestForModerator(listenEvent);
+            webSocketService.listenStoryUpdateEventforModerator(listenEvent);
         }
 
         // Cleanup listener nếu cần
         return () => {
-            // Nếu bạn muốn dọn dẹp, bạn có thể thêm logic để tắt lắng nghe
-            // Tuy nhiên, trong trường hợp này, socket.on không cần phải tắt
+            // Logic để tắt lắng nghe nếu cần thiết
         };
     }, [webSocketService]);
 

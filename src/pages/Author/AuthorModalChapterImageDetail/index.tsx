@@ -31,7 +31,7 @@ const ModalChapterImageDetail: React.FC<ModalChapterImageDetailProps> = ({
     const [imageNewList, setImageNewList] = useState<any[]>([]);
     const [fileList, setFileList] = useState<any[]>([]);
     const [dataForFileUploads, setDataForFileUploads] = useState<any[]>([]);
-    const [dataDeleteImage, setDataDeleteImage] = useState<any>({});
+    const [dataDeleteImage, setDataDeleteImage] = useState<number | null>(null);
     const {
         data: createImage,
         setRefetch: setRefetchCreateImage,
@@ -51,7 +51,7 @@ const ModalChapterImageDetail: React.FC<ModalChapterImageDetailProps> = ({
         setRefetch: setRefetchDeleteImage,
         isLoading: isLoadingDeleteImage,
         error: deleteImageError,
-    } = useFetchDeleteImage(dataDeleteImage);
+    } = useFetchDeleteImage(dataDeleteImage ? dataDeleteImage : 0);
 
     const {
         data: updateOrderImage,
@@ -107,7 +107,8 @@ const ModalChapterImageDetail: React.FC<ModalChapterImageDetailProps> = ({
 
     useEffect(() => {
         if (deleteImage) {
-            setDataDeleteImage({});
+            setDataDeleteImage(null);
+            setSelectedImage(null);
             toast.success("Xóa hình ảnh chương thành công.");
         }
     }, [deleteImage, deleteImageError]);
@@ -183,14 +184,14 @@ const ModalChapterImageDetail: React.FC<ModalChapterImageDetailProps> = ({
             toast.error("Vui lòng chọn hình ảnh để xóa");
             return;
         }
-        setSelectedImage(null);
+
         if (imageList.some((image) => image.order === order)) {
-            const dataDelete = {
-                id: imageList.find((image) => image.order === order)?.id,
-                fileName: imageList.find((image) => image.order === order)?.path,
-            };
-            setDataDeleteImage(dataDelete);
-            setRefetchDeleteImage({ value: true });
+            const dataDelete = imageList.find((image) => image.order === order)?.id;
+
+            if (dataDelete) {
+                setDataDeleteImage(dataDelete);
+                setRefetchDeleteImage({ value: true });
+            }
         }
         let indexDelete: number | null = null;
         const updatedImageList = imageOldList.filter((image) => image.order !== order);

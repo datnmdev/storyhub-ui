@@ -10,6 +10,8 @@ import { ModerationStatus, ModerationStatusLabels } from "@pages/Author/AllEnum/
 import ModalApproveStory from "./ModalApprpveStory";
 import { useDispatch, useSelector } from "react-redux";
 import { AppRootState } from "@store/store.type";
+import authFeature from "@features/auth";
+import { useAppSelector } from "@hooks/redux.hook";
 const ModeratorHomePage = () => {
     const [search, setSearch] = useState("");
     const take = 10;
@@ -19,7 +21,7 @@ const ModeratorHomePage = () => {
     const [moderationReqDetail, setModerationReqDetail] = useState<any | null>(null);
     const [showModalApprove, setShowModalApprove] = useState(false);
     const [selectedChapter, setSelectedChapter] = useState<any | undefined>(undefined);
-
+    const profile = useAppSelector(authFeature.authSelector.selectUser);
     const webSocketService = useSelector((state: AppRootState) => state.webSocket.service);
 
     const getValues = (currentPage: number) => {
@@ -28,11 +30,20 @@ const ModeratorHomePage = () => {
             page: currentPage,
             type: 0,
             keyword: search,
+            moderatorId: profile?.id,
         };
     };
-    const { data, isLoading, error, setRefetch } = useFetch(apis.moderatorReqApi.getAllModerationReq, {
-        queries: getValues(currentPage),
-    });
+    const { data, isLoading, error, setRefetch } = useFetch(
+        apis.moderatorReqApi.getAllModerationReq,
+        {
+            queries: getValues(currentPage),
+        },
+        false
+    );
+
+    useEffect(() => {
+        setRefetch({ value: true });
+    }, [profile]);
 
     useEffect(() => {
         if (data) {
@@ -51,6 +62,7 @@ const ModeratorHomePage = () => {
         // Gọi hàm để lắng nghe yêu cầu kiểm duyệt
         if (webSocketService) {
             webSocketService.listenStoryUpdateEventforModerator(listenEvent);
+            webSocketService.listenNewReviewRequestForModerator(listenEvent);
         }
 
         // Cleanup listener nếu cần

@@ -9,7 +9,7 @@ const chapterImageApi = {
         return axiosInstance().post(`/chapter-image`, options.body);
     },
     deleteChapterImages: (options: RequestInit) => {
-        return axiosInstance().post(`/chapter-image/delete`, options.body);
+        return axiosInstance().delete(`/chapter-image/${options.queries.id}`);
     },
     updateOrderChapterImages: (options: RequestInit) => {
         return axiosInstance().put(`/chapter-image`, options.body);
