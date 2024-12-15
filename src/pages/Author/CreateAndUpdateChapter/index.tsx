@@ -112,7 +112,7 @@ const AuthorCreateAndUpdateNovelChapter: React.FC<AuthorModalCreateAndUpdateChap
             setTitleChapter("");
             setStatus(0);
             if (status === 1 && webSocketService) {
-                webSocketService?.sendModerationRequest(createChapter.id, profile?.id);
+                webSocketService.sendModerationRequest(createChapter.id, profile?.id);
             }
         }
     }, [createChapter, createChapterError, setRefetchChapterList]);

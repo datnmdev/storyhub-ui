@@ -32,7 +32,7 @@ const ModalRejectStory: React.FC<ModalRejectStoryProps> = ({
     return (
         <div className={styles.ModalRejectStory}>
             <header className={styles.modalHeader}>
-                <span className={styles.customHeader}>Lí do từ chối duyệt truyện</span>
+                <span className={styles.customHeader}>Lí do từ chối duyệt chương</span>
                 <button className={styles.closeButton} onClick={onCloseShow}>
                     &times;
                 </button>

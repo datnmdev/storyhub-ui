@@ -23,6 +23,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px;
+            background-color: #f5f4f4;
             border-bottom: 1px solid #e0e0e0;
 
             .customHeader {
@@ -99,6 +100,7 @@
             align-items: center;
             padding: 10px;
             border-bottom: 1px solid #e0e0e0;
+            background-color: #f5f4f4;
 
             .customHeader {
                 font-size: 18px;
@@ -111,6 +113,7 @@
                 font-size: 24px;
                 cursor: pointer;
                 color: #666;
+                padding-right: 5px;
             }
         }
         .modalBody {
